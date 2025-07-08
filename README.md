@@ -2,4 +2,14 @@
 
 - Brandon Adolf
 
-# website links
+## Website Links
+
+[Production]
+
+### Testing Profiles
+
+Username: user1@havenmail.com
+Password:
+
+Username: admin1@havenmail.com
+Password:
