@@ -5,6 +5,7 @@
 - Micaela Morales
 - Bimbola Osho-Lowu
 - Lauren Swartz
+- Logan Hartshorn
 
 ## Website Links
 
