@@ -1,6 +1,10 @@
 # wdd430-team4
 
 - Brandon Adolf
+- Arthur Weale
+- Micaela Morales
+- Bimbola Osho-Lowu
+- Lauren Swartz
 
 ## Website Links
 
