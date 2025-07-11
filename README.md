@@ -23,13 +23,26 @@ Password:
 
 css design for when we have the app setup
 
-@import 'tailwindcss';
+@theme {
+--color-primary: oklch(0.285 0.062 247.69);
+--color-accent: oklch(0.4219 0.0468 187.44);
+--color-secondary: oklch(0.7635 0.1264 73.74);
+--color-background: oklch(1 0 0);
+}
+or
+@theme {
+--color-primary: oklch(0.285 0.062 247.69);
+--color-accent: oklch(0.4219 0.0468 187.44);
+--color-secondary: oklch(0.7635 0.1264 73.74);
+--color-background: oklch(0.9347 0.0155 257.2);
+}
+or
 
 @theme {
---color-primary: oklch(0.54 0.281 293.009);
---color-accent: oklch(0.54 0.245 262.881);
---color-secondary: oklch(0.9347 0.0155 257.2);
---color-background: oklch(0.9206 0.0789 85.99);
+--color-primary: oklch(0.285 0.062 247.69);
+--color-accent: oklch(0.4219 0.0468 187.44);
+--color-secondary: oklch(0.7635 0.1264 73.74);
+--color-background: oklch(0.9485 0.0182 161.11);
 }
 
 Fonts
