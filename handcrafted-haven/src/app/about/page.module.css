@@ -1,0 +1,19 @@
+.container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--color-background);
+}
+
+.title {
+  font-size: 2rem;
+  color: var(--color-accent) !important; /* Force green color to test */
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.content {
+  line-height: 1.6;
+  color: var(--color-secondary); /* Use yellow for testing */
+  font-size: 1.1rem;
+}
