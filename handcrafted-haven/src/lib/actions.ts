@@ -3,7 +3,6 @@
 import postgres from 'postgres';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
-import { forbidden } from 'next/navigation';
 
 const sql = await postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -118,6 +117,18 @@ export async function createUser() {
     `;
     const user_id = result[0]?.id;
     return user_id;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function cart({ user_id }: { user_id: string }) {
+  try {
+    const result = await sql`
+            INSERT INTO carts (user_id) VALUES (${user_id}) RETURNING id
+        `;
+
+    return result[0]?.id;
   } catch (error) {
     console.log(error);
   }
