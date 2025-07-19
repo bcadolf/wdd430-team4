@@ -1,13 +1,14 @@
 {
   "name": "handcrafted-haven",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "ts-node seed.ts"
+    "seed": "tsx src/lib/seed.ts"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.11",
@@ -29,6 +30,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.4.1",
+    "tsx": "^4.20.3",
     "typescript": "^5"
   }
 }

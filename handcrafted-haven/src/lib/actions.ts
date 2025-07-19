@@ -10,8 +10,9 @@ import {
   OrderItemSchema,
   ReviewSchema,
 } from './validation/schemas';
+import 'dotenv/config';
 
-const sql = await postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 const CreateSeller = SellerSchema.omit({ id: true });
 
@@ -82,9 +83,9 @@ export async function createProduct(formData: FormData) {
   try {
     await sql`
         INSERT INTO products (item_name, item_price, item_stock, item_description, seller_id)
-        VALUES (${item_name}, ${Math.round(
+        VALUES (${item_name}, ${
       item_price_cents / 100
-    )}, ${item_stock}, ${item_description}, ${seller_id})
+    }, ${item_stock}, ${item_description}, ${seller_id})
     `;
   } catch (error) {
     console.log(error);
@@ -103,7 +104,7 @@ export async function createUser() {
   }
 }
 
-export async function cart({ user_id }: { user_id: string }) {
+export async function createCart({ user_id }: { user_id: string }) {
   try {
     const result = await sql`
             INSERT INTO carts (user_id) VALUES (${user_id}) RETURNING id
@@ -166,9 +167,9 @@ export async function createOrder(formData: FormData) {
 
   try {
     await sql`
-        INSERT INTO orders (user_id, user_name, user_email, user_address, total_price) VALUES (${user_id}, ${user_name}, ${user_email}, ${user_address}, ${Math.round(
+        INSERT INTO orders (user_id, user_name, user_email, user_address, total_price) VALUES (${user_id}, ${user_name}, ${user_email}, ${user_address}, ${
       total_price_cents / 100
-    )})
+    })
     `;
   } catch (error) {
     console.log(error);
@@ -207,9 +208,9 @@ export async function createOrderItem(formData: FormData) {
 
   try {
     await sql`
-        INSERT INTO order_items (order_id, seller_id, store_name, product_id, item_name, item_price, quantity) VALUES (${order_id}, ${seller_id}, ${store_name}, ${product_id}, ${item_name}, ${Math.round(
+        INSERT INTO order_items (order_id, seller_id, store_name, product_id, item_name, item_price, quantity) VALUES (${order_id}, ${seller_id}, ${store_name}, ${product_id}, ${item_name}, ${
       item_price_cents / 100
-    )}, ${quantity})
+    }, ${quantity})
     `;
   } catch (error) {
     console.log(error);
