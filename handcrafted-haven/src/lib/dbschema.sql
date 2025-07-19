@@ -128,7 +128,7 @@ Create table reviews (
   id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   rating smallint NOT NULL CHECK (rating between 1 and 5),
   product_id INTEGER,
-  seller_id UUID,
+  seller_id UUID NOT NULL,
   user_name varchar NOT NULL,
   description varchar(500),
   created_at timestamptz default current_timestamp,
@@ -139,11 +139,7 @@ Create table reviews (
   CONSTRAINT fk_seller
     FOREIGN KEY (seller_id)
     REFERENCES sellers(id)
-    ON DELETE cascade,
-  CHECK (
-    (product_id IS NOT NULL AND seller_id IS NULL) OR
-    (product_id IS NULL AND seller_id IS NOT NULL)
-  )
+    ON DELETE cascade
 );
 
 
