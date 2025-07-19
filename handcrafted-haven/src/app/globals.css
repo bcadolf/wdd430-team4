@@ -1,3 +1,6 @@
+@import 'tailwindcss';
+
+
 :root {
   --color-primary: oklch(0.285 0.062 247.69);   /* Navy */
   --color-accent: oklch(0.4219 0.0468 187.44);  /* Green */
