@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 
-:root {
+@theme {
   --color-primary: oklch(0.285 0.062 247.69);   /* Navy */
   --color-accent: oklch(0.4219 0.0468 187.44);  /* Green */
   --color-secondary: oklch(0.7635 0.1264 73.74);/* Yellow */
@@ -40,4 +40,10 @@ a {
   padding: 1rem 2rem;
   text-align: center;
   border-bottom: 2px solid var(--color-secondary);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
