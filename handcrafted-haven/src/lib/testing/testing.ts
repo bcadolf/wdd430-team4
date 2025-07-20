@@ -1,4 +1,5 @@
-import postgres from 'postgres';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// lint disabled for file since it is only for testing and the functions are commented out to allow for picking which to run.
 import {
   createCart,
   createCartDetail,
@@ -114,3 +115,5 @@ async function testCreateReview() {
 }
 
 // testCreateReview(); SUCCESS
+
+/* eslint-enable @typescript-eslint/no-unused-vars */
