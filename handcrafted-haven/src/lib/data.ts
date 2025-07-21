@@ -1,8 +1,5 @@
 import postgres from 'postgres';
 import {
-  Seller,
-  Cart,
-  CartDetail,
   CartWithItems,
   SellerSQLParam,
   SellerFields,
