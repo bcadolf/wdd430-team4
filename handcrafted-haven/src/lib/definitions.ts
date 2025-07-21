@@ -16,7 +16,7 @@ export type SellerFields = 'id' | 'store_name' | 'store_email';
 
 export type SellerSQLParam = {
   field: SellerFields;
-  value: string | number;
+  value: string | number | UUID;
 };
 
 export type Product = {
@@ -27,6 +27,18 @@ export type Product = {
   item_stock: number;
   item_description: string;
   seller_id: UUID;
+};
+
+export type ProductFields =
+  | 'id'
+  | 'item_name'
+  | 'item_price_cents'
+  | 'item_price'
+  | 'seller_id';
+
+export type ProductSQLParam = {
+  field: ProductFields;
+  value: string | number | UUID;
 };
 
 export type User = {
@@ -94,4 +106,11 @@ export type Reviews = {
   seller_id: UUID;
   user_name: string;
   description: string;
+};
+
+export type ReviewFields = 'seller_id' | 'product_id';
+
+export type ReviewSQLParams = {
+  field: ReviewFields;
+  value: string | number;
 };
