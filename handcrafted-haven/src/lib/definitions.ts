@@ -12,6 +12,13 @@ export type Seller = {
   password: string;
 };
 
+export type SellerFields = 'id' | 'store_name' | 'store_email';
+
+export type SellerSQLParam = {
+  field: SellerFields;
+  value: string | number;
+};
+
 export type Product = {
   id: number;
   item_name: string;
@@ -42,6 +49,20 @@ export type CartDetail = {
   seller_id: UUID;
   product_id: number;
   quantity: number;
+};
+
+export type CartWithItems = {
+  cart_id: number;
+  user_id: UUID;
+  items: {
+    cart_detail_id: number;
+    seller_id: UUID;
+    product_id: number;
+    quantity: number;
+    item_price_cents: number;
+    item_stock: number;
+    item_name: string;
+  }[];
 };
 
 export type Order = {

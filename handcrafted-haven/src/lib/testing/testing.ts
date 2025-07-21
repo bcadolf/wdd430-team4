@@ -10,6 +10,7 @@ import {
   createSeller,
   createUser,
 } from '../actions';
+import { getFullCartById, getSellerByParam } from '../data';
 
 /** tests run before seeding to ensure everything worked */
 
@@ -115,5 +116,29 @@ async function testCreateReview() {
 }
 
 // testCreateReview(); SUCCESS
+
+async function testGetCartById() {
+  const result = await getFullCartById({ cart_id: 1 });
+
+  console.log(result);
+}
+
+// testGetCartById(); SUCCESS
+
+async function testGetSellerByParam() {
+  const result = await getSellerByParam({
+    field: 'store_name',
+    value: 'Fine Iron',
+  });
+  // test with getting password as well.
+  const resultPass = await getSellerByParam({
+    field: 'store_email',
+    value: 'fineiron@handcraftedhaven.com',
+  });
+
+  console.log(result, { 'With Pass': resultPass });
+}
+
+// testGetSellerByParam(); SUCCESS
 
 /* eslint-enable @typescript-eslint/no-unused-vars */
