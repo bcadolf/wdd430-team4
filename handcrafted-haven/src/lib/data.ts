@@ -71,9 +71,9 @@ export async function getSellerByParam(params: SellerSQLParam) {
 }
 
 /**
- * login credentials
- * seller info
- * get seller by filter
+ * login credentials - done
+ * seller info - done
+ * get seller by filter - done
  * product info by id
  * product by filters including seller id (add new category to product table for categories)
  * get user by id
