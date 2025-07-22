@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { products } from "@/lib/products"
 
 export default function Page(){
     return <>
@@ -30,5 +31,25 @@ export default function Page(){
                 <p className="font-bold text-primary">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore, porro qui! Quis tempora, quod velit fugiat, quibusdam nesciunt molestias optio non nisi laudantium iure cupiditate unde autem quos nam eum. Lor</p>
             </div>
         </div>
+        
+        <h2 className="text-primary text-2xl font-bold ml-2">Related Products</h2>
+        <div className="grid grid-cols-5 gap-5 overflow-hidden p-5">
+        {products.map(product => (
+            <div key={product.id} className="bg-white w-64 h-80 rounded-2xl p-4 flex flex-col items-center">
+            <div className="w-full h-40 relative overflow-hidden rounded-lg">
+                <Image
+                src={product.image}
+                alt={`Image of ${product.name}`}
+                fill
+                className="object-cover"
+                />
+            </div>
+            <h3 className="text-primary font-bold mt-3 text-center">{product.name}</h3>
+            <p className="text-primary font-bold">${product.price}</p>
+            {product.inStock ? <p className="text-primary font-bold">In stock</p> : <p className="text-red-600 font-bold">Out of Stock</p>}
+            </div>
+        ))}
+</div>
+        
     </>
 }
