@@ -1,10 +1,17 @@
+'use client'
+
 import Image from "next/image";
 import { products } from "@/lib/products";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
-
+import { useState } from "react";
 
 export default function Page(){
+
+    const [rating, setRating] = useState(0);
+    const [hoverRating, setHoverRating] = useState(0);
+    
+
     return <>
         <div className="grid grid-cols-2 grid-rows-[2fr_1fr] gap-3 p-10 mx-auto mt-3.5 w-full max-w-4xl h-140 ">
             <div className="left-container">
@@ -20,18 +27,24 @@ export default function Page(){
                 <h2 className="text-primary text-2xl font-bold">Wrist Beads</h2>
                 <div className="flex flex-row gap-2 align-bottom items-center">
                     <div className="flex items-center h-3 "> {/* Reduced container height */}
-                        {[...Array(5)].map((_, i) => (
+                        
+                        {[...Array(5)].map((_, i) => {
+                            const index = i + 1;
+                            return (
                             <FontAwesomeIcon
                             key={i}
                             icon={faStar}
-                            className="text-gray-300"
+                            className={` cursor-pointer transition-colors duration-200 ${(hoverRating || rating) >= index ? 'text-secondary' : 'text-gray-300' }`}
                             style={{ 
-                                width: '15px',  // Direct width control
+                                width: '15px',  // Direct width cotrol
                                 height: '15px', // Direct height control
                                 marginRight: '-1px' // Adjusted overlap
                             }}
-                            />
-                        ))}
+                            onClick={()=> (setRating(index))}
+                            onMouseEnter={()=> (setHoverRating(index))}
+                            onMouseLeave={()=> (setHoverRating(0))}
+                            />)
+                        })}
                     </div>
                     <p className="font-semibold text-secondary">12 reviews</p>
                 </div>
