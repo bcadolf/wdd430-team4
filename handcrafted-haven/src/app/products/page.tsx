@@ -1,5 +1,8 @@
-import Image from "next/image"
-import { products } from "@/lib/products"
+import Image from "next/image";
+import { products } from "@/lib/products";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+
 
 export default function Page(){
     return <>
@@ -15,7 +18,24 @@ export default function Page(){
             </div>
             <div className="px-5 flex flex-col gap-5">
                 <h2 className="text-primary text-2xl font-bold">Wrist Beads</h2>
-                <p className="font-semibold text-secondary">12 reviews</p>
+                <div className="flex flex-row gap-2 align-bottom items-center">
+                    <div className="flex items-center h-3 "> {/* Reduced container height */}
+                        {[...Array(5)].map((_, i) => (
+                            <FontAwesomeIcon
+                            key={i}
+                            icon={faStar}
+                            className="text-gray-300"
+                            style={{ 
+                                width: '15px',  // Direct width control
+                                height: '15px', // Direct height control
+                                marginRight: '-1px' // Adjusted overlap
+                            }}
+                            />
+                        ))}
+                    </div>
+                    <p className="font-semibold text-secondary">12 reviews</p>
+                </div>
+
                 <p className="text-primary">$12.99</p>
                 <form action="" className="flex flex-col gap-2">
                     <label htmlFor="quantity" className="text-primary">Quantity</label>
