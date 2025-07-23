@@ -56,7 +56,7 @@ export default function About() {
       <div className={styles.container}>
         <div className={styles.sectionImage}>
           <h1 className={styles.title}>About Page</h1>
-            // eslint-disable-next-line @next/next/no-img-element
+            {// eslint-disable-next-line @next/next/no-img-element}
           <img 
             src="/about.webp"
             alt="About Handcrafted Haven Image"
@@ -68,7 +68,7 @@ export default function About() {
         <section className={styles.section}>
           <h3 className={styles.title}>Purpose</h3>
           <div className={styles.sectionContent}>
-            <p className={styles.purpose}>Our mission is to connect creative makers and passionate buyers through a marketplace built for originality. Whether you're shopping for handcrafted goods, vintage treasures, or one-of-a-kind art, we’re here to celebrate individuality and small business. Every purchase supports an independent creator — not a factory — and helps keep craftsmanship and personal expression alive.</p>
+            <p className={styles.purpose}>Our mission is to connect creative makers and passionate buyers through a marketplace built for originality. Whether you&apos;re shopping for handcrafted goods, vintage treasures, or one-of-a-kind art, we&apos;re here to celebrate individuality and small business. Every purchase supports an independent creator — not a factory — and helps keep craftsmanship and personal expression alive.</p>
           </div>
           <section className={styles.section}>
           <h2 className={styles.title}>Frequently Asked Questions</h2>
