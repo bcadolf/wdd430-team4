@@ -1,3 +1,4 @@
+
 import { LeftImage } from "@/components/ui/LeftImageOverview";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { ProductDetails, ProductDescription } from "@/components/ui/ProductDetail";
