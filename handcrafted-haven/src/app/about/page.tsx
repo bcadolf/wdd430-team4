@@ -61,7 +61,7 @@ export default function About() {
             src="/about.webp"
             alt="About Handcrafted Haven Image"
             className={styles.aboutImg}
-          /div>
+          </div>
         </div>
         
         
