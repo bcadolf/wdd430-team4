@@ -5,16 +5,16 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useState } from "react";
 
 export function ProductDetails(){
-    const [rating, setRating] = useState(0);
+    const [rating, setRating] = useState(0); 
     const [hoverRating, setHoverRating] = useState(0);
 
     return  <div className="px-5 flex flex-col gap-5">
                 <h2 className="text-primary text-2xl font-bold">Wrist Beads</h2>
                 <div className="flex flex-row gap-2 align-bottom items-center">
                     <div className="flex items-center h-3 "> {/* Reduced container height */}
-                        
+                        {/* This array method is creating fontAwesome stars */}
                         {[...Array(5)].map((_, i) => {
-                            const index = i + 1;
+                            const index = i + 1; 
                             return (
                             <FontAwesomeIcon
                             key={i}
@@ -25,7 +25,7 @@ export function ProductDetails(){
                                 height: '15px', // Direct height control
                                 marginRight: '-1px' // Adjusted overlap
                             }}
-                            onClick={()=> (setRating(index))}
+                            onClick={()=> (setRating(index))} 
                             onMouseEnter={()=> (setHoverRating(index))}
                             onMouseLeave={()=> (setHoverRating(0))}
                             />)

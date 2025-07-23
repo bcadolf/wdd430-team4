@@ -5,6 +5,7 @@ import { ProductDetails, ProductDescription } from "@/components/ui/ProductDetai
 export default function Page(){  
     return <>
         <div className="grid grid-cols-2 grid-rows-[2fr_1fr] gap-3 p-10 mx-auto mt-3.5 w-full max-w-4xl h-140 ">
+            {/* Imported components */}
             <LeftImage/>
             <ProductDetails/>
             <ProductDescription/>
