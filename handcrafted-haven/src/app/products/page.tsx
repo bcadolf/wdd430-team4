@@ -1,88 +1,17 @@
-'use client'
+import { LeftImage } from "@/components/ui/LeftImageOverview";
+import { ProductCard } from "@/components/ui/ProductCard";
+import { ProductDetails, ProductDescription } from "@/components/ui/ProductDetail";
 
-import Image from "next/image";
-import { products } from "@/lib/products";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { useState } from "react";
-
-export default function Page(){
-
-    const [rating, setRating] = useState(0);
-    const [hoverRating, setHoverRating] = useState(0);
-    
-
+export default function Page(){  
     return <>
         <div className="grid grid-cols-2 grid-rows-[2fr_1fr] gap-3 p-10 mx-auto mt-3.5 w-full max-w-4xl h-140 ">
-            <div className="left-container">
-                <Image 
-                    src='https://images.unsplash.com/photo-1638256049271-5dc96baf7ffe?q=80&w=982&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-                    width={400}
-                    height={300}
-                    alt="This is a handcrafted item"
-                    objectFit="cover"
-                />
-            </div>
-            <div className="px-5 flex flex-col gap-5">
-                <h2 className="text-primary text-2xl font-bold">Wrist Beads</h2>
-                <div className="flex flex-row gap-2 align-bottom items-center">
-                    <div className="flex items-center h-3 "> {/* Reduced container height */}
-                        
-                        {[...Array(5)].map((_, i) => {
-                            const index = i + 1;
-                            return (
-                            <FontAwesomeIcon
-                            key={i}
-                            icon={faStar}
-                            className={` cursor-pointer transition-colors duration-200 ${(hoverRating || rating) >= index ? 'text-secondary' : 'text-gray-300' }`}
-                            style={{ 
-                                width: '15px',  // Direct width cotrol
-                                height: '15px', // Direct height control
-                                marginRight: '-1px' // Adjusted overlap
-                            }}
-                            onClick={()=> (setRating(index))}
-                            onMouseEnter={()=> (setHoverRating(index))}
-                            onMouseLeave={()=> (setHoverRating(0))}
-                            />)
-                        })}
-                    </div>
-                    <p className="font-semibold text-secondary">12 reviews</p>
-                </div>
-
-                <p className="text-primary">$12.99</p>
-                <form action="" className="flex flex-col gap-2">
-                    <label htmlFor="quantity" className="text-primary">Quantity</label>
-                    <input type="number" min={0} id="quantity" className="border border-amber-600 rounded-2xl p-1 w-65 focus:outline-none focus:ring-2 focus:border-primary text-cyan-950" />
-                    <div>
-                        <button className="text-background bg-secondary w-50 py-1.5 rounded-2xl my-2">Add to Cart</button>
-                    </div>
-                    <button className="text-background  bg-primary w-65 py-1.5 rounded-2xl my-2">Buy Now</button>
-                </form>
-            </div>
-            <div className="col-span-2 ">
-                <h3 className="text-xl text-primary">Product Info</h3>
-                <p className="font-bold text-primary">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore, porro qui! Quis tempora, quod velit fugiat, quibusdam nesciunt molestias optio non nisi laudantium iure cupiditate unde autem quos nam eum. Lor</p>
-            </div>
+            <LeftImage/>
+            <ProductDetails/>
+            <ProductDescription/>
         </div>
         
         <h2 className="text-primary text-2xl font-bold ml-2">Related Products</h2>
-        <div className="grid grid-cols-5 gap-5 overflow-hidden p-5">
-        {products.map(product => (
-            <div key={product.id} className="bg-white w-64 h-80 rounded-2xl p-4 flex flex-col items-center">
-            <div className="w-full h-40 relative overflow-hidden rounded-lg">
-                <Image
-                src={product.image}
-                alt={`Image of ${product.name}`}
-                fill
-                className="object-cover"
-                />
-            </div>
-            <h3 className="text-primary font-bold mt-3 text-center">{product.name}</h3>
-            <p className="text-primary font-bold">${product.price}</p>
-            {product.inStock ? <p className="text-primary font-bold">In stock</p> : <p className="text-red-600 font-bold">Out of Stock</p>}
-            </div>
-        ))}
-</div>
+            <ProductCard/>
         
     </>
 }
