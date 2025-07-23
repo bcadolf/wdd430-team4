@@ -4,7 +4,7 @@ import styles from "./page.module.css";
 
 export default function About() {
 
-    const name ="Handcrafted Haven";
+    // const name ="Handcrafted Haven";
 
     const handleContact =  async () => {
         const email = "contact@handcraftedhaven.com"
@@ -14,6 +14,7 @@ export default function About() {
         alert(`Email address has been copied. Navigate to your email of choice and past in the our address to contact us! Thank you`)
       } catch (err) {
         alert(`There is an issue. Please email us at ${email}`)
+        console.log(err);
       }
     };
     const handleShop = () => {
@@ -55,6 +56,7 @@ export default function About() {
       <div className={styles.container}>
         <div className={styles.sectionImage}>
           <h1 className={styles.title}>About Page</h1>
+            // eslint-disable-next-line @next/next/no-img-element
           <img 
             src="/about.webp"
             alt="About Handcrafted Haven Image"
