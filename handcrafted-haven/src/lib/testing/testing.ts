@@ -150,7 +150,7 @@ async function testGetSellerByParam() {
 async function testGetProductByParam() {
   const result = await getProductByParam({
     field: 'item_price_cents',
-    value: 8.99,
+    value: 899,
   });
 
   console.log(result);

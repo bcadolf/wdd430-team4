@@ -106,7 +106,7 @@ export async function getProductByParam(params: ProductSQLParam) {
         SELECT *, ROUND(item_price * 100)::INT AS item_price_cents FROM products WHERE ${dbField} = $1
     `;
 
-    const result = await sql.unsafe(query, [value]);
+    const result = await sql.unsafe(query, [dbValue]);
 
     // could be one or many so returning all rows as an array.
     return result;
