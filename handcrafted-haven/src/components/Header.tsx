@@ -6,7 +6,7 @@ import { NavLink } from "./types";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import styles from './Header.module.css';
-import SearchBar from "./searchBar";
+import SearchBar from "./SearchBar";
 const navlinks: NavLink[] = [
     { label: "Home", href: "/"},
     { label: "About", href: "/about"},
