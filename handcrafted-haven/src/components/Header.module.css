@@ -1,0 +1,15 @@
+.navigation {
+    background-color: red;
+    display: flex;
+}
+.navList {
+    display: flex;
+}
+.header {
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+    align-items: center;
+    height: 90px
+
+}
