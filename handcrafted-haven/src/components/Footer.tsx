@@ -22,7 +22,7 @@ const navlinks: NavLink[] = [
 const socialLinks: SocialLink[] = [
     { label: "Facebook", href: "https://facebook.com", icon: <FaFacebookF size={25}/>},
     { label: "Instagram", href: "https://instagram.com", icon: <FaInstagram size={25}/>},
-    { label: "Facebook", href: "https://twitter.com", icon: <FaTwitter size={25}/>},
+    { label: "Twitter", href: "https://twitter.com", icon: <FaTwitter size={25}/>},
     { label: "Email", href: "https://mailto:info@handcraftedhaven.com", icon: <FaEnvelope size={25}/>},
 ]
 
