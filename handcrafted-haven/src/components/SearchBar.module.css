@@ -1,14 +1,17 @@
 .searchBarContainer {
     position: relative;
-    width: 250px; 
+    width: 400px; 
+    display: flex;
+    border: 2px solid black;
+    border-radius: 10px;
 }
 
 .searchInput {
     width: 100%;
     padding: 5px 10px;
     border-radius: 10px;
-    border: 2px solid black;
     font-size: 1rem;
+    color: black;
 
 }
 .dropdownContainer {
@@ -30,6 +33,13 @@
 }
 .dropdownItem:hover{
     background: green;
+}
+.searchButton {
+    cursor: pointer;
+    border-radius: 10px;
+}
+.searchButtonImage {
+    border-radius: 10px;
 }
 .resultImage {
     border-radius: 4px;
