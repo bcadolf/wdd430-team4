@@ -1,7 +1,7 @@
 'use client';
 
 
-import React from "react";
+import React, {useState} from "react";
 import { NavLink } from "./types";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -17,6 +17,8 @@ const navlinks: NavLink[] = [
 
 
 export default function Header() {
+
+    const [menuOpen, setMenuOpen] = useState(false);
 
     const pathname = usePathname();
 
@@ -35,7 +37,16 @@ export default function Header() {
                 <div className="search">
                     <SearchBar/>
                 </div>
-             <nav className={styles.navigation}>
+            <button
+            className={`${styles.hamburger} ${menuOpen ? styles.open : ''}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+            >
+                <span className={styles.bar}></span>
+                <span className={styles.bar}></span>
+                <span className={styles.bar}></span>
+                
+            </button>
+             <nav className={`${styles.navigation} ${menuOpen ? styles.show : ''}`}>
                 <ul className={styles.navList}>
                     {navlinks.map((link) => (
                         <li key={link.href}>

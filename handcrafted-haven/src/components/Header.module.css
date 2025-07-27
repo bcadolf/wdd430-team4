@@ -17,6 +17,9 @@
     font-weight: bolder;
     font-size: 2rem;
 }
+.hamburger {
+    display: none;
+}
 .navList li a {
  display: inline-block;
 
@@ -40,4 +43,72 @@
     position: relative;
     overflow: visible;
 
+}
+
+@media (max-width: 768px) {
+    .header {
+        display: flex;
+        flex-direction: column;
+        overflow: none;
+        position: static;
+        z-index: 1;
+        height: 90px;
+    }
+
+  .navigation {
+    position: fixed;
+    top: 25;
+    right: -100%;
+    width: 250px;
+    height: 50vh;
+    background-color: white;
+    flex-direction: column;
+    padding: 2rem;
+    transition: right 0.3s ease;
+    z-index: 999;
+  }
+
+  .navigation.show {
+    right: 0;
+  }
+
+  .navList {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 25px;
+    height: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1000;
+    position: absolute;
+    top: 1rem;
+    right: 10rem;
+  }
+
+  .bar {
+    height: 3px;
+    width: 100%;
+    background: black;
+    border-radius: 2px;
+    transition: 0.3s ease;
+  }
+
+  .open .bar:nth-child(1) {
+    transform: rotate(45deg) translateY(6px);
+  }
+
+  .open .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .open .bar:nth-child(3) {
+    transform: rotate(-45deg) translateY(-6px);
+  }
 }

@@ -20,6 +20,7 @@
   box-shadow: 0 10px 8px rgba(0, 0, 0, 0.5);
 
 }
+
 .aboutImg {
   width: 325px;
   height: 487.5px;
@@ -92,5 +93,16 @@ padding: 10px;
     grid-template-columns: 1fr;
     padding: 1rem;
     gap: 15px;
+    justify-content: center;
+    align-items: center;
+    padding-top: 90px;
   }
+  .aboutImg {
+    margin: 0 auto;
+  }
+  .mainContent {
+    margin-top: 90px;
+  }
+
+
 }
