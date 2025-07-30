@@ -22,7 +22,7 @@ useEffect(() => {
     async function fetchProducts() {
         const res = await fetch("/api/products");
         const data = await res.json();
-        const linked = data.map((product: any) => ({
+        const linked = data.map((product: { id: number; item_name: string; image: string}) => ({
             id: product.id,
             name: product.item_name,
             image: product.image,
