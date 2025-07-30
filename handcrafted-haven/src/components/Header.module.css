@@ -17,6 +17,9 @@
     font-weight: bolder;
     font-size: 2rem;
 }
+.hamburger {
+    display: none;
+}
 .navList li a {
  display: inline-block;
 
@@ -39,5 +42,73 @@
     z-index: 1;
     position: relative;
     overflow: visible;
+    
 
+}
+
+@media (max-width: 768px) {
+    .header {
+        display: flex;
+        flex-direction: column;
+        overflow: none;
+        position: static;
+        z-index: 1;
+        height: 120px;
+        margin-bottom: 20px;
+    }
+
+  .navigation {
+    display : none;
+
+    width: 100%;
+    background-color: white;
+    flex-direction: column;
+    padding: 2rem;
+  }
+
+  .navigation.show {
+    display: flex;
+    z-index: 2000;
+  }
+
+  .navList {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1000;
+    margin: 10px;
+    
+  }
+
+  .bar {
+    height: 3px;
+    width: 100%;
+    background: black;
+    border-radius: 2px;
+    transition: 0.3s ease;
+    margin: 3px 0;
+
+  }
+
+  .open .bar:nth-child(1) {
+    transform: rotate(45deg) translateY(8px);
+  }
+
+  .open .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .open .bar:nth-child(3) {
+    transform: rotate(-45deg) translateY(-8px);
+  }
 }

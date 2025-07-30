@@ -1,10 +1,37 @@
-import React, { useState } from 'react';
-import { products } from "@/lib/products";
+import React, { useState, useEffect } from 'react';
 import styles from './SearchBar.module.css'
 import Image from "next/image";
 
+type Product = {
+    id: number;
+    name: string;
+    image: string;
+}
+
+
+
+
+
+
 const SearchBar = () => {
+    const [products, setProducts] = useState<Product[]>([]);
     const [searchInput, setSearchInput] = useState("");
+
+
+useEffect(() => {
+    async function fetchProducts() {
+        const res = await fetch("/api/products");
+        const data = await res.json();
+        const linked = data.map((product: { id: number; item_name: string; image: string}) => ({
+            id: product.id,
+            name: product.item_name,
+            image: product.image,
+        }));
+        setProducts(linked);
+        console.log("Fetched product", linked);
+    }
+    fetchProducts();
+}, []);
 
 const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
@@ -48,7 +75,7 @@ return (
         <div className={styles.dropdownContainer}>
             {filterProducts.map((product, index) => (
                 <div key={index} className={styles.itemDrop}>
-                    <Image src={product.image} alt={product.name} width={50} height={50} className={styles.resultImage} />
+                    <Image src={product.image || "/about.webp"} alt={product.name} width={50} height={50} className={styles.resultImage} />
                     <span className={styles.productName}>{product.name}</span>
                 </div>
             ))}

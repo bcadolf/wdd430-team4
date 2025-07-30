@@ -53,7 +53,7 @@ export default function About() {
   ];
 
   return (
-    <div>
+    <div className={styles.mainContent}>
       <div className={styles.container}>
         <div className={styles.sectionImage}>
           <h1 className={styles.title}>About Page</h1>
