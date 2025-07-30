@@ -1,19 +1,41 @@
+'use client';
+import React, { useState, useEffect } from 'react';
+import styles from './page.module.css';
 
-import { LeftImage } from "@/components/ui/LeftImageOverview";
-import { ProductCard } from "@/components/ui/ProductCard";
-import { ProductDetails, ProductDescription } from "@/components/ui/ProductDetail";
+import Image from "next/image";
 
-export default function Page(){  
-    return <>
-        <div className="grid grid-cols-2 grid-rows-[2fr_1fr] gap-3 p-10 mx-auto mt-3.5 w-full max-w-4xl h-140 ">
-            {/* Imported components */}
-            <LeftImage/>
-            <ProductDetails/>
-            <ProductDescription/>
+import { ProductCard, Product } from '@/components/ui/ProductCard';
+
+
+
+
+export default function Products() {
+  const [products, setProducts ] = useState<Product[]>([]);
+  // const name ="Handcrafted Haven";
+  useEffect(() => {
+      async function fetchProducts() {
+          const res = await fetch("/api/products");
+          const data = await res.json();
+          console.log(data);
+          const linked = data.map((product: { id: number; item_name: string; image: string, item_price: string, item_stock: string}) => ({
+              id: product.id,
+              name: product.item_name,
+              image: product.image,
+              price: product.item_price,
+              inStock: Number(product.item_stock) > 0,
+          }));
+          setProducts(linked);
+          console.log("Fetched product", linked);
+      }
+      fetchProducts();
+  }, []);
+
+
+  return (
+    <div>
+     <h2 className="text-primary text-2xl font-bold ml-2">Related Products</h2>
+            <ProductCard products={products}/>
+
         </div>
-        
-        <h2 className="text-primary text-2xl font-bold ml-2">Related Products</h2>
-            <ProductCard/>
-        
-    </>
+  );
 }
