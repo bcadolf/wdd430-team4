@@ -1,6 +1,8 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import styles from './page.module.css';
+import SearchBar from "../../components/SearchBar";
+import { useSearchParams } from 'next/navigation';
 
 import Image from "next/image";
 
@@ -11,6 +13,10 @@ import { ProductCard, Product } from '@/components/ui/ProductCard';
 
 export default function Products() {
   const [products, setProducts ] = useState<Product[]>([]);
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search")?.toLowerCase() || "";
+
+           
   // const name ="Handcrafted Haven";
   useEffect(() => {
       async function fetchProducts() {
@@ -30,11 +36,13 @@ export default function Products() {
       fetchProducts();
   }, []);
 
+  const filteredProducts = search ? products.filter(product => product.name.toLowerCase().includes(search)) : products;
+
 
   return (
     <div>
-     <h2 className="text-primary text-2xl font-bold ml-2">Related Products</h2>
-            <ProductCard products={products}/>
+     <h2 className="text-primary text-2xl font-bold ml-2">Products For Sale</h2>
+            <ProductCard products={filteredProducts}/>
 
         </div>
   );

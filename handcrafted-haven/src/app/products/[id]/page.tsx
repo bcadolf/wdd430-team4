@@ -1,18 +1,27 @@
 
-import { LeftImage } from "@/components/ui/LeftImageOverview";
-import { ProductCard } from "@/components/ui/ProductCard";
-import { ProductDetails, ProductDescription } from "@/components/ui/ProductDetail";
+import { notFound } from "next/navigation";
 
-export default function Page(){  
-    return <>
-        <div className="grid grid-cols-2 grid-rows-[2fr_1fr] gap-3 p-10 mx-auto mt-3.5 w-full max-w-4xl h-140 ">
-            {/* Imported components */}
-            <LeftImage/>
-            <ProductDetails/>
-            <ProductDescription/>
+import { getProductByParam } from "@/lib/data";
+
+export default async function ProductPage(props: { params: Promise<{ id: string}>}) {
+    const { id } = await props.params;
+
+    const products = await getProductByParam({ field: "id", value: id});
+    console.log(products);
+    const product = products?.[0];
+
+    if (!product)
+         return notFound();
+
+    return (
+
+        <div>
+            <h1>{product.item_name}</h1>
+            <img src={product.item_image} alt={product.item_name} />
+            <p>{product.item_description}</p>
+            <p>Price: ${product.item_price}</p>
+            <p>Stock: {product.item_stock}</p>
         </div>
-        
-        <h2 className="text-primary text-2xl font-bold ml-2">Related Products</h2>
-        
-    </>
+    )
+
 }

@@ -18,7 +18,7 @@ export function ProductCard({ products }: { products: Product[] }) {
         <div className="grid grid-cols-5 gap-5 overflow-hidden p-5">
             {/* Loop through each product in the products array */}
             {products.map(product => (
-                <Link href={`/product/${product.id}`} key={product.id}>
+                <Link href={`/products/${product.id}`} key={product.id}>
                 // Unique key for each product and styling for the card
                 <div className="bg-white w-64 h-80 rounded-2xl p-4 flex flex-col items-center">
                     

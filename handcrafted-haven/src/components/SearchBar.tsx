@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styles from './SearchBar.module.css'
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type Product = {
     id: number;
@@ -13,7 +15,9 @@ type Product = {
 
 
 
+
 const SearchBar = () => {
+    const router = useRouter();
     const [products, setProducts] = useState<Product[]>([]);
     const [searchInput, setSearchInput] = useState("");
 
@@ -40,6 +44,8 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
 const handleSearchEnter = () => {
     if (!searchInput.trim()) return;
+    router.push(`/products?search=${encodeURIComponent(searchInput)}`)
+    setSearchInput("");
 }
 
 const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -74,10 +80,14 @@ return (
     {searchInput && filterProducts.length > 0 && (
         <div className={styles.dropdownContainer}>
             {filterProducts.map((product, index) => (
-                <div key={index} className={styles.itemDrop}>
+                <Link href={`/products/${product.id}`} key={index}>
+
+                <div onClick={() => setSearchInput("")}
+                 key={index} className={styles.itemDrop}>
                     <Image src={product.image || "/about.webp"} alt={product.name} width={50} height={50} className={styles.resultImage} />
                     <span className={styles.productName}>{product.name}</span>
                 </div>
+                </Link>
             ))}
         </div>
     )}
