@@ -117,6 +117,10 @@ export async function getProductByParam(params: ProductSQLParam) {
   }
 }
 
+export async function getAllProducts() {
+  return await sql`SELECT * FROM products`;
+}
+
 //  basic get the user by the id
 export async function getUserById({ user_id }: { user_id: string }) {
   const result = await sql`
