@@ -24,6 +24,7 @@ export async function createSeller(formData: FormData) {
     store_email: formData.get('store_email'),
     store_address: formData.get('store_address'),
     password: formData.get('password'),
+    seller_image: formData.get('seller_image') ?? '',
   });
 
   if (!validatedData.success) {
@@ -40,14 +41,68 @@ export async function createSeller(formData: FormData) {
     store_email,
     store_address,
     password,
+    seller_image = '',
   } = validatedData.data;
 
   const hashedpassword = await bcrypt.hash(password, 12);
 
   try {
+    const result = await sql`
+        INSERT INTO sellers (owner_first,owner_last, store_name, store_email, store_address, password, seller_image)
+        VALUES (${owner_first}, ${owner_last}, ${store_name}, ${store_email}, ${store_address}, ${hashedpassword}, ${seller_image}) RETURNING id
+    `;
+
+    const seller_id = result[0]?.id;
+    return seller_id;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const UpdateSeller = SellerSchema.partial();
+
+export async function updateSeller(formData: FormData) {
+  const rawData = {
+    id: formData.get('seller_id'),
+    owner_first: formData.get('owner_first') ?? undefined,
+    owner_last: formData.get('owner_last') ?? undefined,
+    store_name: formData.get('store_name') ?? undefined,
+    store_email: formData.get('store_email') ?? undefined,
+    store_address: formData.get('store_address') ?? undefined,
+    password: formData.get('password') ?? undefined,
+  };
+
+  const validatedData = UpdateSeller.safeParse(rawData);
+
+  if (!validatedData.success) {
+    return {
+      errors: validatedData.error,
+      message: 'Missing or Invalid Information. Failed to Update Seller.',
+    };
+  }
+
+  const { id } = validatedData.data;
+  console.log(id);
+  if (typeof id !== 'string') {
+    throw new Error('Invalid ID type');
+  }
+  const updatedFields = Object.entries(validatedData.data)
+    .filter(([key, value]) => key !== 'id' && value !== undefined)
+    .map(([key, value]) => {
+      if (value === null) return `${key} = NULL`;
+      if (typeof value === 'string') {
+        const escaped = value.replace(/'/g, "''"); // Escape single quotes
+        return `${key} = '${escaped}'`;
+      }
+      return `${key} = ${value}`;
+    })
+    .join(', ');
+
+  try {
     await sql`
-        INSERT INTO sellers (owner_first,owner_last, store_name, store_email, store_address, password)
-        VALUES (${owner_first}, ${owner_last}, ${store_name}, ${store_email}, ${store_address}, ${hashedpassword})
+      UPDATE sellers
+      SET ${sql.unsafe(updatedFields)}
+      WHERE id = ${id}
     `;
   } catch (error) {
     console.log(error);
@@ -63,6 +118,7 @@ export async function createProduct(formData: FormData) {
     item_stock: formData.get('item_stock'),
     item_description: formData.get('item_description'),
     seller_id: formData.get('seller_id'),
+    item_image: formData.get('item_image'),
   });
 
   if (!validatedData.success) {
@@ -78,19 +134,22 @@ export async function createProduct(formData: FormData) {
     item_stock,
     item_description,
     seller_id,
+    item_image,
   } = validatedData.data;
 
   try {
     await sql`
-        INSERT INTO products (item_name, item_price, item_stock, item_description, seller_id)
+        INSERT INTO products (item_name, item_price, item_stock, item_description, seller_id, item_image)
         VALUES (${item_name}, ${
       item_price_cents / 100
-    }, ${item_stock}, ${item_description}, ${seller_id})
+    }, ${item_stock}, ${item_description}, ${seller_id}, ${item_image})
     `;
   } catch (error) {
     console.log(error);
   }
 }
+
+export async function updateProduct() {}
 
 export async function createUser() {
   try {
@@ -103,6 +162,8 @@ export async function createUser() {
     console.log(error);
   }
 }
+
+export async function updateUser() {}
 
 export async function createCart({ user_id }: { user_id: string }) {
   try {
@@ -139,6 +200,73 @@ export async function createCartDetail(formData: FormData) {
     await sql`
     INSERT INTO cart_details (cart_id, seller_id, product_id, quantity) VALUES (${cart_id}, ${seller_id}, ${product_id}, ${quantity})
   `;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const UpdateCartDetail = CartDetailSchema.partial();
+
+// for this function to work optimally the form must submit the cart_detail_id and only the fields that need to be updated.
+export async function updateCartDetail(formData: FormData) {
+  const validatedData = UpdateCartDetail.safeParse({
+    id: formData.get('cart_detail_id'),
+    cart_id: formData.get('cart_id'),
+    seller_id: formData.get('seller_id'),
+    product_id: formData.get('product_id'),
+    quantity: formData.get('quantity'),
+  });
+
+  if (!validatedData.success) {
+    return {
+      errors: validatedData.error,
+      message: 'Missing or Invalid Information. Failed to Update Cart Detail.',
+    };
+  }
+
+  const { id } = validatedData.data;
+  if (typeof id !== 'number') {
+    throw new Error('Invalid ID type');
+  }
+  const updatedFields = Object.entries(validatedData.data)
+    .filter(([key, value]) => key !== 'id' && value !== undefined)
+    .map(([key, value]) => {
+      if (value === null) return `${key} = NULL`;
+      if (typeof value === 'string') {
+        const escaped = value.replace(/'/g, "''"); // Escape single quotes
+        return `${key} = '${escaped}'`;
+      }
+      return `${key} = ${value}`;
+    })
+    .join(', ');
+
+  try {
+    await sql`
+      UPDATE cart_details
+      SET ${updatedFields}
+      WHERE id = ${id}
+    `;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function addProductToCart({
+  cart_id,
+  product_id,
+  seller_id,
+  quantity,
+}: {
+  cart_id: string;
+  product_id: string;
+  seller_id: string;
+  quantity: number;
+}) {
+  try {
+    await sql`
+      INSERT INTO cart_details (cart_id, product_id, seller_id, quantity)
+      VALUES (${cart_id}, ${product_id}, ${seller_id}, ${quantity}) ON CONFLICT (cart_id, product_id) DO UPDATE SET quantity = cart_details.quantity + ${quantity}
+    `;
   } catch (error) {
     console.log(error);
   }

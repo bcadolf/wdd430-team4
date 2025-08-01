@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // lint disabled for file since it is only for testing and the functions are commented out to allow for picking which to run.
+
 import {
   createCart,
   createCartDetail,
@@ -9,6 +10,7 @@ import {
   createReview,
   createSeller,
   createUser,
+  updateSeller,
 } from '../actions';
 import {
   getFullCartById,
@@ -22,33 +24,46 @@ import {
 
 async function testCreateSeller() {
   const formData = new FormData();
-  formData.set('owner_first', 'Jackson');
-  formData.set('owner_last', 'Strongman');
-  formData.set('store_name', 'Fine Iron');
-  formData.set('store_email', 'fineiron@handcraftedhaven.com');
-  formData.set('store_address', '26 Iron Way, Steele VA');
-  formData.set('password', '1R0N1sh0t$');
+  formData.set('owner_first', 'Nick');
+  formData.set('owner_last', 'Fury');
+  formData.set('store_name', 'Nick Nacks');
+  formData.set('store_email', 'nicky@handcraftedhaven.com');
+  formData.set('store_address', '1234 Superhero Lane, New York, NY');
+  formData.set('password', 'password123!');
 
-  await createSeller(formData);
+  const result = await createSeller(formData);
+
+  console.log(result);
 }
 
-// testCreateSeller(); SUCCESS
+// testCreateSeller();
+
+async function testUpdateSeller() {
+  const formData = new FormData();
+  formData.set('seller_id', '343832af-b69b-4164-87e5-b230429f4ff1');
+  formData.set('owner_last', 'Strongleg');
+  formData.set('store_address', '27 Iron Way, Steele VA');
+  await updateSeller(formData);
+}
+
+// testUpdateSeller(); SUCCESS
 
 async function testCreateProduct() {
   const formData = new FormData();
-  formData.set('item_name', '8" Knife Blank');
-  formData.set('item_price', '10.99');
-  formData.set('item_stock', '8');
+  formData.set('item_name', 'Hand Painted Mug');
+  formData.set('item_price', '33.82');
+  formData.set('item_stock', '15');
   formData.set(
     'item_description',
-    'These are polished high carbon steel blades. Hand forged and 8 inches tip to tang.'
+    'Hand-painted Mug crafted with care using traditional techniques.'
   );
-  formData.set('seller_id', '343832af-b69b-4164-87e5-b230429f4ff1');
+  formData.set('seller_id', '0f8fad10-6c29-40d2-8d02-581851eff936');
+  formData.set('item_image', '/public/products/hand-painted-mug.webp');
 
   await createProduct(formData);
 }
 
-// testCreateProduct(); SUCCESS
+// testCreateProduct();
 
 async function testCreateUser() {
   const result = await createUser();
@@ -145,18 +160,18 @@ async function testGetSellerByParam() {
   console.log(result, { 'With Pass': resultPass });
 }
 
-// testGetSellerByParam(); SUCCESS
+// testGetSellerByParam();
 
 async function testGetProductByParam() {
   const result = await getProductByParam({
-    field: 'item_price_cents',
-    value: 899,
+    field: 'seller_id',
+    value: '343832af-b69b-4164-87e5-b230429f4ff1',
   });
 
   console.log(result);
 }
 
-// testGetProductByParam(); SUCCESS
+// testGetProductByParam();
 
 async function testGetUserById() {
   const result = await getUserById({
