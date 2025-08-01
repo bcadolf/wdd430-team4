@@ -25,7 +25,8 @@ export async function getFullCartById({ cart_id }: { cart_id: number }) {
         cd.quantity,
         ROUND(p.item_price * 100)::INT AS item_price_cents,
         p.item_stock,
-        p.item_name
+        p.item_name,
+        p.item_image,
         FROM carts c
         JOIN cart_details cd ON cd.cart_id = c.id
         JOIN products p ON p.id = cd.product_id
@@ -56,6 +57,7 @@ export async function getSellerByParam(params: SellerSQLParam) {
       'store_name',
       'store_email',
       'store_address',
+      'seller_image',
     ];
 
     if (field === 'store_email') {
