@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // lint disabled for file since it is only for testing and the functions are commented out to allow for picking which to run.
 
+import test from 'node:test';
 import {
   createCart,
   createCartDetail,
@@ -10,7 +11,10 @@ import {
   createReview,
   createSeller,
   createUser,
+  updateCartDetail,
+  updateProduct,
   updateSeller,
+  updateUser,
 } from '../actions';
 import {
   getFullCartById,
@@ -58,12 +62,26 @@ async function testCreateProduct() {
     'Hand-painted Mug crafted with care using traditional techniques.'
   );
   formData.set('seller_id', '0f8fad10-6c29-40d2-8d02-581851eff936');
-  formData.set('item_image', '/public/products/hand-painted-mug.webp');
+  formData.set('item_image', '/products/hand-painted-mug.webp');
 
   await createProduct(formData);
 }
 
-// testCreateProduct();
+// testCreateProduct(); SUCCESS
+
+async function testUpdateProduct() {
+  const formData = new FormData();
+  formData.set('product_id', '1');
+  formData.set('item_price', '6.99');
+  formData.set(
+    'item_description',
+    'High-quality steel knife blank, perfect for custom knife making, no handle.'
+  );
+
+  await updateProduct(formData);
+}
+
+// testUpdateProduct(); SUCCESS
 
 async function testCreateUser() {
   const result = await createUser();
@@ -71,6 +89,19 @@ async function testCreateUser() {
 }
 
 // testCreateUser(); SUCCESS
+
+async function testUpdateUser() {
+  const formData = new FormData();
+  formData.set('user_id', '2306b65d-ef7d-4ef4-93de-b3f88dfc9304');
+  formData.set('user_first', 'John');
+  formData.set('user_last', 'Wick');
+  formData.set('user_email', 'lovedogs@illkill.com');
+  formData.set('user_address', '1234 Dog Lane, New York, NY');
+
+  await updateUser(formData);
+}
+
+// testUpdateUser(); SUCCESS
 
 async function testCreateCart() {
   const user_id = { user_id: '97d43122-81b9-433c-a231-77fea4cb30bf' };
@@ -92,7 +123,15 @@ async function testCreateCartDetail() {
   await createCartDetail(formData);
 }
 
-// testCreateCartDetail(); SUCCESS
+async function testUpdateCartDetail() {
+  const formData = new FormData();
+  formData.set('cart_detail_id', '3');
+  formData.set('quantity', '2');
+
+  await updateCartDetail(formData);
+}
+
+// testUpdateCartDetail(); SUCCESS
 
 async function testCreateOrder() {
   const formData = new FormData();
@@ -134,7 +173,7 @@ async function testCreateReview() {
   );
 
   await createReview(formData);
-  console.log("review created")
+  console.log('review created');
 }
 
 //estCreateReview();
@@ -190,7 +229,6 @@ async function testGetReviewByParam() {
   console.log(result);
 }
 
-testGetReviewByParam();
+// testGetReviewByParam();
 
 /* eslint-enable @typescript-eslint/no-unused-vars */
-
