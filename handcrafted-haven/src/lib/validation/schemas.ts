@@ -8,6 +8,7 @@ export const SellerSchema = z.object({
   store_email: z.string(),
   store_address: z.string(),
   password: z.string(),
+  seller_image: z.string(),
 });
 
 export const ProductSchema = z.object({
@@ -18,6 +19,7 @@ export const ProductSchema = z.object({
   item_stock: z.coerce.number().int().min(0),
   item_description: z.string(),
   seller_id: z.uuid(),
+  item_image: z.string(), // Assuming item_image is a URL or path to the image
 });
 
 export const UserSchema = z.object({
