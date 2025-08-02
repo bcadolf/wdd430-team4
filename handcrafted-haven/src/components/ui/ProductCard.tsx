@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-// Importing the list of products from the local module
+
 export type Product = {
   id: number;
   name: string;
