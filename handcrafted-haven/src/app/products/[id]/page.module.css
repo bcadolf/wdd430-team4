@@ -1,0 +1,35 @@
+.productcontainer {
+    display: grid;
+    grid-template-columns: auto auto ;
+    flex-direction: row;
+    margin: 0 auto;
+    justify-content: center;
+    gap: 20px;
+
+}
+.productimage {
+    
+    align-items: center;
+    padding-top: 100px;
+}
+
+.main {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.description {
+    justify-content: center;
+    align-items: center;
+    padding-top: 100px;
+    
+}
+.image {
+    width: 400 ;
+    height: 400;
+    padding-top: 10px;
+    background-color:rgba(255, 255,255, 0.6);
+    border-radius: 25px;
+    padding-bottom: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+}
