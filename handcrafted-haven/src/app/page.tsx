@@ -1,12 +1,31 @@
+'use client'
+
 import Image from "next/image"
 import { ProductCard } from "@/components/ui/ProductCard";
+import { images } from '@/lib/hero';
+import { useState, useEffect} from 'react';
 
 export default function Home(){
+  const [currentImage, setCurrentImage] = useState(0)
+
+  const nextSlide = ()=> {
+    setCurrentImage((prevIndex)=>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1)
+  }
+
+  useEffect(()=>{
+    const interval = setInterval(()=>{
+      nextSlide()
+    }, 15000)
+
+    return ()=> clearInterval(interval);
+  }, [currentImage])
+
   return <>
     <div className="relative h-[500px] w-full ">
         <div className="w-full h-10 overflow-hidden">
           <Image
-          src='https://images.unsplash.com/photo-1496769843785-93aa0be525dc?w=1600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aGFuZGNyYWZ0ZWR8ZW58MHx8MHx8fDI%3D'
+          src={images[currentImage].url}
           alt="Hero image of a handcrafted item"
           fill
           className="object-cover"
