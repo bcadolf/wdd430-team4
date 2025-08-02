@@ -167,12 +167,12 @@ export async function createProduct(formData: FormData) {
 export async function updateProduct(formData: FormData) {
   const validatedData = ProductSchema.partial().safeParse({
     id: formData.get('product_id'),
-    item_name: formData.get('item_name'),
-    item_price_cents: formData.get('item_price'),
-    item_stock: formData.get('item_stock'),
-    item_description: formData.get('item_description'),
-    seller_id: formData.get('seller_id'),
-    item_image: formData.get('item_image'),
+    item_name: formData.get('item_name') ?? undefined,
+    item_price_cents: formData.get('item_price') ?? undefined,
+    item_stock: formData.get('item_stock') ?? undefined,
+    item_description: formData.get('item_description') ?? undefined,
+    seller_id: formData.get('seller_id') ?? undefined,
+    item_image: formData.get('item_image') ?? undefined,
   });
   if (!validatedData.success) {
     return {
@@ -188,13 +188,22 @@ export async function updateProduct(formData: FormData) {
     .filter(([key, value]) => key !== 'id' && value !== undefined)
     .map(([key, value]) => {
       if (value === null) return `${key} = NULL`;
+
+      if (key === 'item_price_cents') {
+        if (typeof value !== 'number') {
+          throw new Error('item_price_cents must be a number');
+        }
+        return `item_price = ${value / 100}`;
+      }
       if (typeof value === 'string') {
         const escaped = value.replace(/'/g, "''"); // Escape single quotes
         return `${key} = '${escaped}'`;
       }
+
       return `${key} = ${value}`;
     })
     .join(', ');
+
   try {
     await sql`
       UPDATE products
@@ -353,10 +362,10 @@ const UpdateCartDetail = CartDetailSchema.partial();
 export async function updateCartDetail(formData: FormData) {
   const validatedData = UpdateCartDetail.safeParse({
     id: formData.get('cart_detail_id'),
-    cart_id: formData.get('cart_id'),
-    seller_id: formData.get('seller_id'),
-    product_id: formData.get('product_id'),
-    quantity: formData.get('quantity'),
+    cart_id: formData.get('cart_id') ?? undefined,
+    seller_id: formData.get('seller_id') ?? undefined,
+    product_id: formData.get('product_id') ?? undefined,
+    quantity: formData.get('quantity') ?? undefined,
   });
 
   if (!validatedData.success) {
@@ -385,7 +394,7 @@ export async function updateCartDetail(formData: FormData) {
   try {
     await sql`
       UPDATE cart_details
-      SET ${updatedFields}
+      SET ${sql.unsafe(updatedFields)}
       WHERE id = ${id}
     `;
   } catch (error) {
