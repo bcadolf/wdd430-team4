@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { getProductByParam } from "@/lib/data";
+import { NextResponse } from 'next/server';
+import { getProductByParam } from '@/lib/data';
 
 export async function GET(
   _request: Request,
