@@ -3,13 +3,22 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useState } from "react";
+import { Product } from './ProductCard';
 
-export function ProductDetails(){
+type ProductDetailsProps = {
+    name: string;
+    price: number | string;
+    stock: number | string;
+    description?: string;
+
+}
+
+export default function ProductDetails({ name, price, stock}: ProductDetailsProps){
     const [rating, setRating] = useState(0); 
     const [hoverRating, setHoverRating] = useState(0);
 
     return  <div className="px-5 flex flex-col gap-5">
-                <h2 className="text-primary text-2xl font-bold">Wrist Beads</h2>
+                <h2 className="text-primary text-4xl font-bold">{name}</h2>
                 <div className="flex flex-row gap-2 align-bottom items-center">
                     <div className="flex items-center h-3 "> {/* Reduced container height */}
                         {/* This array method is creating fontAwesome stars */}
@@ -34,21 +43,21 @@ export function ProductDetails(){
                     <p className="font-semibold text-secondary">12 reviews</p>
                 </div>
 
-                <p className="text-primary">$12.99</p>
+                <p className="text-primary text-6x2 font-bold">Product Price - ${price}</p>
                 <form action="" className="flex flex-col gap-2">
-                    <label htmlFor="quantity" className="text-primary">Quantity</label>
-                    <input type="number" min={0} id="quantity" className="border border-amber-600 rounded-2xl p-1 w-65 focus:outline-none focus:ring-2 focus:border-primary text-cyan-950" />
+                    <label htmlFor="quantity" className="text-primary text-6x2 font-bold" >Quantity: Available - {stock}</label>
+                    <input type="number" min={0} id="quantity" className="border border-amber-600 rounded-2xl p-1 w-65 focus:outline-none focus:ring-2 focus:border-primary text-cyan-950  hover:bg-secondary/80 hover:shadow-lg transition"style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.5)" }} />
                     <div>
-                        <button className="text-background bg-secondary w-50 py-1.5 rounded-2xl my-2">Add to Cart</button>
+                        <button className="cursor-pointer text-background bg-secondary w-50 py-1.5 rounded-2xl my-2  hover:bg-secondary/80 hover:shadow-lg transition" style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.5)" }}>Add to Cart</button>
                     </div>
-                    <button className="text-background  bg-primary w-65 py-1.5 rounded-2xl my-2">Buy Now</button>
+                    <button className="cursor-pointer text-background  bg-primary w-65 py-1.5 rounded-2xl my-2  hover:bg-secondary/80 hover:shadow-lg transition " style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.5)" }}>Buy Now</button>
                 </form>
             </div>
 }
 
-export function ProductDescription(){
+export function ProductDescription({ description }: {description: string}){
     return  <div className="col-span-2 ">
-                <h3 className="text-xl text-primary">Product Info</h3>
-                <p className="font-bold text-primary">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore, porro qui! Quis tempora, quod velit fugiat, quibusdam nesciunt molestias optio non nisi laudantium iure cupiditate unde autem quos nam eum. Lor</p>
+                <h3 className="text-primary text-4xl font-bolder">Product Info</h3>
+                <p className="font-bold text-primary">{description}</p>
             </div>
 }

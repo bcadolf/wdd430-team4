@@ -1,7 +1,11 @@
 import { notFound } from 'next/navigation';
 import Image from "next/image";
-
+import styles from './page.module.css';
 import { getProductByParam } from '@/lib/data';
+import ProductDetails, {ProductDescription}  from '@/components/ui/ProductDetail';
+import { Suspense } from 'react';
+import SellerProductList from '@/components/SellerProductList';
+
 
 export default async function ProductPage({params}: { params: Promise<{ id: string }>}) {
     const { id } = await params;
@@ -16,18 +20,26 @@ export default async function ProductPage({params}: { params: Promise<{ id: stri
 
     return (
 
-        <div>
-            <h1>{product.item_name}</h1>
+        <div className={styles.productcontainer}>
+            <div className={styles.productimage}>
             <Image
+                className={styles.image}
                 src={product.item_image}
                 alt={product.item_name}
                 width={400}
                 height={400}
                 style={{ objectFit: "contain"}}
             />
-            <p>{product.item_description}</p>
-            <p>Price: ${product.item_price}</p>
-            <p>Stock: {product.item_stock}</p>
+            </div>
+            <div className={styles.description}>
+            <ProductDetails name={product.item_name} price={product.item_price} stock={product.item_stock} />
+            </div>
+             <ProductDescription description={product.item_description}/>
+            <div>
+                 <Suspense fallback={<div>Loading .... </div>}>
+                           <SellerProductList sellerId={product.seller_id}/>
+                       </Suspense>
+            </div>
         </div>
     )
 

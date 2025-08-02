@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import { getProductByParam } from '@/lib/data';
+import { NextResponse } from "next/server";
+import { getReviewByParam } from "@/lib/data";
 
 export async function GET(
   _request: Request,
@@ -11,7 +11,7 @@ export async function GET(
     return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
   }
 
-  const products = (await getProductByParam({ field: "id", value: numericId })) || [];
+  const products = (await getReviewByParam({ field: "product_id", value: numericId })) || [];
   const product = products[0];
 
   if (!product) {
@@ -20,5 +20,4 @@ export async function GET(
 
   return NextResponse.json(product);
 }
-
 
