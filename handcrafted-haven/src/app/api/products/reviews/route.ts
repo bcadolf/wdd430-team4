@@ -1,23 +1,13 @@
 import { NextResponse } from "next/server";
 import { getReviewByParam } from "@/lib/data";
 
-export async function GET(
-  _request: Request,
-  context: { params: Promise<{ id: string }> }
-): Promise<NextResponse> {
-  const { id } = await context.params;
-  const numericId = Number(id);
-  if (isNaN(numericId)) {
-    return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
-  }
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const product_id =  searchParams.get("product_id");
 
-  const products = (await getReviewByParam({ field: "product_id", value: numericId })) || [];
-  const product = products[0];
 
-  if (!product) {
-    return NextResponse.json({ error: "Not Found" }, { status: 404 });
-  }
 
-  return NextResponse.json(product);
+const reviews = await getReviewByParam({ field: "product_id", value: Number(product_id) });
+
+  return NextResponse.json(reviews);
 }
-

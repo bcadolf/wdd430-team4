@@ -125,18 +125,19 @@ async function testCreateOrderItem() {
 async function testCreateReview() {
   const formData = new FormData();
   formData.set('rating', '4');
-  formData.set('product_id', '1');
+  formData.set('product_id', '3');
   formData.set('seller_id', '343832af-b69b-4164-87e5-b230429f4ff1');
-  formData.set('user_name', 'Happy Buyer');
+  formData.set('user_name', 'Happy Buyer 2');
   formData.set(
     'description',
     'good blade missing handle... should have read the description'
   );
 
   await createReview(formData);
+  console.log("review created")
 }
 
-// testCreateReview(); SUCCESS
+//estCreateReview();
 
 async function testGetCartById() {
   const result = await getFullCartById({ cart_id: 1 });
@@ -184,11 +185,12 @@ async function testGetUserById() {
 // testGetUserById(); SUCCESS
 
 async function testGetReviewByParam() {
-  const result = await getReviewByParam({ field: 'product_id', value: 1 });
+  const result = await getReviewByParam({ field: 'product_id', value: 4 });
 
   console.log(result);
 }
 
-// testGetReviewByParam(); SUCCESS
+testGetReviewByParam();
 
 /* eslint-enable @typescript-eslint/no-unused-vars */
+
