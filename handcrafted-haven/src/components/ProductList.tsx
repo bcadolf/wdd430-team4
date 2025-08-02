@@ -18,10 +18,10 @@ export default function ProductList() {
             const res = await fetch("/api/products");
             const data = await res.json();
             console.log(data);
-            const linked = data.map((product: { id: number; item_name: string; image: string, item_price: string, item_stock: string}) => ({
+            const linked = data.map((product: { id: number; item_name: string; item_image: string, item_price: string, item_stock: string}) => ({
                 id: product.id,
                 name: product.item_name,
-                image: product.image,
+                image: product.item_image,
                 price: product.item_price,
                 inStock: Number(product.item_stock) > 0,
             }));
