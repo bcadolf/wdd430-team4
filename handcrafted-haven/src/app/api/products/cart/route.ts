@@ -28,7 +28,7 @@ export async function POST(request: Request) {
         console.log("API response:", { success: true, user_id, cart_id })
 
         return response;
-    }catch (error) {
+    } catch (error) {
         console.error(error);
         return NextResponse.json({ error: "failed to add item to cart"}, { status: 500});
 
