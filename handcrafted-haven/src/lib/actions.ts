@@ -525,7 +525,15 @@ export async function createOrderItem(formData: FormData) {
 
 const CreateReview = ReviewSchema.omit({ id: true });
 
-export async function createReview(data: any) {
+type CreateReviewValues = {
+  rating: number;
+  product_id: number;
+  seller_id: string;
+  user_name: string;
+  description: string;
+}
+
+export async function createReview(data: CreateReviewValues) {
   const validatedData = CreateReview.safeParse({
     rating: data.rating,
     product_id: data.product_id,
