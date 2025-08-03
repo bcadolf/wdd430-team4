@@ -58,6 +58,14 @@ export default function Header() {
 
                 </ul>
              </nav>
+        <Link href="/checkout">
+                 <Image
+                src="/checkout.webp" width="50" height="50"
+                alt="Handcrafted Haven Checkout"
+                />
+        </Link>
+
+             
         </header>
     );
 }

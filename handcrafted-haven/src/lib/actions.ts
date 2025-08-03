@@ -525,18 +525,26 @@ export async function createOrderItem(formData: FormData) {
 
 const CreateReview = ReviewSchema.omit({ id: true });
 
-export async function createReview(formData: FormData) {
+type CreateReviewValues = {
+  rating: number;
+  product_id: number;
+  seller_id: string;
+  user_name: string;
+  description: string;
+}
+
+export async function createReview(data: CreateReviewValues) {
   const validatedData = CreateReview.safeParse({
-    rating: formData.get('rating'),
-    product_id: formData.get('product_id'),
-    seller_id: formData.get('seller_id'),
-    user_name: formData.get('user_name'),
-    description: formData.get('description'),
+    rating: data.rating,
+    product_id: data.product_id,
+    seller_id: data.seller_id,
+    user_name: data.user_name,
+    description: data.description,
   });
 
   if (!validatedData.success) {
     return {
-      errors: validatedData.error,
+      errors: validatedData.error.format(),
       message: 'Missing or Invalid Information. Failed to Create Order.',
     };
   }
@@ -548,8 +556,10 @@ export async function createReview(formData: FormData) {
     await sql`
      INSERT INTO reviews (rating, product_id, seller_id, user_name, description) VALUES (${rating}, ${product_id}, ${seller_id}, ${user_name}, ${description})
     `;
+    return { success: true};
   } catch (error) {
     console.log(error);
+    return { succes: false, error: error instanceof Error ? error.message: String(error)}
   }
 }
 

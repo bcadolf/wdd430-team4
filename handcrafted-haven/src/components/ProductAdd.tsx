@@ -9,17 +9,18 @@ type ProductAddProps = {
 export default function ProductAdd({ product_id, seller_id }: ProductAddProps) {
     const handleAddToCart = async () => {
         
-        await fetch('/api/products/cart', {
+        await fetch('/api/review/cart', {
             method: 'POST',
             body: JSON.stringify({
                 product_id,
                 seller_id,
                 quantity: 1
             }),
-            headers: { 'Content-Type': 'application/json'}
+            headers: { 'Content-Type': 'application/json'},
+            credentials: "include",
         })
     };
     return (
-        <button onClick={handleAddToCart}>Add to cart</button>
+        <button className="cursor-pointer text-background bg-secondary w-50 py-1.5 rounded-2xl my-2  hover:bg-secondary/80 hover:shadow-lg transition" style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.5)" }} onClick={handleAddToCart}>Add to cart</button>
     )
 }

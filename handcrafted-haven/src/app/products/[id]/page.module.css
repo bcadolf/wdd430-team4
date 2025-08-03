@@ -17,6 +17,13 @@
     max-width: 1300px;
     margin: 0 auto;
 }
+.seller {
+    display: flex;
+    justify-content: space-between;
+    color: black;
+
+
+}
 
 .description {
     justify-content: center;
