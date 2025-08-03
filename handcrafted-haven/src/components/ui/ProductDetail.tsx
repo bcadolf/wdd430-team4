@@ -4,8 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useState } from "react";
 import { Product } from './ProductCard';
+import ProductAdd from '../ProductAdd';
 
 type ProductDetailsProps = {
+    product_id: string;
+    seller_id: string;
     name: string;
     price: number | string;
     stock: number | string;
@@ -13,7 +16,7 @@ type ProductDetailsProps = {
 
 }
 
-export default function ProductDetails({ name, price, stock}: ProductDetailsProps){
+export default function ProductDetails({ product_id, seller_id, name, price, stock}: ProductDetailsProps){
     const [rating, setRating] = useState(0); 
     const [hoverRating, setHoverRating] = useState(0);
 
@@ -48,7 +51,7 @@ export default function ProductDetails({ name, price, stock}: ProductDetailsProp
                     <label htmlFor="quantity" className="text-primary text-6x2 font-bold" >Quantity: Available - {stock}</label>
                     <input type="number" min={0} id="quantity" className="border border-amber-600 rounded-2xl p-1 w-65 focus:outline-none focus:ring-2 focus:border-primary text-cyan-950  hover:bg-secondary/80 hover:shadow-lg transition"style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.5)" }} />
                     <div>
-                        <button className="cursor-pointer text-background bg-secondary w-50 py-1.5 rounded-2xl my-2  hover:bg-secondary/80 hover:shadow-lg transition" style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.5)" }}>Add to Cart</button>
+                        <ProductAdd product_id={product_id} seller_id={seller_id}/>
                     </div>
                     <button className="cursor-pointer text-background  bg-primary w-65 py-1.5 rounded-2xl my-2  hover:bg-secondary/80 hover:shadow-lg transition " style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.5)" }}>Buy Now</button>
                 </form>

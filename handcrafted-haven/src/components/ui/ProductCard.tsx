@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import ProductAdd from '../ProductAdd';
 
 export type Product = {
   id: number;
@@ -7,6 +8,7 @@ export type Product = {
   image: string;
   price: number;
   inStock: boolean;
+  seller_id: string;
 };
 
 // Functional component that renders a list of product cards
@@ -16,6 +18,7 @@ export function ProductCard({ products }: { products: Product[] }) {
     <div className='grid grid-cols-5 gap-5 overflow-hidden p-5'>
       {/* Loop through each product in the products array */}
       {products.map((product) => (
+        <div key={product.id}>
         <Link href={`/products/${product.id}`} key={product.id}>
           {/* Unique key for each product and styling for the card */}
           <div className='bg-white w-64 h-80 rounded-2xl p-4 flex flex-col items-center'>
@@ -45,6 +48,8 @@ export function ProductCard({ products }: { products: Product[] }) {
             )}
           </div>
         </Link>
+        <ProductAdd product_id={product.id.toString()} seller_id={product.seller_id}/>
+        </div>
       ))}
     </div>
   );

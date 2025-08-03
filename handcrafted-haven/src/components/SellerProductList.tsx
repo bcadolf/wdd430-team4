@@ -32,7 +32,7 @@ export default function SellerProductList({ sellerId}: { sellerId: string}) {
 
     return (
         <div>
-            <h2>Products for Sale</h2>
+            <h2 className="font-bold text-black text-lg p-5">Sellers Other Products</h2>
             <ProductCard products={products}/>
         </div>
     )

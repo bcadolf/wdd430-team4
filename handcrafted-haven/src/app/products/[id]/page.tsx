@@ -8,6 +8,7 @@ import SellerProductList from '@/components/SellerProductList';
 import ReviewProduct from '@/components/ReviewProduct';
 import ProductAdd from '@/components/ProductAdd';
 import SellerProfile from '@/components/SellerProfile';
+import ReviewForm from '@/components/ReviewForm';
 
 
 export default async function ProductPage({params}: { params: Promise<{ id: string }>}) {
@@ -38,11 +39,13 @@ export default async function ProductPage({params}: { params: Promise<{ id: stri
                 />
                 </div>
                 <div className={styles.description}>
-                <ProductDetails name={product.item_name} price={product.item_price} stock={product.item_stock} />
+                <ProductDetails product_id={product.id} seller_id={product.seller_id}name={product.item_name} price={product.item_price} stock={product.item_stock} />
                 </div>
             </div>
-                <ProductAdd seller_id={product.seller_id} product_id={product.id}></ProductAdd>
-             <ProductDescription description={product.item_description}/>
+                <div className={styles.seller}>
+                <ProductDescription description={product.item_description}/>
+                <SellerProfile seller_id={product.seller_id}/>
+                </div>
             <div>
                  <Suspense fallback={<div>Loading .... </div>}>
                            <SellerProductList sellerId={product.seller_id}/>
@@ -53,7 +56,7 @@ export default async function ProductPage({params}: { params: Promise<{ id: stri
                     <ReviewProduct product_id={product.id}/>
             </div>
             <div>
-                <SellerProfile seller_id={product.seller_id}/>
+                <ReviewForm product_id={product.id} seller_id={product.seller_id}></ReviewForm>
             </div>
         </div>
     )
