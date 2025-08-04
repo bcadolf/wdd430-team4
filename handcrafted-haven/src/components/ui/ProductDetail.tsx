@@ -49,9 +49,8 @@ export default function ProductDetails({ product_id, seller_id, name, price, sto
                 <p className="text-primary text-6x2 font-bold">Product Price - ${price}</p>
                 <form action="" className="flex flex-col gap-2">
                     <label htmlFor="quantity" className="text-primary text-6x2 font-bold" >Quantity: Available - {stock}</label>
-                    <input type="number" min={0} id="quantity" className="border border-amber-600 rounded-2xl p-1 w-65 focus:outline-none focus:ring-2 focus:border-primary text-cyan-950  hover:bg-secondary/80 hover:shadow-lg transition"style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.5)" }} />
                     <div>
-                        <ProductAdd product_id={product_id} seller_id={seller_id}/>
+                         <ProductAdd product_id={product_id.toString()} seller_id={seller_id}/>
                     </div>
                     <button className="cursor-pointer text-background  bg-primary w-65 py-1.5 rounded-2xl my-2  hover:bg-secondary/80 hover:shadow-lg transition " style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.5)" }}>Buy Now</button>
                 </form>

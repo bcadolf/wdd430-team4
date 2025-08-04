@@ -23,6 +23,7 @@ import {
   getSellerByParam,
   getUserById,
   getProductsByCategory,
+  getAllCarts,
 } from '../data';
 
 /** tests run before seeding to ensure everything worked */
@@ -91,7 +92,15 @@ async function testCreateUser() {
   console.log(result);
 }
 
+
 // testCreateUser(); SUCCESS
+
+async function testGetAllCarts() {
+  const result = await getAllCarts();
+  console.log(result);
+}
+
+testGetAllCarts();
 
 async function testUpdateUser() {
   const formData = new FormData();
@@ -114,7 +123,7 @@ async function testCreateCart() {
   console.log(result);
 }
 
-// testCreateCart(); SUCCESS
+//testCreateCart();
 
 async function testCreateCartDetail() {
   const formData = new FormData();
@@ -167,12 +176,14 @@ async function testCreateOrderItem() {
 //testCreateReview();
 
 async function testGetCartById() {
-  const result = await getFullCartById({ cart_id: 1 });
+  const result = await getFullCartById({ cart_id: 48
+
+   });
 
   console.log(result);
 }
 
-// testGetCartById(); SUCCESS
+//testGetCartById(); 
 
 async function testGetSellerByParam() {
   const result = await getSellerByParam({
@@ -188,7 +199,7 @@ async function testGetSellerByParam() {
   console.log(result, { 'With Pass': resultPass });
 }
 
-// testGetSellerByParam();
+ testGetSellerByParam();
 
 async function testGetProductByParam() {
   const result = await getProductByParam({

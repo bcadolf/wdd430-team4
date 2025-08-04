@@ -19,7 +19,7 @@ export default function About() {
     }
   };
   const handleShop = () => {
-    window.location.href = '/product';
+    window.location.href = '/products';
   };
   const handleCart = async () => {
     window.location.href = '/checkout';
