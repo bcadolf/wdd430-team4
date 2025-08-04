@@ -12,10 +12,10 @@ export type Review = {
 export function ReviewCard({ reviews }: { reviews: Review[] }) {
   return (
 
-    <div className='grid grid-cols-5 gap-5 overflow-hidden p-5'>
+    <div className='grid grid-cols-2 gap-5 overflow-hidden p-5'>
 
       {reviews.map((review) => (
-        <div key={review.id} className='bg white w-64 h-48 rounded-2x1 p-4 flex flex-col items-center shadow'>
+        <div key={review.id} className='bg-white w-64 h-48 rounded-2x1 p-4 flex flex-col items-center shadow-lg'>
             <h3 className='text-primary font-bold mt-3 text-center'>
                 {review.user_name}
             </h3>

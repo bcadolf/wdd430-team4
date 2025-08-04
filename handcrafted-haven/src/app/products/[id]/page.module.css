@@ -19,10 +19,21 @@
 }
 .seller {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    margin-top: 50px;
+    padding-top: 10px;
     color: black;
+    border-top: solid  #e5e7eb 3px;
+    border-bottom:  #e5e7eb solid 3px;
+    padding-bottom: 10px;
 
 
+}
+.reviews {
+    display: grid;
+    grid-template-columns: auto auto ;
+    border-top:  #e5e7eb 3px solid;
+    margin-top: 50px;
 }
 
 .description {

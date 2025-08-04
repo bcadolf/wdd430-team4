@@ -8,7 +8,6 @@ type ProductAddProps = {
 
 export default function ProductAdd({ product_id, seller_id }: ProductAddProps) {
     const handleAddToCart = async () => {
-        console.log("add to cart clicked", { product_id, seller_id})
         
         await fetch('/api/products/cart', {
             method: 'POST',
@@ -22,7 +21,6 @@ export default function ProductAdd({ product_id, seller_id }: ProductAddProps) {
         })
     };
     return (
-        <button 
-        type="button" style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.5)" }} onClick={handleAddToCart}>Add to cart</button>
+        <button type="button" className="cursor-pointer text-background bg-secondary w-50 py-1.5 rounded-2xl my-2  hover:bg-secondary/80 hover:shadow-lg transition" style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.5)" }} onClick={handleAddToCart}>Add to cart</button>
     )
 }

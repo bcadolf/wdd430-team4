@@ -14,43 +14,30 @@ export type Product = {
 // Functional component that renders a list of product cards
 export function ProductCard({ products }: { products: Product[] }) {
   return (
-    // Grid layout for product cards: 5 columns with spacing and padding
-    <div className='grid grid-cols-5 gap-5 overflow-hidden p-5'>
-      {/* Loop through each product in the products array */}
+    <div className='grid grid-cols-5 gap-10 overflow-hidden p-5'>
       {products.map((product) => (
-        <div key={product.id}>
-        <Link href={`/products/${product.id}`} key={product.id}>
-          {/* Unique key for each product and styling for the card */}
-          <div className='bg-white w-64 h-80 rounded-2xl p-4 flex flex-col items-center'>
-            {/* Container for the product image */}
+        <div key={product.id} className='bg-white w-64 mx-auto h-80 shadow-lg rounded-2x1 p-4 transition-transform duration-300 hover:scale-125 flex flex-col items-center rounded '>
+          <Link href={`/products/${product.id}`}>
             <div className='w-full h-40 relative overflow-hidden rounded-lg'>
               <Image
-                src={product.image || '/about.webp'} // Image source from the product data
-                alt={`Image of ${product.name}`} // Accessible alt text
-                fill // Fill the parent container
-                className='object-cover' // Ensure the image covers the container
-              />
+                src={product.image || '/about.webp'}
+                alt={`Image of ${product.name}`}
+                fill
+                className='object-cover'
+                />
             </div>
-
-            {/* Product name displayed in bold and centered */}
-            <h3 className='text-primary font-bold mt-3 text-center'>
+            <h3 className='text primary font-bold mt-3 text-center'>
               {product.name}
             </h3>
-
-            {/* Product price displayed in bold */}
-            <p className='text-primary font-bold'>${product.price}</p>
-
-            {/* Conditional rendering based on stock status */}
-            {product.inStock ? (
-              <p className='text-primary font-bold'>In stock</p>
-            ) : (
-              <p className='text-red-600 font-bold'>Out of Stock</p>
-            )}
-          </div>
-        </Link>
-        <ProductAdd product_id={product.id.toString()} seller_id={product.seller_id}/>
-        </div>
-      ))}
+          </Link>
+          <p className='text-primary font-bold'>${product.price}</p>
+          {product.inStock ? (
+            <p className='text-primary font-bold'>In Stock</p>
+          ) : (
+            <p className='text-primary font-bold'>Out of Stock</p>
+          )}
     </div>
+      ))}
+</div>
   );
 }
