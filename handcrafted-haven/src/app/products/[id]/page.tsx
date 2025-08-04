@@ -51,12 +51,14 @@ export default async function ProductPage({params}: { params: Promise<{ id: stri
                            <SellerProductList sellerId={product.seller_id}/>
                        </Suspense>
             </div>
-            <div>
-           
+            <div className={styles.reviews}>
+                <div>
                     <ReviewProduct product_id={product.id}/>
-            </div>
-            <div>
-                <ReviewForm product_id={product.id} seller_id={product.seller_id}></ReviewForm>
+                </div>
+                <div>
+                    <h2 className='text-primary text-4xl font-bolder text-center'>Your Review</h2>
+                    <ReviewForm product_id={product.id} seller_id={product.seller_id}></ReviewForm>
+                </div>
             </div>
         </div>
     )

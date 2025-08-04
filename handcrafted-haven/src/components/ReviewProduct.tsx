@@ -38,7 +38,7 @@ export default function ReviewProduct({ product_id }: { product_id: string}) {
 
     return (
         <div>
-            <h2>Reviews</h2>
+            <h2 className="text-primary text-4xl font-bolder text-center">Reviews</h2>
             <ReviewCard reviews={reviews}/>
         </div>
     )
