@@ -29,6 +29,20 @@ export type Product = {
   item_description: string;
   seller_id: UUID;
   item_image: string;
+  category:
+    | 'electronics'
+    | 'kitchen'
+    | 'decor'
+    | 'furniture'
+    | 'jewelry'
+    | 'clothes'
+    | 'outdoor'
+    | 'tools'
+    | 'shoes'
+    | 'tableware'
+    | 'cutlery'
+    | 'accessories'
+    | 'art';
 };
 
 export type ProductFields =

@@ -134,6 +134,7 @@ export async function createProduct(formData: FormData) {
     item_description: formData.get('item_description'),
     seller_id: formData.get('seller_id'),
     item_image: formData.get('item_image'),
+    category: formData.get('category'),
   });
 
   if (!validatedData.success) {
@@ -150,6 +151,7 @@ export async function createProduct(formData: FormData) {
     item_description,
     seller_id,
     item_image,
+    category,
   } = validatedData.data;
 
   try {
@@ -157,7 +159,7 @@ export async function createProduct(formData: FormData) {
         INSERT INTO products (item_name, item_price, item_stock, item_description, seller_id, item_image)
         VALUES (${item_name}, ${
       item_price_cents / 100
-    }, ${item_stock}, ${item_description}, ${seller_id}, ${item_image})
+    }, ${item_stock}, ${item_description}, ${seller_id}, ${item_image}, ${category})
     `;
   } catch (error) {
     console.log(error);
@@ -173,6 +175,7 @@ export async function updateProduct(formData: FormData) {
     item_description: formData.get('item_description') ?? undefined,
     seller_id: formData.get('seller_id') ?? undefined,
     item_image: formData.get('item_image') ?? undefined,
+    category: formData.get('category') ?? undefined,
   });
   if (!validatedData.success) {
     return {
@@ -531,7 +534,7 @@ type CreateReviewValues = {
   seller_id: string;
   user_name: string;
   description: string;
-}
+};
 
 export async function createReview(data: CreateReviewValues) {
   const validatedData = CreateReview.safeParse({
@@ -556,10 +559,13 @@ export async function createReview(data: CreateReviewValues) {
     await sql`
      INSERT INTO reviews (rating, product_id, seller_id, user_name, description) VALUES (${rating}, ${product_id}, ${seller_id}, ${user_name}, ${description})
     `;
-    return { success: true};
+    return { success: true };
   } catch (error) {
     console.log(error);
-    return { succes: false, error: error instanceof Error ? error.message: String(error)}
+    return {
+      succes: false,
+      error: error instanceof Error ? error.message : String(error),
+    };
   }
 }
 

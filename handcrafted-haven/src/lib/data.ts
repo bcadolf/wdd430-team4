@@ -8,6 +8,7 @@ import {
   ReviewSQLParams,
   ReviewFields,
 } from './definitions';
+import { CategorySchema } from './validation/schemas';
 
 // call the db
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
@@ -128,6 +129,25 @@ export async function getUserById({ user_id }: { user_id: string }) {
     `;
 
   return result[0];
+}
+
+export async function getProductsByCategory(category: string) {
+  try {
+    const validatedData = CategorySchema.safeParse({
+      category,
+    });
+
+    if (!validatedData.success) {
+      throw new Error('Invalid category');
+    }
+
+    const result = await sql`
+        SELECT * FROM products WHERE category = ${category}
+    `;
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // same as the other params but for reviews so you can get the seller or product reviews.

@@ -22,6 +22,7 @@ import {
   getReviewByParam,
   getSellerByParam,
   getUserById,
+  getProductsByCategory,
 } from '../data';
 
 /** tests run before seeding to ensure everything worked */
@@ -77,11 +78,13 @@ async function testUpdateProduct() {
     'item_description',
     'High-quality steel knife blank, perfect for custom knife making, no handle.'
   );
+  formData.set('category', 'cutlery');
 
-  await updateProduct(formData);
+  const result = await updateProduct(formData);
+  console.log(result);
 }
 
-// testUpdateProduct(); SUCCESS
+// testUpdateProduct();
 
 async function testCreateUser() {
   const result = await createUser();
@@ -161,9 +164,7 @@ async function testCreateOrderItem() {
 
 // testCreateOrderItem(); SUCCESS
 
-
-
-//estCreateReview();
+//testCreateReview();
 
 async function testGetCartById() {
   const result = await getFullCartById({ cart_id: 1 });
@@ -199,6 +200,13 @@ async function testGetProductByParam() {
 }
 
 // testGetProductByParam();
+
+async function testGetProductsByCategory() {
+  const result = await getProductsByCategory('cutlery');
+  console.log(result);
+}
+
+// testGetProductsByCategory();
 
 async function testGetUserById() {
   const result = await getUserById({
