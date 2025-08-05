@@ -1,25 +1,22 @@
 
+import { SellerCard } from "@/components/ui/SellerCard";
+import { ProfileCard } from "@/components/ui/ProfileCard";  
 
-export default function Page() {
-  return (
-    <main className="flex min-h-screen flex-col p-6">
-       <div className="flex items-center">
-        <img
-          src="logo.png"
-          alt="Seller Icon"
-          className="w-16 h-16 mr-4"
-        />    
-        <h1 className="text-2xl font-bold">Seller Dashboard</h1>
-      </div>
-      <div className="Seller Profile">
-        <h2 className="text-xl font-semibold mt-6">Profile Information</h2>
-        <div className="grid grid-flow-col grid-rows-3 gap-4"></div>
-        <div className="row-span-3 ...">01</div>
-        <div className="col-span-2 ...">02</div>
-        <div className="col-span-2 row-span-2 ...">03</div>
-      </div>      
-
-    </main>
-  )
+export default function Page(){  
+    return (
+        <>
+            <main className="flex min-h-screen flex-col p-6">
+                <div className="grid grid-cols-1 grid-rows-[2fr_1fr] gap-3 p-10 mx-auto mt-3.5 w-full max-w-4xl h-140 ">
+                    {/* Imported components */}
+                    <ProfileCard/>
+                    <div className="flex justify-start items-center gap-4">
+                        <button className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors">
+                            Add Item
+                        </button>
+                    </div>
+                    <SellerCard/>
+                </div>
+            </main>    
+        </>
+    );
 }
-
