@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ca } from 'zod/v4/locales';
 
 export const SellerSchema = z.object({
   id: z.uuid(),
@@ -20,6 +21,39 @@ export const ProductSchema = z.object({
   item_description: z.string(),
   seller_id: z.uuid(),
   item_image: z.string(), // Assuming item_image is a URL or path to the image
+  category: z.enum([
+    'electronics',
+    'kitchen',
+    'decor',
+    'furniture',
+    'jewelry',
+    'clothes',
+    'outdoor',
+    'tools',
+    'shoes',
+    'tableware',
+    'cutlery',
+    'accessories',
+    'art',
+  ]),
+});
+
+export const CategorySchema = z.object({
+  category: z.enum([
+    'electronics',
+    'kitchen',
+    'decor',
+    'furniture',
+    'jewelry',
+    'clothes',
+    'outdoor',
+    'tools',
+    'shoes',
+    'tableware',
+    'cutlery',
+    'accessories',
+    'art',
+  ]),
 });
 
 export const UserSchema = z.object({
