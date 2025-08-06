@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 
-import { ProductCard, Product} from '@/components/ui/ProductCard';
+import { ProductCard, Product} from '@/components/product/ProductCard';
   
   
   
@@ -26,7 +26,7 @@ export default function SellerProductList({ sellerId}: { sellerId: string}) {
             console.log("Fetched product", linked);
         }
         fetchProducts();
-    }, []);
+    }, [sellerId]);
 
 
 

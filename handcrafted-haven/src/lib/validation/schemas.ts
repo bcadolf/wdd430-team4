@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { ca } from 'zod/v4/locales';
 
 export const SellerSchema = z.object({
   id: z.uuid(),

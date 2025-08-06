@@ -17,7 +17,7 @@ export default function ReviewAdd({ product_id, seller_id }: ReviewAddProps) {
 
     const handleAddReview = async (e: React.FormEvent) => {
         e.preventDefault();
-        await fetch('/api/products/reviews', {
+        await fetch('/api/reviews', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify({

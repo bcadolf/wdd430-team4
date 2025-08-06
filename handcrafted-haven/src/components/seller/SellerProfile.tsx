@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import Image from "next/image";
 
 type Seller = {
     id: string;
@@ -20,7 +21,7 @@ export default function SellerProfile({ seller_id }: { seller_id: string}) {
     useEffect(() => {
         async function fetchSeller() {
            console.log("Fetching reviews for seller_id:", seller_id);
-            const res = await fetch(`/api/products/seller/${seller_id}`);
+            const res = await fetch(`/api/seller/${seller_id}`);
             console.log(res);
             const data = await res.json();
             setSeller(data);
@@ -33,12 +34,19 @@ export default function SellerProfile({ seller_id }: { seller_id: string}) {
 
 
     return (
-        <div>
-            <h2>{seller.store_name}</h2>
-            <img src={seller.seller_image || "About.webp"} alt={seller.store_name} width={100} />
-            <p>Owner: {seller.owner_first} {seller.owner_last}</p>
-            <p>Email: {seller.store_email}</p>
-            <p>Address:  {seller.store_address}</p>
+        <div className='text-center flex flex-col items-center justify-center pt-8 '>
+            <h2 className='font-bold text-xl mb-3'>{seller.store_name}</h2>
+            <Image
+                src={seller.seller_image || "/About.webp"}
+                alt={seller.store_name}
+                width={100}
+                height={100}
+                style={{ borderRadius: "50%" }}
+            />
+            <p>
+                <span className='font-bold'>Owner:</span> {seller.owner_first} {seller.owner_last}</p>
+            <p><span className='font-bold'>Email:</span> {seller.store_email}</p>
+            <p><span className='font-bold'>Address:</span>  {seller.store_address}</p>
 
             
         </div>

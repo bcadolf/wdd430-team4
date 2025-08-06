@@ -2,13 +2,12 @@ import { notFound } from 'next/navigation';
 import Image from "next/image";
 import styles from './page.module.css';
 import { getProductByParam } from '@/lib/data';
-import ProductDetails, {ProductDescription}  from '@/components/ui/ProductDetail';
+import ProductDetails, {ProductDescription}  from '@/components/product/ProductDetail';
 import { Suspense } from 'react';
-import SellerProductList from '@/components/SellerProductList';
-import ReviewProduct from '@/components/ReviewProduct';
-import ProductAdd from '@/components/ProductAdd';
-import SellerProfile from '@/components/SellerProfile';
-import ReviewForm from '@/components/ReviewForm';
+import SellerProductList from '@/components/seller/SellerProductList';
+import ReviewProduct from '@/components/review/ReviewProduct';
+import SellerProfile from '@/components/seller/SellerProfile';
+import ReviewForm from '@/components/review/ReviewForm';
 
 
 export default async function ProductPage({params}: { params: Promise<{ id: string }>}) {
@@ -35,6 +34,7 @@ export default async function ProductPage({params}: { params: Promise<{ id: stri
                     alt={product.item_name}
                     width={400}
                     height={400}
+                    priority
                     style={{ objectFit: "contain"}}
                 />
                 </div>
