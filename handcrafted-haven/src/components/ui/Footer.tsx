@@ -2,7 +2,7 @@
 
 
 import React from "react";
-import { NavLink, SocialLink } from "./types";
+import { NavLink, SocialLink } from "../types";
 
 import Link from "next/link";
 import styles from './Footer.module.css';

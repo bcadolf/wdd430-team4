@@ -2,7 +2,7 @@
 
 
 import React, {useState} from "react";
-import { NavLink } from "./types";
+import { NavLink } from "../types";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import styles from './Header.module.css';
@@ -28,8 +28,9 @@ export default function Header() {
         <header className={styles.header}>
         <Link href="/">
          <Image
-                src="/handcrafted-haven-logo.webp" width="150" height="50"
+                src="/handcrafted-haven-logo.webp" width="150" height={100}
                 alt="Handcrafted Haven Logo"
+                sizes="(max-width: 800px) 50vw, 20vw"
                 />
         </Link>
 
@@ -62,6 +63,7 @@ export default function Header() {
                  <Image
                 src="/checkout.webp" width="50" height="50"
                 alt="Handcrafted Haven Checkout"
+                
                 />
         </Link>
 

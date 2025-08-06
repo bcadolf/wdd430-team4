@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 
-import { ReviewCard, Review } from '@/components/ui/ReviewCard';
+import { ReviewCard, Review } from '@/components/review/ReviewCard';
 
 
   
@@ -12,7 +12,7 @@ export default function ReviewProduct({ product_id }: { product_id: string}) {
     useEffect(() => {
         async function fetchReviews() {
            console.log("Fetching reviews for product_id:", product_id);
-            const res = await fetch(`/api/products/reviews?product_id=${product_id}`);
+            const res = await fetch(`/api/reviews?product_id=${product_id}`);
             console.log(res);
             const data = await res.json();
             if (!Array.isArray(data)) {

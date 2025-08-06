@@ -3,8 +3,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useState } from "react";
-import { Product } from './ProductCard';
-import ProductAdd from '../ProductAdd';
+
+import ProductAdd from './ProductAdd';
 
 type ProductDetailsProps = {
     product_id: string;
@@ -48,7 +48,7 @@ export default function ProductDetails({ product_id, seller_id, name, price, sto
 
                 <p className="text-primary text-6x2 font-bold">Product Price - ${price}</p>
                 <form action="" className="flex flex-col gap-2">
-                    <label htmlFor="quantity" className="text-primary text-6x2 font-bold" >Quantity: Available - {stock}</label>
+                    <p className="text-primary text-xl font-bold" >Quantity: Available - {stock}</p>
                     <div>
                          <ProductAdd product_id={product_id.toString()} seller_id={seller_id}/>
                     </div>
@@ -59,7 +59,7 @@ export default function ProductDetails({ product_id, seller_id, name, price, sto
 
 export function ProductDescription({ description }: {description: string}){
     return  <div className="col-span-2 ">
-                <h3 className="text-primary text-4xl font-bolder">Product Info</h3>
-                <p className="font-bold text-primary">{description}</p>
+                <h3 className="text-primary text-4xl font-bolder text-center">Product Info</h3>
+                <p className="font-bold text-primary text-center">{description}</p>
             </div>
 }

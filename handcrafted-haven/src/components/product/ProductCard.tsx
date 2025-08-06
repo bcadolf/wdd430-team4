@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import ProductAdd from '../ProductAdd';
+
+import styles from './page.module.css';
 
 export type Product = {
   id: number;
@@ -14,27 +15,30 @@ export type Product = {
 // Functional component that renders a list of product cards
 export function ProductCard({ products }: { products: Product[] }) {
   return (
-    <div className='grid grid-cols-5 gap-10 overflow-hidden p-5'>
+    <div className={styles.productGrid}>
       {products.map((product) => (
-        <div key={product.id} className='bg-white w-64 mx-auto h-80 shadow-lg rounded-2x1 p-4 transition-transform duration-300 hover:scale-125 flex flex-col items-center rounded '>
+        <div key={product.id} className={styles.productCard}>
           <Link href={`/products/${product.id}`}>
-            <div className='w-full h-40 relative overflow-hidden rounded-lg'>
+            <div className={styles.productImageContainer}>
               <Image
                 src={product.image || '/about.webp'}
                 alt={`Image of ${product.name}`}
+
+                priority
                 fill
+  sizes="(max-width: 800px) 100vw, 300px"
                 className='object-cover'
                 />
             </div>
-            <h3 className='text primary font-bold mt-3 text-center'>
+            <h3 className={styles.productName}>
               {product.name}
             </h3>
           </Link>
-          <p className='text-primary font-bold'>${product.price}</p>
+          <p className={styles.productPrice}>${product.price}</p>
           {product.inStock ? (
-            <p className='text-primary font-bold'>In Stock</p>
+            <p className={styles.inStock}>In Stock</p>
           ) : (
-            <p className='text-primary font-bold'>Out of Stock</p>
+            <p className={styles.outOfStock}>Out of Stock</p>
           )}
     </div>
       ))}
