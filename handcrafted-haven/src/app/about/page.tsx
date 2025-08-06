@@ -1,6 +1,7 @@
 'use client';
 
 import styles from './page.module.css';
+import LandingSkeleton from '../ui/skeletons';
 
 export default function About() {
   // const name ="Handcrafted Haven";
@@ -11,7 +12,7 @@ export default function About() {
     try {
       await navigator.clipboard.writeText(email);
       alert(
-        `Email address has been copied. Navigate to your email of choice and past in the our address to contact us! Thank you`
+        `Email address has been copied. Navigate to your email of choice and paste in the our address to contact us! Thank you.`
       );
     } catch (err) {
       alert(`There is an issue. Please email us at ${email}`);
@@ -19,7 +20,7 @@ export default function About() {
     }
   };
   const handleShop = () => {
-    window.location.href = '/products';
+    window.location.href = '/product';
   };
   const handleCart = async () => {
     window.location.href = '/checkout';
@@ -33,7 +34,7 @@ export default function About() {
     },
     {
       question: 'What is shipping times for items?',
-      answer: 'Most standard shipping takes 5-7 business days within the US',
+      answer: 'Most standard shipping takes 5-7 business days within the US.',
     },
     {
       question: 'Do you offer international shipping?',
@@ -53,7 +54,7 @@ export default function About() {
   ];
 
   return (
-    <div className={styles.mainContent}>
+    <div>
       <div className={styles.container}>
         <div className={styles.sectionImage}>
           <h1 className={styles.title}>About Page</h1>

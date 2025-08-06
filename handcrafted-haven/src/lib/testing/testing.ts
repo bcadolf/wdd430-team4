@@ -174,13 +174,28 @@ async function testCreateOrderItem() {
 
 //testCreateReview();
 
+// testGetSellerByParam();
+
+// testGetProductByParam();
+
+async function testGetProductsByCategory() {
+  const result = await getProductsByCategory('cutlery');
+  console.log(result);
+}
+
+// testGetProductsByCategory();
+
+// testGetUserById(); SUCCESS
+
+// testGetReviewByParam();
+
 async function testGetCartById() {
-  const result = await getFullCartById({ cart_id: 48 });
+  const result = await getFullCartById({ cart_id: 1 });
 
   console.log(result);
 }
 
-// testGetCartById();
+// testGetCartById(); SUCCESS
 
 async function testGetSellerByParam() {
   const result = await getSellerByParam({
@@ -196,25 +211,18 @@ async function testGetSellerByParam() {
   console.log(result, { 'With Pass': resultPass });
 }
 
-// testGetSellerByParam();
+// testGetSellerByParam(); SUCCESS
 
 async function testGetProductByParam() {
   const result = await getProductByParam({
-    field: 'seller_id',
-    value: '343832af-b69b-4164-87e5-b230429f4ff1',
+    field: 'item_price_cents',
+    value: 899,
   });
 
   console.log(result);
 }
 
-// testGetProductByParam();
-
-async function testGetProductsByCategory() {
-  const result = await getProductsByCategory('cutlery');
-  console.log(result);
-}
-
-// testGetProductsByCategory();
+// testGetProductByParam(); SUCCESS
 
 async function testGetUserById() {
   const result = await getUserById({
@@ -227,11 +235,11 @@ async function testGetUserById() {
 // testGetUserById(); SUCCESS
 
 async function testGetReviewByParam() {
-  const result = await getReviewByParam({ field: 'product_id', value: 4 });
+  const result = await getReviewByParam({ field: 'product_id', value: 1 });
 
   console.log(result);
 }
 
-// testGetReviewByParam();
+// testGetReviewByParam(); SUCCESS
 
 /* eslint-enable @typescript-eslint/no-unused-vars */
