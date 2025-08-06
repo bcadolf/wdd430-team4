@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image"
-import { ProductCard } from "@/components/ui/ProductCard";
+import { ProductCard } from "@/components/product/ProductCard";
 import { images } from '@/lib/hero';
 import { useState, useEffect} from 'react';
 
@@ -38,7 +38,7 @@ export default function Home(){
         </div>
       </div>
       <div>
-        <ProductCard/>
+        
       </div>
     </>
 
