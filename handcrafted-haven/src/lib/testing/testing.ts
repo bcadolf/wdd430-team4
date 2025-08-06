@@ -92,7 +92,6 @@ async function testCreateUser() {
   console.log(result);
 }
 
-
 // testCreateUser(); SUCCESS
 
 async function testGetAllCarts() {
@@ -100,7 +99,7 @@ async function testGetAllCarts() {
   console.log(result);
 }
 
-testGetAllCarts();
+// testGetAllCarts();
 
 async function testUpdateUser() {
   const formData = new FormData();
@@ -176,14 +175,12 @@ async function testCreateOrderItem() {
 //testCreateReview();
 
 async function testGetCartById() {
-  const result = await getFullCartById({ cart_id: 48
-
-   });
+  const result = await getFullCartById({ cart_id: 48 });
 
   console.log(result);
 }
 
-//testGetCartById(); 
+// testGetCartById();
 
 async function testGetSellerByParam() {
   const result = await getSellerByParam({
@@ -199,7 +196,7 @@ async function testGetSellerByParam() {
   console.log(result, { 'With Pass': resultPass });
 }
 
- testGetSellerByParam();
+// testGetSellerByParam();
 
 async function testGetProductByParam() {
   const result = await getProductByParam({
