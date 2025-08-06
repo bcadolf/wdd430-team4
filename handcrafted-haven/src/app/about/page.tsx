@@ -40,22 +40,13 @@ export default function About() {
       question: 'Do you offer international shipping?',
       answer:
         'Yes, we can ship to any countries accepting shipping from the USA. Rates will be calculated at checkout for additional costs.',
-      question: 'Do you offer international shipping?',
-      answer:
-        'Yes, we can ship to any countries accepting shipping from the USA. Rates will be calculated at checkout for additional costs.',
     },
     {
       question: 'Can I change or cancel my order after placing it.',
       answer:
         'Generally if done so within 24 hours orders can be canceled otherwise you will be required to ship the item back in the original condition shipped to you.',
-      question: 'Can I change or cancel my order after placing it.',
-      answer:
-        'Generally if done so within 24 hours orders can be canceled otherwise you will be required to ship the item back in the original condition shipped to you.',
     },
     {
-      question: 'Who can sell on Hancrafted Haven?',
-      answer:
-        'Everyone and Anyone over 18 years of age can sell on this site! See our guide for more information on getting started!',
       question: 'Who can sell on Hancrafted Haven?',
       answer:
         'Everyone and Anyone over 18 years of age can sell on this site! See our guide for more information on getting started!',
