@@ -174,38 +174,7 @@ async function testCreateOrderItem() {
 
 //testCreateReview();
 
-async function testGetCartById() {
-  const result = await getFullCartById({ cart_id: 48 });
-
-  console.log(result);
-}
-
-// testGetCartById();
-
-async function testGetSellerByParam() {
-  const result = await getSellerByParam({
-    field: 'store_name',
-    value: 'Fine Iron',
-  });
-  // test with getting password as well.
-  const resultPass = await getSellerByParam({
-    field: 'store_email',
-    value: 'fineiron@handcraftedhaven.com',
-  });
-
-  console.log(result, { 'With Pass': resultPass });
-}
-
 // testGetSellerByParam();
-
-async function testGetProductByParam() {
-  const result = await getProductByParam({
-    field: 'seller_id',
-    value: '343832af-b69b-4164-87e5-b230429f4ff1',
-  });
-
-  console.log(result);
-}
 
 // testGetProductByParam();
 
@@ -216,21 +185,7 @@ async function testGetProductsByCategory() {
 
 // testGetProductsByCategory();
 
-async function testGetUserById() {
-  const result = await getUserById({
-    user_id: '97d43122-81b9-433c-a231-77fea4cb30bf',
-  });
-
-  console.log(result);
-}
-
 // testGetUserById(); SUCCESS
-
-async function testGetReviewByParam() {
-  const result = await getReviewByParam({ field: 'product_id', value: 4 });
-
-  console.log(result);
-}
 
 // testGetReviewByParam();
 
