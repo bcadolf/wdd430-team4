@@ -11,6 +11,9 @@
 .footer {
     width: 90%;
     margin: 0 auto;
+    border-top:solid  3px black;
+    height: 300px;
+    
 }
 .socials {
     display: flex;

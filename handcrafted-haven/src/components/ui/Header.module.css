@@ -38,25 +38,26 @@
     justify-content: space-evenly;
     text-align: center;
     align-items: center;
-    height: 90px;
     z-index: 1;
     position: relative;
     overflow: visible;
+    max-width: 1500px;
+    margin: 0 auto;
+    margin-top: 20px;
+    padding-bottom: 20px;
+    border-bottom:   solid  3px black;
+
     
 
 }
 
 @media (max-width: 768px) {
-    .header {
-        display: flex;
-        flex-direction: column;
-        overflow: none;
-        position: static;
-        z-index: 1;
-        height: 120px;
-        margin-bottom: 20px;
-    }
 
+  .header {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
   .navigation {
     display : none;
 
