@@ -20,13 +20,6 @@ export type SellerSQLParam = {
   value: string | number | UUID;
 };
 
-export type SellerFields = 'id' | 'store_name' | 'store_email';
-
-export type SellerSQLParam = {
-  field: SellerFields;
-  value: string | number | UUID;
-};
-
 export type Product = {
   id: number;
   item_name: string;
@@ -59,18 +52,6 @@ export type ProductFields =
   | 'item_price'
   | 'seller_id'
   | 'item_image';
-
-export type ProductSQLParam = {
-  field: ProductFields;
-  value: string | number | UUID;
-};
-
-export type ProductFields =
-  | 'id'
-  | 'item_name'
-  | 'item_price_cents'
-  | 'item_price'
-  | 'seller_id';
 
 export type ProductSQLParam = {
   field: ProductFields;
