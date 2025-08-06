@@ -4,8 +4,8 @@ import "./globals.css";
 import React from "react";
 import { CartProvider } from '@/context/CartContext';
 
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import Header from '@/components/ui/Header';
+import Footer from '@/components/ui/Footer';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

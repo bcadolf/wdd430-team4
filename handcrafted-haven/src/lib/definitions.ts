@@ -10,6 +10,7 @@ export type Seller = {
   store_email: string;
   store_address: string;
   password: string;
+  seller_image: string;
 };
 
 export type SellerFields = 'id' | 'store_name' | 'store_email';
@@ -27,6 +28,21 @@ export type Product = {
   item_stock: number;
   item_description: string;
   seller_id: UUID;
+  item_image: string;
+  category:
+    | 'electronics'
+    | 'kitchen'
+    | 'decor'
+    | 'furniture'
+    | 'jewelry'
+    | 'clothes'
+    | 'outdoor'
+    | 'tools'
+    | 'shoes'
+    | 'tableware'
+    | 'cutlery'
+    | 'accessories'
+    | 'art';
 };
 
 export type ProductFields =
@@ -34,7 +50,8 @@ export type ProductFields =
   | 'item_name'
   | 'item_price_cents'
   | 'item_price'
-  | 'seller_id';
+  | 'seller_id'
+  | 'item_image';
 
 export type ProductSQLParam = {
   field: ProductFields;
