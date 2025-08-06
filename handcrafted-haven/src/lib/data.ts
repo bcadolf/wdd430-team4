@@ -8,6 +8,7 @@ import {
   ReviewSQLParams,
   ReviewFields,
 } from './definitions';
+import { CategorySchema } from './validation/schemas';
 
 // call the db
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
@@ -25,7 +26,8 @@ export async function getFullCartById({ cart_id }: { cart_id: number }) {
         cd.quantity,
         ROUND(p.item_price * 100)::INT AS item_price_cents,
         p.item_stock,
-        p.item_name
+        p.item_name,
+        p.item_image
         FROM carts c
         JOIN cart_details cd ON cd.cart_id = c.id
         JOIN products p ON p.id = cd.product_id
@@ -56,6 +58,7 @@ export async function getSellerByParam(params: SellerSQLParam) {
       'store_name',
       'store_email',
       'store_address',
+      'seller_image',
     ];
 
     if (field === 'store_email') {
@@ -114,6 +117,37 @@ export async function getProductByParam(params: ProductSQLParam) {
     console.log(error);
   }
 }
+type CartFields = 'id' | 'user_id';
+
+type CartSQLParam = {
+  field: CartFields;
+  value: string | number;
+};
+export async function getCartByParam(params: CartSQLParam) {
+  try {
+    const { field, value } = params;
+
+    const validField: CartFields[] = ['id', 'user_id'];
+
+    if (!validField.includes(field)) {
+      throw new Error(`Invlaid field: ${field}`);
+    }
+
+    const query = `
+        SELECT * FROM carts WHERE ${field} = $1
+        `;
+
+    const result = await sql.unsafe(query, [value]);
+
+    return result[0];
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getAllProducts() {
+  return await sql`SELECT * FROM products`;
+}
 
 //  basic get the user by the id
 export async function getUserById({ user_id }: { user_id: string }) {
@@ -122,6 +156,25 @@ export async function getUserById({ user_id }: { user_id: string }) {
     `;
 
   return result[0];
+}
+
+export async function getProductsByCategory(category: string) {
+  try {
+    const validatedData = CategorySchema.safeParse({
+      category,
+    });
+
+    if (!validatedData.success) {
+      throw new Error('Invalid category');
+    }
+
+    const result = await sql`
+        SELECT * FROM products WHERE category = ${category}
+    `;
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // same as the other params but for reviews so you can get the seller or product reviews.
@@ -141,6 +194,10 @@ export async function getReviewByParam(params: ReviewSQLParams) {
   const result = await sql.unsafe(query, [value]);
   //   returned as an array.
   return result;
+}
+
+export async function getAllCarts() {
+  return await sql`SELECT * FROM carts`;
 }
 
 /**

@@ -1,0 +1,42 @@
+import Image from 'next/image';
+
+import { getProductByParam } from '@/lib/data';
+
+export async function SellerCard() {
+  const seller_id = 'f1bd0df5-9e36-4828-bbdf-52f7b0ec5995'; // Replace with actual seller ID logic
+  const products = await getProductByParam({
+    field: 'seller_id',
+    value: seller_id,
+  }); // Replace with actual seller ID logic
+  if (!products || products.length === 0) {
+    throw new Error('No products found for this seller.');
+  }
+  console.log('Seller Products:', products);
+
+  return (
+    <div className='grid grid-cols-3 grid-rows-3 gap-4'>
+      {products.map((product) => (
+        <div
+          key={product.id}
+          className='bg- w-64 h-80 rounded-2xl p-4 flex flex-col items-center'
+        >
+          <div className='w-full h-40 relative overflow-hidden rounded-lg'>
+            <Image
+              src={product.item_image}
+              alt={`Image of ${product.item_name}`}
+              fill
+              className='object-cover'
+            />
+          </div>
+          <h3 className='text-primary font-bold mt-3 text-center'>
+            {product.item_name}
+          </h3>
+          <p>Price: {product.item_price}</p>
+          <p className='text-gray-600 text-sm mt-1 text-center'>
+            {product.item_description}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}

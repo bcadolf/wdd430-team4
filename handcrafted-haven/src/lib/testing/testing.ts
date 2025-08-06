@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // lint disabled for file since it is only for testing and the functions are commented out to allow for picking which to run.
+
+import test from 'node:test';
 import {
   createCart,
   createCartDetail,
@@ -9,6 +11,10 @@ import {
   createReview,
   createSeller,
   createUser,
+  updateCartDetail,
+  updateProduct,
+  updateSeller,
+  updateUser,
 } from '../actions';
 import {
   getFullCartById,
@@ -16,39 +22,70 @@ import {
   getReviewByParam,
   getSellerByParam,
   getUserById,
+  getProductsByCategory,
+  getAllCarts,
 } from '../data';
 
 /** tests run before seeding to ensure everything worked */
 
 async function testCreateSeller() {
   const formData = new FormData();
-  formData.set('owner_first', 'Jackson');
-  formData.set('owner_last', 'Strongman');
-  formData.set('store_name', 'Fine Iron');
-  formData.set('store_email', 'fineiron@handcraftedhaven.com');
-  formData.set('store_address', '26 Iron Way, Steele VA');
-  formData.set('password', '1R0N1sh0t$');
+  formData.set('owner_first', 'Nick');
+  formData.set('owner_last', 'Fury');
+  formData.set('store_name', 'Nick Nacks');
+  formData.set('store_email', 'nicky@handcraftedhaven.com');
+  formData.set('store_address', '1234 Superhero Lane, New York, NY');
+  formData.set('password', 'password123!');
 
-  await createSeller(formData);
+  const result = await createSeller(formData);
+
+  console.log(result);
 }
 
-// testCreateSeller(); SUCCESS
+// testCreateSeller();
+
+async function testUpdateSeller() {
+  const formData = new FormData();
+  formData.set('seller_id', '343832af-b69b-4164-87e5-b230429f4ff1');
+  formData.set('owner_last', 'Strongleg');
+  formData.set('store_address', '27 Iron Way, Steele VA');
+  await updateSeller(formData);
+}
+
+// testUpdateSeller(); SUCCESS
 
 async function testCreateProduct() {
   const formData = new FormData();
-  formData.set('item_name', '8" Knife Blank');
-  formData.set('item_price', '10.99');
-  formData.set('item_stock', '8');
+  formData.set('item_name', 'Hand Painted Mug');
+  formData.set('item_price', '33.82');
+  formData.set('item_stock', '15');
   formData.set(
     'item_description',
-    'These are polished high carbon steel blades. Hand forged and 8 inches tip to tang.'
+    'Hand-painted Mug crafted with care using traditional techniques.'
   );
-  formData.set('seller_id', '343832af-b69b-4164-87e5-b230429f4ff1');
+  formData.set('seller_id', '0f8fad10-6c29-40d2-8d02-581851eff936');
+  formData.set('item_image', '/products/hand-painted-mug.webp');
 
   await createProduct(formData);
 }
 
 // testCreateProduct(); SUCCESS
+
+async function testUpdateProduct() {
+  const formData = new FormData();
+  formData.set('product_id', '1');
+  formData.set('item_price', '6.99');
+  formData.set(
+    'item_description',
+    'High-quality steel knife blank, perfect for custom knife making, no handle.'
+  );
+  formData.set('category', 'cutlery');
+
+  const result = await updateProduct(formData);
+  console.log(result);
+}
+
+// testUpdateProduct();
 
 async function testCreateUser() {
   const result = await createUser();
@@ -56,6 +93,26 @@ async function testCreateUser() {
 }
 
 // testCreateUser(); SUCCESS
+
+async function testGetAllCarts() {
+  const result = await getAllCarts();
+  console.log(result);
+}
+
+// testGetAllCarts();
+
+async function testUpdateUser() {
+  const formData = new FormData();
+  formData.set('user_id', '2306b65d-ef7d-4ef4-93de-b3f88dfc9304');
+  formData.set('user_first', 'John');
+  formData.set('user_last', 'Wick');
+  formData.set('user_email', 'lovedogs@illkill.com');
+  formData.set('user_address', '1234 Dog Lane, New York, NY');
+
+  await updateUser(formData);
+}
+
+// testUpdateUser(); SUCCESS
 
 async function testCreateCart() {
   const user_id = { user_id: '97d43122-81b9-433c-a231-77fea4cb30bf' };
@@ -65,7 +122,7 @@ async function testCreateCart() {
   console.log(result);
 }
 
-// testCreateCart(); SUCCESS
+//testCreateCart();
 
 async function testCreateCartDetail() {
   const formData = new FormData();
@@ -77,7 +134,15 @@ async function testCreateCartDetail() {
   await createCartDetail(formData);
 }
 
-// testCreateCartDetail(); SUCCESS
+async function testUpdateCartDetail() {
+  const formData = new FormData();
+  formData.set('cart_detail_id', '3');
+  formData.set('quantity', '2');
+
+  await updateCartDetail(formData);
+}
+
+// testUpdateCartDetail(); SUCCESS
 
 async function testCreateOrder() {
   const formData = new FormData();
@@ -107,21 +172,67 @@ async function testCreateOrderItem() {
 
 // testCreateOrderItem(); SUCCESS
 
-async function testCreateReview() {
-  const formData = new FormData();
-  formData.set('rating', '4');
-  formData.set('product_id', '1');
-  formData.set('seller_id', '343832af-b69b-4164-87e5-b230429f4ff1');
-  formData.set('user_name', 'Happy Buyer');
-  formData.set(
-    'description',
-    'good blade missing handle... should have read the description'
-  );
+//testCreateReview();
 
-  await createReview(formData);
+async function testGetCartById() {
+  const result = await getFullCartById({ cart_id: 48 });
+
+  console.log(result);
 }
 
-// testCreateReview(); SUCCESS
+// testGetCartById();
+
+async function testGetSellerByParam() {
+  const result = await getSellerByParam({
+    field: 'store_name',
+    value: 'Fine Iron',
+  });
+  // test with getting password as well.
+  const resultPass = await getSellerByParam({
+    field: 'store_email',
+    value: 'fineiron@handcraftedhaven.com',
+  });
+
+  console.log(result, { 'With Pass': resultPass });
+}
+
+// testGetSellerByParam();
+
+async function testGetProductByParam() {
+  const result = await getProductByParam({
+    field: 'seller_id',
+    value: '343832af-b69b-4164-87e5-b230429f4ff1',
+  });
+
+  console.log(result);
+}
+
+// testGetProductByParam();
+
+async function testGetProductsByCategory() {
+  const result = await getProductsByCategory('cutlery');
+  console.log(result);
+}
+
+// testGetProductsByCategory();
+
+async function testGetUserById() {
+  const result = await getUserById({
+    user_id: '97d43122-81b9-433c-a231-77fea4cb30bf',
+  });
+
+  console.log(result);
+}
+
+// testGetUserById(); SUCCESS
+
+async function testGetReviewByParam() {
+  const result = await getReviewByParam({ field: 'product_id', value: 4 });
+
+  console.log(result);
+}
+
+// testGetReviewByParam();
 
 async function testGetCartById() {
   const result = await getFullCartById({ cart_id: 1 });
