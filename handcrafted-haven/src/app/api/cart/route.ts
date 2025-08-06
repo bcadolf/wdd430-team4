@@ -18,7 +18,7 @@ export async function POST(request: Request) {
       }
     }
 
-    let cart = await getCartByParam({ field: "user_id", value: user_id });
+    const cart = await getCartByParam({ field: "user_id", value: user_id });
     let cart_id = cart?.id;
 
     if (!cart_id) {
