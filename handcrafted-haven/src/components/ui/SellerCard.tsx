@@ -1,6 +1,7 @@
 import Image from 'next/image';
 
 import { getProductByParam } from '@/lib/data';
+import Link from 'next/link';
 
 export async function SellerCard() {
   const seller_id = 'f1bd0df5-9e36-4828-bbdf-52f7b0ec5995'; // Replace with actual seller ID logic
@@ -14,7 +15,7 @@ export async function SellerCard() {
   console.log('Seller Products:', products);
 
   return (
-    <div className='grid grid-cols-3 grid-rows-3 gap-4'>
+    <div className='grid grid-cols-3 grid-rows-none auto-rows-auto gap-4 overflow-auto'>
       {products.map((product) => (
         <div
           key={product.id}
@@ -35,6 +36,11 @@ export async function SellerCard() {
           <p className='text-gray-600 text-sm mt-1 text-center'>
             {product.item_description}
           </p>
+          <Link href={`sellers/edit-item/${product.id}`}>
+            <button className='mt-3 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors'>
+              Edit Item
+            </button>
+          </Link>
         </div>
       ))}
     </div>

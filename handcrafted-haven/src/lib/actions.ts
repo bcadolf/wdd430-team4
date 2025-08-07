@@ -126,19 +126,27 @@ export async function deleteSeller(seller_id: string) {
 
 const CreateProduct = ProductSchema.omit({ id: true });
 
-export async function createProduct(formData: FormData) {
+export async function createProduct(
+  prevState: { success: boolean; message: string },
+  formData: FormData
+) {
+  console.log(formData.get('category'));
+  const file = formData.get('item_image') as File;
+  const imagePath = `products/${file.name}`; // need logic for saving file to products folder
+
   const validatedData = CreateProduct.safeParse({
     item_name: formData.get('item_name'),
     item_price_cents: formData.get('item_price'),
     item_stock: formData.get('item_stock'),
     item_description: formData.get('item_description'),
     seller_id: formData.get('seller_id'),
-    item_image: formData.get('item_image'),
+    item_image: imagePath,
     category: formData.get('category'),
   });
 
   if (!validatedData.success) {
     return {
+      success: false,
       errors: validatedData.error,
       message: 'Missing or Invalid Information. Failed to Create Product.',
     };
@@ -156,7 +164,7 @@ export async function createProduct(formData: FormData) {
 
   try {
     await sql`
-        INSERT INTO products (item_name, item_price, item_stock, item_description, seller_id, item_image)
+        INSERT INTO products (item_name, item_price, item_stock, item_description, seller_id, item_image, category)
         VALUES (${item_name}, ${
       item_price_cents / 100
     }, ${item_stock}, ${item_description}, ${seller_id}, ${item_image}, ${category})
@@ -164,6 +172,10 @@ export async function createProduct(formData: FormData) {
   } catch (error) {
     console.log(error);
   }
+  return {
+    success: true,
+    message: 'Product created successfully.',
+  };
 }
 
 export async function updateProduct(formData: FormData) {
