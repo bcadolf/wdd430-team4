@@ -24,7 +24,8 @@ import {
   getUserById,
   getProductsByCategory,
   getAllCarts,
-} from '../data';
+  getDistinctCategories,
+} from "../data";
 
 /** tests run before seeding to ensure everything worked */
 
@@ -100,7 +101,7 @@ async function testGetAllCarts() {
   console.log(result);
 }
 
-testGetAllCarts();
+//testGetAllCarts();
 
 async function testUpdateUser() {
   const formData = new FormData();
@@ -199,7 +200,7 @@ async function testGetSellerByParam() {
   console.log(result, { 'With Pass': resultPass });
 }
 
- testGetSellerByParam();
+ //testGetSellerByParam();
 
 async function testGetProductByParam() {
   const result = await getProductByParam({
@@ -217,7 +218,7 @@ async function testGetProductsByCategory() {
   console.log(result);
 }
 
-// testGetProductsByCategory();
+//testGetProductsByCategory();
 
 async function testGetUserById() {
   const result = await getUserById({
@@ -234,7 +235,13 @@ async function testGetReviewByParam() {
 
   console.log(result);
 }
-
 // testGetReviewByParam();
+
+export default async function testCategories(){
+    const categories = await getDistinctCategories();
+    console.log(categories);
+}
+
+testCategories();
 
 /* eslint-enable @typescript-eslint/no-unused-vars */
