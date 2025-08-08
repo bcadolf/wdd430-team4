@@ -7,11 +7,11 @@ export const metadata: Metadata = {
 };
 
 export default function LoginPage() {
-    return(
-        <main className="flex items-center justify-center md:h-screen">
-            <Suspense>
-                <LoginForm />
-            </Suspense>
-        </main>
-    )
+  return (
+    <main className='flex items-center justify-center md:h-screen'>
+      <Suspense>
+        <LoginForm />
+      </Suspense>
+    </main>
+  );
 }
