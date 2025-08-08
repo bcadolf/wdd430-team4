@@ -1,5 +1,5 @@
 import styles from './page.module.css';
-import LandingSkeleton from '../../ui/skeletons';
+import LandingSkeleton from '../ui/skeletons';
 import React, { useState, FormEvent } from 'react'
 
 export default function Login() {
