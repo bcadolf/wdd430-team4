@@ -2,6 +2,8 @@
 
 import { createProduct } from '@/lib/actions';
 import { CategorySchema } from '@/lib/validation/schemas';
+import router from 'next/router';
+import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
 
 const initialState = { success: false, message: '' };
@@ -10,6 +12,15 @@ export default function Page() {
   const seller_id = 'f1bd0df5-9e36-4828-bbdf-52f7b0ec5995'; // Replace with actual seller ID logic
   const categories = CategorySchema.shape.category.options;
   const [state, formAction] = useFormState(createProduct, initialState);
+  useEffect(() => {
+    if (state.success) {
+      const timeout = setTimeout(() => {
+        router.push('/sellers');
+      }, 1500); // 1.5 seconds
+
+      return () => clearTimeout(timeout);
+    }
+  }, [state.success, router]);
 
   return (
     <div className='flex flex-col items-center justify-center min-h-screen p-4'>
