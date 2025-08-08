@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // lint disabled for file since it is only for testing and the functions are commented out to allow for picking which to run.
-
-import test from 'node:test';
 import {
   createCart,
   createCartDetail,
@@ -65,12 +63,13 @@ async function testCreateProduct() {
   );
   formData.set('seller_id', 'c2cd79fa-74bf-42bd-a7d4-233992f42f4c');
   formData.set('item_image', '/products/hand-painted-mug.webp');
+
   formData.set('category', 'clothes');
-  const result = await createProduct(formData);
+  const result = await createProduct({ success: false, message: '' }, formData);
   console.log(result);
 }
 
- testCreateProduct(); 
+testCreateProduct();
 
 async function testUpdateProduct() {
   const formData = new FormData();
@@ -82,7 +81,7 @@ async function testUpdateProduct() {
   );
   formData.set('category', 'cutlery');
 
-  const result = await updateProduct(formData);
+  const result = await updateProduct({ success: false, message: '' }, formData);
   console.log(result);
 }
 
@@ -212,7 +211,7 @@ async function testGetSellerByParam() {
   console.log(result, { 'With Pass': resultPass });
 }
 
-//testGetSellerByParam(); 
+//testGetSellerByParam();
 
 async function testGetProductByParam() {
   const result = await getProductByParam({

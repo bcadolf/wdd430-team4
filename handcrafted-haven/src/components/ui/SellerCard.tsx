@@ -1,16 +1,17 @@
 import Image from 'next/image';
 
 import { getProductByParam } from '@/lib/data';
+import Link from 'next/link';
 import { getSellerByParam } from '@/lib/data';
 
-  
-
-
-export async function SellerCard({userEmail} : { userEmail: string | null | undefined}) {
-
+export async function SellerCard({
+  userEmail,
+}: {
+  userEmail: string | null | undefined;
+}) {
   const sellerArr = await getSellerByParam({
     field: 'store_email',
-    value: userEmail ?? "",
+    value: userEmail ?? '',
   }); // Replace with actual seller ID logic
 
   const seller_id = sellerArr?.id;
@@ -26,7 +27,7 @@ export async function SellerCard({userEmail} : { userEmail: string | null | unde
   console.log('Seller Products:', products);
 
   return (
-    <div className='grid grid-cols-3 grid-rows-3 gap-4'>
+    <div className='grid grid-cols-3 grid-rows-none auto-rows-auto gap-4 overflow-auto'>
       {products.map((product) => (
         <div
           key={product.id}
@@ -47,6 +48,11 @@ export async function SellerCard({userEmail} : { userEmail: string | null | unde
           <p className='text-gray-600 text-sm mt-1 text-center'>
             {product.item_description}
           </p>
+          <Link href={`sellers/edit-item/${product.id}`}>
+            <button className='mt-3 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors'>
+              Edit Item
+            </button>
+          </Link>
         </div>
       ))}
     </div>

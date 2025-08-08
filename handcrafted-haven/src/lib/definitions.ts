@@ -27,9 +27,27 @@ export type Product = {
   item_price_cents: number;
   item_stock: number;
   item_description: string;
-  seller_id: UUID;
+  seller_id: UUID | string;
   item_image: string;
   category:
+    | 'electronics'
+    | 'kitchen'
+    | 'decor'
+    | 'furniture'
+    | 'jewelry'
+    | 'clothes'
+    | 'outdoor'
+    | 'tools'
+    | 'shoes'
+    | 'tableware'
+    | 'cutlery'
+    | 'accessories'
+    | 'art';
+};
+
+export type Category = {
+  category:
+    | 'Please select a category'
     | 'electronics'
     | 'kitchen'
     | 'decor'

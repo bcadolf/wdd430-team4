@@ -12,6 +12,8 @@ import {
   UserSchema,
 } from './validation/schemas';
 import 'dotenv/config';
+import path from 'path';
+import { writeFile } from 'fs/promises';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -126,19 +128,39 @@ export async function deleteSeller(seller_id: string) {
 
 const CreateProduct = ProductSchema.omit({ id: true });
 
-export async function createProduct(formData: FormData) {
+export async function createProduct(
+  prevState: { success: boolean; message: string },
+  formData: FormData
+) {
+  const maybeFile = formData.get('item_image');
+  const file =
+    maybeFile instanceof File && maybeFile.size > 0 ? maybeFile : null;
+
+  let imagePath: string | undefined;
+
+  if (file) {
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const fileName = `${Date.now()}-${file.name}`;
+    const filePath = path.join(process.cwd(), 'public', 'products', fileName);
+    await writeFile(filePath, buffer);
+    imagePath = `/products/${fileName}`;
+  } else {
+    imagePath = '/products/No-Image-Placeholder.svg'; // Default image path if no file is provided
+  }
+
   const validatedData = CreateProduct.safeParse({
     item_name: formData.get('item_name'),
     item_price_cents: formData.get('item_price'),
     item_stock: formData.get('item_stock'),
     item_description: formData.get('item_description'),
     seller_id: formData.get('seller_id'),
-    item_image: formData.get('item_image'),
+    item_image: imagePath,
     category: formData.get('category'),
   });
 
   if (!validatedData.success) {
     return {
+      success: false,
       errors: validatedData.error,
       message: 'Missing or Invalid Information. Failed to Create Product.',
     };
@@ -160,13 +182,36 @@ export async function createProduct(formData: FormData) {
         VALUES (${item_name}, ${
       item_price_cents / 100
     }, ${item_stock}, ${item_description}, ${seller_id}, ${item_image}, ${category})
-    `;
+`;
   } catch (error) {
     console.log(error);
   }
+  return {
+    success: true,
+    message: 'Product created successfully.',
+  };
 }
 
-export async function updateProduct(formData: FormData) {
+export async function updateProduct(
+  prevState: { success: boolean; message: string },
+  formData: FormData
+) {
+  const maybeFile = formData.get('item_image');
+  const file =
+    maybeFile instanceof File && maybeFile.size > 0 ? maybeFile : null;
+
+  let imagePath: string | undefined;
+
+  if (file) {
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const fileName = `${Date.now()}-${file.name}`;
+    const filePath = path.join(process.cwd(), 'public', 'products', fileName);
+    await writeFile(filePath, buffer);
+    imagePath = `/products/${fileName}`;
+  } else {
+    imagePath = undefined; // Default image path made in db if no file is provided
+  }
+
   const validatedData = ProductSchema.partial().safeParse({
     id: formData.get('product_id'),
     item_name: formData.get('item_name') ?? undefined,
@@ -174,11 +219,12 @@ export async function updateProduct(formData: FormData) {
     item_stock: formData.get('item_stock') ?? undefined,
     item_description: formData.get('item_description') ?? undefined,
     seller_id: formData.get('seller_id') ?? undefined,
-    item_image: formData.get('item_image') ?? undefined,
+    item_image: imagePath,
     category: formData.get('category') ?? undefined,
   });
   if (!validatedData.success) {
     return {
+      success: false,
       errors: validatedData.error,
       message: 'Missing or Invalid Information. Failed to Update Product.',
     };
@@ -191,7 +237,9 @@ export async function updateProduct(formData: FormData) {
     .filter(([key, value]) => key !== 'id' && value !== undefined)
     .map(([key, value]) => {
       if (value === null) return `${key} = NULL`;
-
+      if (key === 'item_image' && value === '/products/undefined') {
+        return ''; // Skip item_image if it's undefined
+      }
       if (key === 'item_price_cents') {
         if (typeof value !== 'number') {
           throw new Error('item_price_cents must be a number');
@@ -216,6 +264,10 @@ export async function updateProduct(formData: FormData) {
   } catch (error) {
     console.log(error);
   }
+  return {
+    success: true,
+    message: 'Product updated successfully.',
+  };
 }
 
 export async function deleteProduct(product_id: number) {
