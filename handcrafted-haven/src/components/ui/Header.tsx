@@ -8,11 +8,13 @@ import Link from "next/link";
 import styles from './Header.module.css';
 import SearchBar from "./SearchBar";
 import Image from "next/image";
+import LogoutButton from "./Logout";
 const navlinks: NavLink[] = [
     { label: "Home", href: "/"},
     { label: "About", href: "/about"},
     { label: "Products", href: "/products"},
     { label: "Login", href: "/login"},
+    { label: "Seller", href: "/sellers"}
 ]
 
 
@@ -66,6 +68,7 @@ export default function Header() {
                 
                 />
         </Link>
+        <LogoutButton/>
 
              
         </header>

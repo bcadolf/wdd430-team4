@@ -32,8 +32,8 @@ async function testCreateSeller() {
   const formData = new FormData();
   formData.set('owner_first', 'Nick');
   formData.set('owner_last', 'Fury');
-  formData.set('store_name', 'Nick Nacks');
-  formData.set('store_email', 'nicky@handcraftedhaven.com');
+  formData.set('store_name', 'Logans ');
+  formData.set('store_email', 'loganhartshorn@gmail.com');
   formData.set('store_address', '1234 Superhero Lane, New York, NY');
   formData.set('password', 'password123!');
 
@@ -63,13 +63,14 @@ async function testCreateProduct() {
     'item_description',
     'Hand-painted Mug crafted with care using traditional techniques.'
   );
-  formData.set('seller_id', '0f8fad10-6c29-40d2-8d02-581851eff936');
+  formData.set('seller_id', 'c2cd79fa-74bf-42bd-a7d4-233992f42f4c');
   formData.set('item_image', '/products/hand-painted-mug.webp');
-
-  await createProduct(formData);
+  formData.set('category', 'clothes');
+  const result = await createProduct(formData);
+  console.log(result);
 }
 
-// testCreateProduct(); SUCCESS
+ testCreateProduct(); 
 
 async function testUpdateProduct() {
   const formData = new FormData();
@@ -199,8 +200,8 @@ async function testGetCartById() {
 
 async function testGetSellerByParam() {
   const result = await getSellerByParam({
-    field: 'store_name',
-    value: 'Fine Iron',
+    field: 'store_email',
+    value: 'loganhartshorn@gmail.com',
   });
   // test with getting password as well.
   const resultPass = await getSellerByParam({
@@ -211,7 +212,7 @@ async function testGetSellerByParam() {
   console.log(result, { 'With Pass': resultPass });
 }
 
-// testGetSellerByParam(); SUCCESS
+//testGetSellerByParam(); 
 
 async function testGetProductByParam() {
   const result = await getProductByParam({

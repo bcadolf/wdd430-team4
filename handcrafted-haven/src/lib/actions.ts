@@ -156,7 +156,7 @@ export async function createProduct(formData: FormData) {
 
   try {
     await sql`
-        INSERT INTO products (item_name, item_price, item_stock, item_description, seller_id, item_image)
+        INSERT INTO products (item_name, item_price, item_stock, item_description, seller_id, item_image, category)
         VALUES (${item_name}, ${
       item_price_cents / 100
     }, ${item_stock}, ${item_description}, ${seller_id}, ${item_image}, ${category})
