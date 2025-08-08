@@ -2,8 +2,7 @@
 import { SellerCard } from "@/components/ui/SellerCard";
 import { ProfileCard } from "@/components/ui/ProfileCard";  
 import { redirect } from "next/navigation";
-import { authOptions } from "../api/auth/[...nextauth]/route";
-import { getServerField } from "next/dist/server/lib/render-server";
+import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth";
 
 export default async function Page(){  
