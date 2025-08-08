@@ -1,8 +1,13 @@
 import { getSellerByParam } from '@/lib/data';
 import Image from 'next/image';
-export async function ProfileCard() {
-  const seller_id = 'f1bd0df5-9e36-4828-bbdf-52f7b0ec5995'; // Replace with actual seller ID logic
+export async function ProfileCard({userEmail} : { userEmail: string | null | undefined}) {
+   const sellerArr = await getSellerByParam({
+    field: 'store_email',
+    value: userEmail ?? "",
+  }); // Replace with actual seller ID logic
 
+  const seller_id = sellerArr?.id;
+  
   if (!seller_id) {
     throw new Error('Seller ID is required to fetch profile data.');
   }

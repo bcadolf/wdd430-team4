@@ -2,9 +2,21 @@ import Image from 'next/image';
 
 import { getProductByParam } from '@/lib/data';
 import Link from 'next/link';
+import { getSellerByParam } from '@/lib/data';
 
-export async function SellerCard() {
-  const seller_id = 'f1bd0df5-9e36-4828-bbdf-52f7b0ec5995'; // Replace with actual seller ID logic
+export async function SellerCard({
+  userEmail,
+}: {
+  userEmail: string | null | undefined;
+}) {
+  const sellerArr = await getSellerByParam({
+    field: 'store_email',
+    value: userEmail ?? '',
+  }); // Replace with actual seller ID logic
+
+  const seller_id = sellerArr?.id;
+
+  console.log(seller_id);
   const products = await getProductByParam({
     field: 'seller_id',
     value: seller_id,
