@@ -11,7 +11,7 @@ const navlinks: NavLink[] = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
   { label: 'Products', href: '/products' },
-  { label: 'Login', href: '/sellers/login' },
+  { label: 'Login', href: '/login' },
 ];
 
 export default function Header() {

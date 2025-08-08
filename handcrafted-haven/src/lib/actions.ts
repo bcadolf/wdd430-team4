@@ -12,6 +12,8 @@ import {
   UserSchema,
 } from './validation/schemas';
 import 'dotenv/config';
+import path from 'path';
+import { writeFile } from 'fs/promises';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -130,12 +132,22 @@ export async function createProduct(
   prevState: { success: boolean; message: string },
   formData: FormData
 ) {
-  const file = formData.get('item_image') as File;
-  let imagePath = `/products/${file.name}`;
-  if (file.name === `undefined`) {
-    imagePath = '/products/No-Image-Placeholder.svg'; // default image path
+  const maybeFile = formData.get('item_image');
+  const file =
+    maybeFile instanceof File && maybeFile.size > 0 ? maybeFile : null;
+
+  let imagePath: string | undefined;
+
+  if (file) {
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const fileName = `${Date.now()}-${file.name}`;
+    const filePath = path.join(process.cwd(), 'public', 'products', fileName);
+    await writeFile(filePath, buffer);
+    imagePath = `/products/${fileName}`;
+  } else {
+    imagePath = '/products/No-Image-Placeholder.svg'; // Default image path if no file is provided
   }
-  console.log('Image Path:', imagePath);
+
   const validatedData = CreateProduct.safeParse({
     item_name: formData.get('item_name'),
     item_price_cents: formData.get('item_price'),
@@ -184,8 +196,21 @@ export async function updateProduct(
   prevState: { success: boolean; message: string },
   formData: FormData
 ) {
-  const file = formData.get('item_image') as File;
-  const imagePath = `/products/${file.name}`; // need logic for saving file to products folder
+  const maybeFile = formData.get('item_image');
+  const file =
+    maybeFile instanceof File && maybeFile.size > 0 ? maybeFile : null;
+
+  let imagePath: string | undefined;
+
+  if (file) {
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const fileName = `${Date.now()}-${file.name}`;
+    const filePath = path.join(process.cwd(), 'public', 'products', fileName);
+    await writeFile(filePath, buffer);
+    imagePath = `/products/${fileName}`;
+  } else {
+    imagePath = undefined; // Default image path made in db if no file is provided
+  }
 
   const validatedData = ProductSchema.partial().safeParse({
     id: formData.get('product_id'),
