@@ -3,10 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ProductCard, Product} from '@/components/product/ProductCard';
 
-  
-  
-  
-  
 export default function ProductList() {
     const [products, setProducts ] = useState<Product[]>([]);
     const searchParams = useSearchParams();
