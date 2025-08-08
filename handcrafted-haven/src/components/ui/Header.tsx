@@ -56,7 +56,7 @@ export default function Header() {
           ))}
         </ul>
       </nav>
-      <Link href='/checkout'>
+      <Link href='/cart'>
         <Image
           src='/checkout.webp'
           width='50'
