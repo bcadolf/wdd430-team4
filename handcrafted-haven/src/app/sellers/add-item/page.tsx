@@ -2,16 +2,18 @@
 
 import { createProduct } from '@/lib/actions';
 import { CategorySchema } from '@/lib/validation/schemas';
-import router from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
 
 const initialState = { success: false, message: '' };
 
 export default function Page() {
+  const router = useRouter();
   const seller_id = 'f1bd0df5-9e36-4828-bbdf-52f7b0ec5995'; // Replace with actual seller ID logic
   const categories = CategorySchema.shape.category.options;
   const [state, formAction] = useFormState(createProduct, initialState);
+
   useEffect(() => {
     if (state.success) {
       const timeout = setTimeout(() => {
