@@ -12,6 +12,7 @@ import {
 } from './validation/schemas';
 import 'dotenv/config';
 
+
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 const CreateSeller = SellerSchema.omit({ id: true });
@@ -246,3 +247,5 @@ export async function createReview(formData: FormData) {
     console.log(error);
   }
 }
+
+

@@ -1,20 +1,17 @@
-import styles from './page.module.css';
-import LandingSkeleton from '../../ui/skeletons';
-import React, { useState, FormEvent } from 'react'
+import LoginForm from '@/app/ui/login-form';
+import { Suspense } from 'react';
+import { Metadata } from 'next';
 
-export default function Login() {
+export const metadata: Metadata = {
+  title: 'Login',
+};
 
-    interface LoginFormData {
-        email: string;
-        password: string;
-    }
-    
-    const [formData, setFormData] = useState<LoginFormData>({
-        email: '',
-        password: ''
-    });
-    const [errors, setErrors] = useState<Partial<LoginFormData>>({});
-
-    const [isLoading,setIsLoading] = useState(false);
-    
+export default function LoginPage() {
+    return(
+        <main className="flex items-center justify-center md:h-screen">
+            <Suspense>
+                <LoginForm />
+            </Suspense>
+        </main>
+    )
 }
