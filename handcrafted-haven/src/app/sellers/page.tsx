@@ -20,7 +20,7 @@ export default async function Page() {
       <main className='flex min-h-screen flex-col p-6'>
         <div className='grid grid-cols-1 grid-rows-[2fr_1fr] gap-3 p-10 mx-auto mt-3.5 w-full max-w-4xl h-auto '>
           {/* Imported components */}
-          <ProfileCard sellerId={seller_id} />
+          <ProfileCard seller_id={seller_id} />
           <div className='flex justify-start items-center gap-4'>
             <Link
               href={`/sellers/${seller_id}/add-item`}
@@ -31,7 +31,7 @@ export default async function Page() {
               </button>
             </Link>
           </div>
-          <SellerCard sellerId={seller_id} />
+          <SellerCard seller_id={seller_id} />
         </div>
       </main>
     </>

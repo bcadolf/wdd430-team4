@@ -3,10 +3,10 @@ import Image from 'next/image';
 import { getProductByParam } from '@/lib/data';
 import Link from 'next/link';
 
-export async function SellerCard({ sellerId }: { sellerId: string }) {
+export async function SellerCard({ seller_id }: { seller_id: string }) {
   const products = await getProductByParam({
     field: 'seller_id',
-    value: sellerId,
+    value: seller_id,
   }); // Replace with actual seller ID logic
 
   if (!products || products.length === 0) {

@@ -1,13 +1,13 @@
 import { getSellerByParam } from '@/lib/data';
 import Image from 'next/image';
-export async function ProfileCard({ sellerId }: { sellerId: string }) {
-  if (!sellerId) {
+export async function ProfileCard({ seller_id }: { seller_id: string }) {
+  if (!seller_id) {
     throw new Error('Seller ID is required to fetch profile data.');
   }
   // Fetch seller profile data based on seller_id
   const sellerProfile = await getSellerByParam({
     field: 'id',
-    value: sellerId,
+    value: seller_id,
   });
   if (!sellerProfile || sellerProfile.length === 0) {
     throw new Error('Seller profile not found.');
