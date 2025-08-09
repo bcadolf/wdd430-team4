@@ -1,20 +1,13 @@
 import { getSellerByParam } from '@/lib/data';
 import Image from 'next/image';
-export async function ProfileCard({userEmail} : { userEmail: string | null | undefined}) {
-   const sellerArr = await getSellerByParam({
-    field: 'store_email',
-    value: userEmail ?? "",
-  }); // Replace with actual seller ID logic
-
-  const seller_id = sellerArr?.id;
-  
-  if (!seller_id) {
+export async function ProfileCard({ sellerId }: { sellerId: string }) {
+  if (!sellerId) {
     throw new Error('Seller ID is required to fetch profile data.');
   }
   // Fetch seller profile data based on seller_id
   const sellerProfile = await getSellerByParam({
     field: 'id',
-    value: seller_id,
+    value: sellerId,
   });
   if (!sellerProfile || sellerProfile.length === 0) {
     throw new Error('Seller profile not found.');

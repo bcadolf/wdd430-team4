@@ -13,18 +13,17 @@ export default async function Page() {
     redirect('/api/auth/signin');
   }
   console.log(session);
-
-  const userEmail = session.user?.email;
+  const seller_id = (session.user as { id: string }).id;
 
   return (
     <>
       <main className='flex min-h-screen flex-col p-6'>
         <div className='grid grid-cols-1 grid-rows-[2fr_1fr] gap-3 p-10 mx-auto mt-3.5 w-full max-w-4xl h-auto '>
           {/* Imported components */}
-          <ProfileCard userEmail={userEmail} />
+          <ProfileCard sellerId={seller_id} />
           <div className='flex justify-start items-center gap-4'>
             <Link
-              href='sellers/add-item'
+              href={`/sellers/${seller_id}/add-item`}
               className='flex justify-start items-center gap-4'
             >
               <button className='bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors'>
@@ -32,7 +31,7 @@ export default async function Page() {
               </button>
             </Link>
           </div>
-          <SellerCard userEmail={userEmail} />
+          <SellerCard sellerId={seller_id} />
         </div>
       </main>
     </>

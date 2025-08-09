@@ -8,9 +8,9 @@ import { useFormState } from 'react-dom';
 
 const initialState = { success: false, message: '' };
 
-export default function Page() {
+export default function Page({ params }: { params: { seller_id: string } }) {
   const router = useRouter();
-  const seller_id = 'f1bd0df5-9e36-4828-bbdf-52f7b0ec5995'; // Replace with actual seller ID logic
+  const seller_id = params.seller_id; // Replace with actual seller ID logic
   const categories = CategorySchema.shape.category.options;
   const [state, formAction] = useFormState(createProduct, initialState);
 
