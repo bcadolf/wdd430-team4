@@ -2,7 +2,7 @@
 
 import { createProduct } from '@/lib/actions';
 import { CategorySchema } from '@/lib/validation/schemas';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
 
@@ -10,9 +10,14 @@ const initialState = { success: false, message: '' };
 
 export default function Page() {
   const router = useRouter();
-  const seller_id = 'f1bd0df5-9e36-4828-bbdf-52f7b0ec5995'; // Replace with actual seller ID logic
+  const searchParams = useSearchParams();
+  const seller_id = searchParams.get('seller_id');
   const categories = CategorySchema.shape.category.options;
   const [state, formAction] = useFormState(createProduct, initialState);
+
+  if (!seller_id) {
+    throw new Error('Missing seller_id in query params');
+  }
 
   useEffect(() => {
     if (state.success) {

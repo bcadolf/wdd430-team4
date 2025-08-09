@@ -2,25 +2,13 @@ import Image from 'next/image';
 
 import { getProductByParam } from '@/lib/data';
 import Link from 'next/link';
-import { getSellerByParam } from '@/lib/data';
 
-export async function SellerCard({
-  userEmail,
-}: {
-  userEmail: string | null | undefined;
-}) {
-  const sellerArr = await getSellerByParam({
-    field: 'store_email',
-    value: userEmail ?? '',
-  }); // Replace with actual seller ID logic
-
-  const seller_id = sellerArr?.id;
-
-  console.log(seller_id);
+export async function SellerCard({ seller_id }: { seller_id: string }) {
   const products = await getProductByParam({
     field: 'seller_id',
     value: seller_id,
   }); // Replace with actual seller ID logic
+
   if (!products || products.length === 0) {
     throw new Error('No products found for this seller.');
   }
