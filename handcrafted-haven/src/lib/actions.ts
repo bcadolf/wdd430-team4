@@ -9,8 +9,11 @@ import {
   OrderSchema,
   OrderItemSchema,
   ReviewSchema,
+  UserSchema,
 } from './validation/schemas';
 import 'dotenv/config';
+import path from 'path';
+import { writeFile } from 'fs/promises';
 
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
@@ -25,6 +28,7 @@ export async function createSeller(formData: FormData) {
     store_email: formData.get('store_email'),
     store_address: formData.get('store_address'),
     password: formData.get('password'),
+    seller_image: formData.get('seller_image') ?? '',
   });
 
   if (!validatedData.success) {
@@ -41,14 +45,82 @@ export async function createSeller(formData: FormData) {
     store_email,
     store_address,
     password,
+    seller_image = '',
   } = validatedData.data;
 
   const hashedpassword = await bcrypt.hash(password, 12);
 
   try {
+    const result = await sql`
+        INSERT INTO sellers (owner_first,owner_last, store_name, store_email, store_address, password, seller_image)
+        VALUES (${owner_first}, ${owner_last}, ${store_name}, ${store_email}, ${store_address}, ${hashedpassword}, ${seller_image}) RETURNING id
+    `;
+
+    const seller_id = result[0]?.id;
+    return seller_id;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const UpdateSeller = SellerSchema.partial();
+
+export async function updateSeller(formData: FormData) {
+  const rawData = {
+    id: formData.get('seller_id'),
+    owner_first: formData.get('owner_first') ?? undefined,
+    owner_last: formData.get('owner_last') ?? undefined,
+    store_name: formData.get('store_name') ?? undefined,
+    store_email: formData.get('store_email') ?? undefined,
+    store_address: formData.get('store_address') ?? undefined,
+    password: formData.get('password') ?? undefined,
+  };
+
+  const validatedData = UpdateSeller.safeParse(rawData);
+
+  if (!validatedData.success) {
+    return {
+      errors: validatedData.error,
+      message: 'Missing or Invalid Information. Failed to Update Seller.',
+    };
+  }
+
+  const { id } = validatedData.data;
+  console.log(id);
+  if (typeof id !== 'string') {
+    throw new Error('Invalid ID type');
+  }
+  const updatedFields = Object.entries(validatedData.data)
+    .filter(([key, value]) => key !== 'id' && value !== undefined)
+    .map(([key, value]) => {
+      if (value === null) return `${key} = NULL`;
+      if (typeof value === 'string') {
+        const escaped = value.replace(/'/g, "''"); // Escape single quotes
+        return `${key} = '${escaped}'`;
+      }
+      return `${key} = ${value}`;
+    })
+    .join(', ');
+
+  try {
     await sql`
-        INSERT INTO sellers (owner_first,owner_last, store_name, store_email, store_address, password)
-        VALUES (${owner_first}, ${owner_last}, ${store_name}, ${store_email}, ${store_address}, ${hashedpassword})
+      UPDATE sellers
+      SET ${sql.unsafe(updatedFields)}
+      WHERE id = ${id}
+    `;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deleteSeller(seller_id: string) {
+  if (typeof seller_id !== 'string') {
+    throw new Error('Invalid ID type');
+  }
+  try {
+    await sql`
+      DELETE FROM sellers
+      WHERE id = ${seller_id}
     `;
   } catch (error) {
     console.log(error);
@@ -57,17 +129,39 @@ export async function createSeller(formData: FormData) {
 
 const CreateProduct = ProductSchema.omit({ id: true });
 
-export async function createProduct(formData: FormData) {
+export async function createProduct(
+  prevState: { success: boolean; message: string },
+  formData: FormData
+) {
+  const maybeFile = formData.get('item_image');
+  const file =
+    maybeFile instanceof File && maybeFile.size > 0 ? maybeFile : null;
+
+  let imagePath: string | undefined;
+
+  if (file) {
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const fileName = `${Date.now()}-${file.name}`;
+    const filePath = path.join(process.cwd(), 'public', 'products', fileName);
+    await writeFile(filePath, buffer);
+    imagePath = `/products/${fileName}`;
+  } else {
+    imagePath = '/products/No-Image-Placeholder.svg'; // Default image path if no file is provided
+  }
+
   const validatedData = CreateProduct.safeParse({
     item_name: formData.get('item_name'),
     item_price_cents: formData.get('item_price'),
     item_stock: formData.get('item_stock'),
     item_description: formData.get('item_description'),
     seller_id: formData.get('seller_id'),
+    item_image: imagePath,
+    category: formData.get('category'),
   });
 
   if (!validatedData.success) {
     return {
+      success: false,
       errors: validatedData.error,
       message: 'Missing or Invalid Information. Failed to Create Product.',
     };
@@ -79,14 +173,112 @@ export async function createProduct(formData: FormData) {
     item_stock,
     item_description,
     seller_id,
+    item_image,
+    category,
   } = validatedData.data;
 
   try {
     await sql`
-        INSERT INTO products (item_name, item_price, item_stock, item_description, seller_id)
+        INSERT INTO products (item_name, item_price, item_stock, item_description, seller_id, item_image, category)
         VALUES (${item_name}, ${
       item_price_cents / 100
-    }, ${item_stock}, ${item_description}, ${seller_id})
+    }, ${item_stock}, ${item_description}, ${seller_id}, ${item_image}, ${category})
+`;
+  } catch (error) {
+    console.log(error);
+  }
+  return {
+    success: true,
+    message: 'Product created successfully.',
+  };
+}
+
+export async function updateProduct(
+  prevState: { success: boolean; message: string },
+  formData: FormData
+) {
+  const maybeFile = formData.get('item_image');
+  const file =
+    maybeFile instanceof File && maybeFile.size > 0 ? maybeFile : null;
+
+  let imagePath: string | undefined;
+
+  if (file) {
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const fileName = `${Date.now()}-${file.name}`;
+    const filePath = path.join(process.cwd(), 'public', 'products', fileName);
+    await writeFile(filePath, buffer);
+    imagePath = `/products/${fileName}`;
+  } else {
+    imagePath = undefined; // Default image path made in db if no file is provided
+  }
+
+  const validatedData = ProductSchema.partial().safeParse({
+    id: formData.get('product_id'),
+    item_name: formData.get('item_name') ?? undefined,
+    item_price_cents: formData.get('item_price') ?? undefined,
+    item_stock: formData.get('item_stock') ?? undefined,
+    item_description: formData.get('item_description') ?? undefined,
+    seller_id: formData.get('seller_id') ?? undefined,
+    item_image: imagePath,
+    category: formData.get('category') ?? undefined,
+  });
+  if (!validatedData.success) {
+    return {
+      success: false,
+      errors: validatedData.error,
+      message: 'Missing or Invalid Information. Failed to Update Product.',
+    };
+  }
+  const { id } = validatedData.data;
+  if (typeof id !== 'number') {
+    throw new Error('Invalid ID type');
+  }
+  const updatedFields = Object.entries(validatedData.data)
+    .filter(([key, value]) => key !== 'id' && value !== undefined)
+    .map(([key, value]) => {
+      if (value === null) return `${key} = NULL`;
+      if (key === 'item_image' && value === '/products/undefined') {
+        return ''; // Skip item_image if it's undefined
+      }
+      if (key === 'item_price_cents') {
+        if (typeof value !== 'number') {
+          throw new Error('item_price_cents must be a number');
+        }
+        return `item_price = ${value / 100}`;
+      }
+      if (typeof value === 'string') {
+        const escaped = value.replace(/'/g, "''"); // Escape single quotes
+        return `${key} = '${escaped}'`;
+      }
+
+      return `${key} = ${value}`;
+    })
+    .join(', ');
+
+  try {
+    await sql`
+      UPDATE products
+      SET ${sql.unsafe(updatedFields)}
+      WHERE id = ${id}
+    `;
+  } catch (error) {
+    console.log(error);
+  }
+  return {
+    success: true,
+    message: 'Product updated successfully.',
+  };
+}
+
+export async function deleteProduct(product_id: number) {
+  if (typeof product_id !== 'number') {
+    throw new Error('Invalid ID type');
+  }
+  try {
+    await sql`
+      DELETE FROM products
+      WHERE id = ${product_id}
     `;
   } catch (error) {
     console.log(error);
@@ -105,6 +297,67 @@ export async function createUser() {
   }
 }
 
+export async function updateUser(formData: FormData) {
+  const validatedData = UserSchema.partial().safeParse({
+    id: formData.get('user_id'),
+    user_first: formData.get('user_first'),
+    user_last: formData.get('user_last'),
+    user_email: formData.get('user_email'),
+    user_address: formData.get('user_address'),
+    is_guest: formData.get('is_guest') === 'true',
+  });
+
+  if (!validatedData.success) {
+    return {
+      errors: validatedData.error,
+      message: 'Missing or Invalid Information. Failed to Update User.',
+    };
+  }
+
+  const { id } = validatedData.data;
+  if (typeof id !== 'string') {
+    throw new Error('Invalid ID type');
+  }
+
+  validatedData.data.is_guest = false; // Ensure is_guest is always false for updates
+
+  const updatedFields = Object.entries(validatedData.data)
+    .filter(([key, value]) => key !== 'id' && value !== undefined)
+    .map(([key, value]) => {
+      if (value === null) return `${key} = NULL`;
+      if (typeof value === 'string') {
+        const escaped = value.replace(/'/g, "''"); // Escape single quotes
+        return `${key} = '${escaped}'`;
+      }
+      return `${key} = ${value}`;
+    })
+    .join(', ');
+
+  try {
+    await sql`
+      UPDATE users
+      SET ${sql.unsafe(updatedFields)}
+      WHERE id = ${id}
+    `;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deleteUser(user_id: string) {
+  if (typeof user_id !== 'string') {
+    throw new Error('Invalid ID type');
+  }
+  try {
+    await sql`
+      DELETE FROM users
+      WHERE id = ${user_id}
+    `;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function createCart({ user_id }: { user_id: string }) {
   try {
     const result = await sql`
@@ -112,6 +365,20 @@ export async function createCart({ user_id }: { user_id: string }) {
         `;
 
     return result[0]?.id;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deleteCart(cart_id: number) {
+  if (typeof cart_id !== 'number') {
+    throw new Error('Invalid ID type');
+  }
+  try {
+    await sql`
+      DELETE FROM carts
+      WHERE id = ${cart_id}
+    `;
   } catch (error) {
     console.log(error);
   }
@@ -138,8 +405,102 @@ export async function createCartDetail(formData: FormData) {
 
   try {
     await sql`
-    INSERT INTO cart_details (cart_id, seller_id, product_id, quantity) VALUES (${cart_id}, ${seller_id}, ${product_id}, ${quantity})
+    INSERT INTO cart_details (cart_id, seller_id, product_id, quantity) VALUES (${cart_id}, ${seller_id}, ${product_id}, ${quantity}) ON CONFLICT (cart_id, product_id) DO UPDATE SET quantity = cart_details.quantity + ${quantity}
   `;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const UpdateCartDetail = CartDetailSchema.partial();
+
+// for this function to work optimally the form must submit the cart_detail_id and only the fields that need to be updated.
+export async function updateCartDetail(formData: FormData) {
+  const validatedData = UpdateCartDetail.safeParse({
+    id: formData.get('cart_detail_id'),
+    cart_id: formData.get('cart_id') ?? undefined,
+    seller_id: formData.get('seller_id') ?? undefined,
+    product_id: formData.get('product_id') ?? undefined,
+    quantity: formData.get('quantity') ?? undefined,
+  });
+
+  if (!validatedData.success) {
+    return {
+      errors: validatedData.error,
+      message: 'Missing or Invalid Information. Failed to Update Cart Detail.',
+    };
+  }
+
+  const { id } = validatedData.data;
+  if (typeof id !== 'number') {
+    throw new Error('Invalid ID type');
+  }
+  const updatedFields = Object.entries(validatedData.data)
+    .filter(([key, value]) => key !== 'id' && value !== undefined)
+    .map(([key, value]) => {
+      if (value === null) return `${key} = NULL`;
+      if (typeof value === 'string') {
+        const escaped = value.replace(/'/g, "''"); // Escape single quotes
+        return `${key} = '${escaped}'`;
+      }
+      return `${key} = ${value}`;
+    })
+    .join(', ');
+
+  try {
+    await sql`
+      UPDATE cart_details
+      SET ${sql.unsafe(updatedFields)}
+      WHERE id = ${id}
+    `;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deleteCartDetail(cart_detail_id: number) {
+  if (typeof cart_detail_id !== 'number') {
+    throw new Error('Invalid ID type');
+  }
+  try {
+    await sql`
+      DELETE FROM cart_details
+      WHERE id = ${cart_detail_id}
+    `;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function addProductToCart({
+  cart_id,
+  product_id,
+  seller_id,
+  quantity,
+}: {
+  cart_id: string;
+  product_id: string;
+  seller_id: string;
+  quantity: number;
+}) {
+  const validatedData = CreateCartDetail.safeParse({
+    cart_id: cart_id,
+    seller_id: seller_id,
+    product_id: product_id,
+    quantity: quantity,
+  });
+
+  if (!validatedData.success) {
+    return {
+      errors: validatedData.error,
+      message: 'Missing or Invalid Information. Failed to Add to Cart Detail.',
+    };
+  }
+  try {
+    await sql`
+      INSERT INTO cart_details (cart_id, product_id, seller_id, quantity)
+      VALUES (${cart_id}, ${product_id}, ${seller_id}, ${quantity}) ON CONFLICT (cart_id, product_id) DO UPDATE SET quantity = cart_details.quantity + ${quantity}
+    `;
   } catch (error) {
     console.log(error);
   }
@@ -220,18 +581,26 @@ export async function createOrderItem(formData: FormData) {
 
 const CreateReview = ReviewSchema.omit({ id: true });
 
-export async function createReview(formData: FormData) {
+type CreateReviewValues = {
+  rating: number;
+  product_id: number;
+  seller_id: string;
+  user_name: string;
+  description: string;
+};
+
+export async function createReview(data: CreateReviewValues) {
   const validatedData = CreateReview.safeParse({
-    rating: formData.get('rating'),
-    product_id: formData.get('product_id'),
-    seller_id: formData.get('seller_id'),
-    user_name: formData.get('user_name'),
-    description: formData.get('description'),
+    rating: data.rating,
+    product_id: data.product_id,
+    seller_id: data.seller_id,
+    user_name: data.user_name,
+    description: data.description,
   });
 
   if (!validatedData.success) {
     return {
-      errors: validatedData.error,
+      errors: validatedData.error.format(),
       message: 'Missing or Invalid Information. Failed to Create Order.',
     };
   }
@@ -242,6 +611,25 @@ export async function createReview(formData: FormData) {
   try {
     await sql`
      INSERT INTO reviews (rating, product_id, seller_id, user_name, description) VALUES (${rating}, ${product_id}, ${seller_id}, ${user_name}, ${description})
+    `;
+    return { success: true };
+  } catch (error) {
+    console.log(error);
+    return {
+      succes: false,
+      error: error instanceof Error ? error.message : String(error),
+    };
+  }
+}
+
+export async function deleteReview(review_id: number) {
+  if (typeof review_id !== 'number') {
+    throw new Error('Invalid ID type');
+  }
+  try {
+    await sql`
+      DELETE FROM reviews
+      WHERE id = ${review_id}
     `;
   } catch (error) {
     console.log(error);

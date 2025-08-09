@@ -1,45 +1,98 @@
-import { useSearchParams } from "next/navigation"
-import { useActionState } from "react";
+'use client';
+import React, { useState } from 'react';
+import { signIn } from 'next-auth/react';
+import GoogleSignIn from '@/components/ui/GoogleSignIn';
 
+export default function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError('');
 
-export default function LoginForm () {
-    const searchParams = useSearchParams();
-    const [errorMessage, formAction, isPending] = useActionState(
-        authenticate,
-        undefined,
-    );
+    if (password.length < 8) {
+      alert('Password must be at least 8 characters');
+      return;
+    }
+    setLoading(true);
+    try {
+      const result = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+      });
+      if (result?.error) {
+        console.error('login error:', result.error);
+        setError(result.error);
+      } else {
+        alert('Account has been logged in');
+        window.location.href = '/products';
+      }
+    } catch (error) {
+      console.error('login error', error);
+      setError('login has failed');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-
-    return (
-        <form action={formAction}>
-            <h1>Please Login to continue.</h1>
-
-            <label htmlFor="email">
-                Email
-            </label>
-            <input
-                id="email"
-                type="email"
-                name="email"
-                placeholder="Enter your email address"
-                required
-            />
-            <label htmlFor="password">
-                Password
-            </label>
-            <input
-                id="password"
-                type="password"
-                name="password"
-                placeholder="Enter password"
-                required
-                minLength={8}
-            />
-            <button type="submit" disabled={isPending}>
-                Login
-            </button>
-        
-        </form>
-    )
-};
+  return (
+    <div
+      style={{
+        minHeight: '50vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'black',
+        padding: '10px',
+      }}
+    >
+      <form
+        onSubmit={handleLogin}
+        style={{
+          background: 'white',
+          padding: '2rem',
+          borderRadius: '24px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
+          minWidth: 400,
+          maxWidth: 600,
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1rem',
+          color: 'black',
+        }}
+      >
+        <label htmlFor='email'>Email</label>
+        <input
+          type='email'
+          placeholder='Enter your email'
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={loading}
+        />
+        <label htmlFor='password'>Password</label>
+        <input
+          type='password'
+          placeholder='Input your password.'
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          disabled={loading}
+        />
+        <button
+          className='bg-blue-500 text-white rounded px-5 py-3 font-bold hover:bg-blue-700 transition-colors cursor-pointer'
+          type='submit'
+          disabled={loading}
+        >
+          {loading ? 'Logging in... ' : 'Login'}
+        </button>
+        {error && <div style={{ color: 'red' }}>{error}</div>}
+      </form>
+      <GoogleSignIn />
+    </div>
+  );
+}

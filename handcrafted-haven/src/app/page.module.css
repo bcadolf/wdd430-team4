@@ -131,9 +131,10 @@ a.secondary {
     padding-bottom: 80px;
   }
 
-  .main {
+  .mainContent {
+    display: flex;
     align-items: center;
-  }
+    margin: 20px;}
 
   .main ol {
     text-align: center;
