@@ -23,7 +23,7 @@ export default async function Page() {
           <ProfileCard seller_id={seller_id} />
           <div className='flex justify-start items-center gap-4'>
             <Link
-              href={`/sellers/${seller_id}/add-item`}
+              href={`/sellers/add-item?seller_id=${seller_id}`}
               className='flex justify-start items-center gap-4'
             >
               <button className='bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors'>
