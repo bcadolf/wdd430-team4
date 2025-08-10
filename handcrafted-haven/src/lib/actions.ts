@@ -19,7 +19,25 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 const CreateSeller = SellerSchema.omit({ id: true });
 
-export async function createSeller(formData: FormData) {
+export async function createSeller(
+  prevState: { success: boolean; message: string },
+  formData: FormData
+) {
+  const maybeFile = formData.get('seller_image');
+  const file =
+    maybeFile instanceof File && maybeFile.size > 0 ? maybeFile : null;
+
+  let imagePath: string | undefined;
+
+  if (file) {
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const fileName = `${Date.now()}-${file.name}`;
+    const filePath = path.join(process.cwd(), 'public', 'sellers', fileName);
+    await writeFile(filePath, buffer);
+    imagePath = `/sellers/${fileName}`;
+  } else {
+    imagePath = '/sellers/No-Image-Placeholder.svg'; // Default image path if no file is provided
+  }
   const validatedData = CreateSeller.safeParse({
     owner_first: formData.get('owner_first'),
     owner_last: formData.get('owner_last'),
@@ -27,11 +45,12 @@ export async function createSeller(formData: FormData) {
     store_email: formData.get('store_email'),
     store_address: formData.get('store_address'),
     password: formData.get('password'),
-    seller_image: formData.get('seller_image') ?? '',
+    seller_image: imagePath,
   });
 
   if (!validatedData.success) {
     return {
+      success: false,
       errors: validatedData.error,
       message: 'Missing or Invalid Information. Failed to Create Seller.',
     };
@@ -44,7 +63,7 @@ export async function createSeller(formData: FormData) {
     store_email,
     store_address,
     password,
-    seller_image = '',
+    seller_image,
   } = validatedData.data;
 
   const hashedpassword = await bcrypt.hash(password, 12);
@@ -52,14 +71,16 @@ export async function createSeller(formData: FormData) {
   try {
     const result = await sql`
         INSERT INTO sellers (owner_first,owner_last, store_name, store_email, store_address, password, seller_image)
-        VALUES (${owner_first}, ${owner_last}, ${store_name}, ${store_email}, ${store_address}, ${hashedpassword}, ${seller_image}) RETURNING id
+        VALUES (${owner_first}, ${owner_last}, ${store_name}, ${store_email}, ${store_address}, ${hashedpassword}, ${imagePath}) RETURNING id
     `;
 
     const seller_id = result[0]?.id;
+
     return seller_id;
   } catch (error) {
     console.log(error);
   }
+  return { success: true, message: 'Seller created successfully.' };
 }
 
 const UpdateSeller = SellerSchema.partial();
