@@ -10,9 +10,12 @@ export async function SellerCard({ seller_id }: { seller_id: string }) {
   }); // Replace with actual seller ID logic
 
   if (!products || products.length === 0) {
-    throw new Error('No products found for this seller.');
+    return (
+      <div className='text-center text-gray-500'>
+        No products found for this seller.
+      </div>
+    );
   }
-  console.log('Seller Products:', products);
 
   return (
     <div className='grid grid-cols-3 grid-rows-none auto-rows-auto gap-4 overflow-auto'>

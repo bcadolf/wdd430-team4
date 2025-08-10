@@ -71,7 +71,7 @@ export async function createSeller(
   try {
     const result = await sql`
         INSERT INTO sellers (owner_first,owner_last, store_name, store_email, store_address, password, seller_image)
-        VALUES (${owner_first}, ${owner_last}, ${store_name}, ${store_email}, ${store_address}, ${hashedpassword}, ${imagePath}) RETURNING id
+        VALUES (${owner_first}, ${owner_last}, ${store_name}, ${store_email}, ${store_address}, ${hashedpassword}, ${seller_image}) RETURNING id
     `;
 
     const seller_id = result[0]?.id;
