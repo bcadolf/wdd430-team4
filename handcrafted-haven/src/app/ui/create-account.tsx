@@ -116,10 +116,10 @@ export default function CreateSellerForm() {
                 color: "black",
             }}>
 
-                <h1 style={{ textAlign: "center", marginBottom: "1rem", fontWeight: "bold", fontSize: "1.5rem" }}>Create Seller's Account</h1>
+                <h1 style={{ textAlign: "center", marginBottom: "1rem", fontWeight: "bold", fontSize: "1.5rem" }}>Create Seller&apos;s Account</h1>
 
                 <label htmlFor="owner_first" style={{ fontWeight: "bold" }}>
-                    Owner's First Name
+                    Owner&apos;s First Name
                 </label>
                 <input
                     id="owner_first"
@@ -139,7 +139,7 @@ export default function CreateSellerForm() {
                 />
 
                 <label htmlFor="owner_last" style={{ fontWeight: "bold" }}>
-                    Owner's Last Name
+                    Owner&apos;s Last Name
                 </label>
                 <input
                     id="owner_last"
@@ -239,7 +239,7 @@ export default function CreateSellerForm() {
                 />
 
                 <label htmlFor="seller_image" style={{ fontWeight: "bold" }}>
-                    Upload Seller's Image (Optional)
+                    Upload Seller&apos;s Image (Optional)
                 </label>
                 <input
                     id="seller_image"
