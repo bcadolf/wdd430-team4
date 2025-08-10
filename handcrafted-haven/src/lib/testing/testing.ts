@@ -35,7 +35,7 @@ async function testCreateSeller() {
   formData.set('store_address', '1234 Superhero Lane, New York, NY');
   formData.set('password', 'password123!');
 
-  const result = await createSeller(formData);
+  const result = await createSeller({ success: false, message: '' }, formData);
 
   console.log(result);
 }
