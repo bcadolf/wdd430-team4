@@ -163,6 +163,7 @@ export async function createProduct(
   if (file) {
     const blob = await put(`products/${Date.now()}-${file.name}`, file, {
       access: 'public',
+      token: process.env.BLOB_READ_WRITE_TOKEN,
     });
     imagePath = blob.url;
   } else {
