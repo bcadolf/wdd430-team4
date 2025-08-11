@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 import { getProductByParam } from '@/lib/data';
 import Link from 'next/link';
+import { DeleteButton } from '../product/DeleteButton';
 
 export async function SellerCard({ seller_id }: { seller_id: string }) {
   const products = await getProductByParam({
@@ -44,6 +45,7 @@ export async function SellerCard({ seller_id }: { seller_id: string }) {
               Edit Item
             </button>
           </Link>
+          <DeleteButton product_id={product.id} />
         </div>
       ))}
     </div>
