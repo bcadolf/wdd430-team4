@@ -210,6 +210,18 @@ export async function getAllCarts() {
   return await sql`SELECT * FROM carts`;
 }
 
+//Function below gets distinct category for the landing homepage.
+//We want to get a category that is available from the database.
+export async function getDistinctCategories() {
+  try {
+    const result = await sql`SELECT DISTINCT category from products`;
+    return result.map((row) => row.category);
+  } catch (e) {
+    console.log(e);
+    return [];
+  }
+}
+
 /**
  * login credentials - done
  * seller info - done
