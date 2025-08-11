@@ -1,7 +1,6 @@
 'use client';
 
 import styles from './page.module.css';
-import LandingSkeleton from '../ui/skeletons';
 
 export default function About() {
   // const name ="Handcrafted Haven";
@@ -20,10 +19,10 @@ export default function About() {
     }
   };
   const handleShop = () => {
-    window.location.href = '/product';
+    window.location.href = '/products';
   };
   const handleCart = async () => {
-    window.location.href = '/checkout';
+    window.location.href = '/cart';
   };
 
   const faqs = [
