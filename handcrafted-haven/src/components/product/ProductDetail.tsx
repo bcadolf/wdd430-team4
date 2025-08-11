@@ -2,7 +2,7 @@
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import ProductAdd from './ProductAdd';
 
@@ -17,8 +17,34 @@ type ProductDetailsProps = {
 }
 
 export default function ProductDetails({ product_id, seller_id, name, price, stock}: ProductDetailsProps){
-    const [rating, setRating] = useState(0); 
-    const [hoverRating, setHoverRating] = useState(0);
+        const [average, setAverage] = useState<number>(0);
+        const [reviewCount, setReviewCount] = useState("");
+
+    
+    
+        useEffect(() => {
+            async function fetchReviews() {
+               console.log("Fetching reviews for product_id:", product_id);
+                const res = await fetch(`/api/reviews?product_id=${product_id}`);
+                const data = await res.json();
+                if (!Array.isArray(data)) {
+                    setAverage(0);
+                    setReviewCount("0");
+                    return;
+                }
+
+                setReviewCount(data.length.toString());
+    
+                if (data.length > 0) {
+                    const total = data.reduce((acc, cur) => acc + cur.rating, 0);
+                    setAverage(total / data.length);
+                } else {
+                    setAverage(0);
+                }
+            }
+            fetchReviews();
+        }, [product_id]);
+    
 
     return  <div className="px-5 flex flex-col gap-5">
                 <h2 className="text-primary text-4xl font-bold">{name}</h2>
@@ -31,19 +57,16 @@ export default function ProductDetails({ product_id, seller_id, name, price, sto
                             <FontAwesomeIcon
                             key={i}
                             icon={faStar}
-                            className={` cursor-pointer transition-colors duration-200 ${(hoverRating || rating) >= index ? 'text-secondary' : 'text-gray-300' }`}
+                            className={` cursor-pointer transition-colors duration-200 ${average >= index ? 'text-secondary' : 'text-gray-300' }`}
                             style={{ 
                                 width: '15px',  // Direct width cotrol
                                 height: '15px', // Direct height control
                                 marginRight: '-1px' // Adjusted overlap
                             }}
-                            onClick={()=> (setRating(index))} 
-                            onMouseEnter={()=> (setHoverRating(index))}
-                            onMouseLeave={()=> (setHoverRating(0))}
                             />)
                         })}
                     </div>
-                    <p className="font-semibold text-secondary">12 reviews</p>
+                    <p className="font-semibold text-secondary">{reviewCount} Reviews</p>
                 </div>
 
                 <p className="text-primary text-6x2 font-bold">Product Price - ${price}</p>
