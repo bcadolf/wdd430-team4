@@ -12,8 +12,6 @@ import {
   UserSchema,
 } from './validation/schemas';
 import 'dotenv/config';
-import path from 'path';
-import { writeFile } from 'fs/promises';
 import { put } from '@vercel/blob';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
@@ -24,18 +22,18 @@ export async function createSeller(
   prevState: { success: boolean; message: string },
   formData: FormData
 ) {
-  const maybeFile = formData.get('seller_image');
+  const maybeFile = formData.get('item_image');
   const file =
     maybeFile instanceof File && maybeFile.size > 0 ? maybeFile : null;
 
-  let imagePath: string | undefined;
+  let imagePath: string;
 
   if (file) {
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const fileName = `${Date.now()}-${file.name}`;
-    const filePath = path.join(process.cwd(), 'public', 'sellers', fileName);
-    await writeFile(filePath, buffer);
-    imagePath = `/sellers/${fileName}`;
+    const blob = await put(`sellers/${Date.now()}-${file.name}`, file, {
+      access: 'public',
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    });
+    imagePath = blob.url;
   } else {
     imagePath = '/sellers/No-Image-Placeholder.svg'; // Default image path if no file is provided
   }
@@ -87,6 +85,21 @@ export async function createSeller(
 const UpdateSeller = SellerSchema.partial();
 
 export async function updateSeller(formData: FormData) {
+  const maybeFile = formData.get('item_image');
+  const file =
+    maybeFile instanceof File && maybeFile.size > 0 ? maybeFile : null;
+
+  let imagePath: string;
+
+  if (file) {
+    const blob = await put(`sellers/${Date.now()}-${file.name}`, file, {
+      access: 'public',
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    });
+    imagePath = blob.url;
+  } else {
+    imagePath = '/sellers/No-Image-Placeholder.svg'; // Default image path if no file is provided
+  }
   const rawData = {
     id: formData.get('seller_id'),
     owner_first: formData.get('owner_first') ?? undefined,
@@ -95,6 +108,7 @@ export async function updateSeller(formData: FormData) {
     store_email: formData.get('store_email') ?? undefined,
     store_address: formData.get('store_address') ?? undefined,
     password: formData.get('password') ?? undefined,
+    seller_image: imagePath,
   };
 
   const validatedData = UpdateSeller.safeParse(rawData);
@@ -169,15 +183,6 @@ export async function createProduct(
   } else {
     imagePath = '/products/No-Image-Placeholder.svg'; // Default image path if no file is provided
   }
-  /*if (file) {
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const fileName = `${Date.now()}-${file.name}`;
-    const filePath = path.join(process.cwd(), 'public', 'products', fileName);
-    await writeFile(filePath, buffer);
-    imagePath = `/products/${fileName}`;
-  } else {
-    imagePath = '/products/No-Image-Placeholder.svg'; // Default image path if no file is provided
-  }*/ //testing vercel blob storage
 
   const validatedData = CreateProduct.safeParse({
     item_name: formData.get('item_name'),
@@ -231,16 +236,16 @@ export async function updateProduct(
   const file =
     maybeFile instanceof File && maybeFile.size > 0 ? maybeFile : null;
 
-  let imagePath: string | undefined;
+  let imagePath: string;
 
   if (file) {
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const fileName = `${Date.now()}-${file.name}`;
-    const filePath = path.join(process.cwd(), 'public', 'products', fileName);
-    await writeFile(filePath, buffer);
-    imagePath = `/products/${fileName}`;
+    const blob = await put(`products/${Date.now()}-${file.name}`, file, {
+      access: 'public',
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    });
+    imagePath = blob.url;
   } else {
-    imagePath = undefined; // Default image path made in db if no file is provided
+    imagePath = '/products/No-Image-Placeholder.svg'; // Default image path if no file is provided
   }
 
   const validatedData = ProductSchema.partial().safeParse({
