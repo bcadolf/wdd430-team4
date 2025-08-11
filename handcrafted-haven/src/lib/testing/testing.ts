@@ -22,6 +22,7 @@ import {
   getUserById,
   getProductsByCategory,
   getAllCarts,
+  getDistinctCategories,
 } from '../data';
 
 /** tests run before seeding to ensure everything worked */
@@ -99,7 +100,7 @@ async function testGetAllCarts() {
   console.log(result);
 }
 
-// testGetAllCarts();
+//testGetAllCarts();
 
 async function testUpdateUser() {
   const formData = new FormData();
@@ -178,11 +179,6 @@ async function testCreateOrderItem() {
 
 // testGetProductByParam();
 
-async function testGetProductsByCategory() {
-  const result = await getProductsByCategory('cutlery');
-  console.log(result);
-}
-
 // testGetProductsByCategory();
 
 // testGetUserById(); SUCCESS
@@ -222,6 +218,16 @@ async function testGetProductByParam() {
   console.log(result);
 }
 
+// testGetProductByParam();
+
+async function testGetProductsByCategory() {
+  const result = await getProductsByCategory('cutlery');
+  console.log(result);
+  console.log('result:', result);
+  //console.log("result.rows:", (result as any).rows);
+  console.log('Is rows property defined?', 'rows' in result);
+}
+
 // testGetProductByParam(); SUCCESS
 
 async function testGetUserById() {
@@ -241,5 +247,12 @@ async function testGetReviewByParam() {
 }
 
 // testGetReviewByParam(); SUCCESS
+
+export default async function testCategories() {
+  const categories = await getDistinctCategories();
+  console.log(categories);
+}
+
+//testCategories();
 
 /* eslint-enable @typescript-eslint/no-unused-vars */
