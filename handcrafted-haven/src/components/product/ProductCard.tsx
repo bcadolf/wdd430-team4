@@ -44,4 +44,7 @@ export function ProductCard({ products }: { products: Product[] }) {
       ))}
 </div>
   );
+
+
+  
 }

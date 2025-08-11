@@ -1,39 +1,61 @@
 'use client';
-import React from "react";
-import Image from "next/image";
-import { useCart } from '@/context/CartContext';
+
+import React, { useEffect, useState } from 'react';
 
 export default function CartPage() {
-  const { cart, removeFromCart } = useCart();
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const [items, setItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchCart() {
+      try {
+        const res = await fetch('/api/cart');
+        if (!res.ok) {
+          throw new Error('Failed to fetch cart');
+        }
+
+        const data = await res.json();
+        setItems(data.items || []);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCart();
+  }, []);
+
+  if (loading) return <div>Loading your cart...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  const total = items.reduce((sum, item) => sum + (item.item_price * item.quantity), 0);
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-playfair mb-4">Your Cart</h2>
+    <div className="p-6 max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
 
-      {cart.length === 0 ? (
+      {items.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
-        cart.map((item) => (
-          <div key={item.id} className="flex items-center gap-4 mb-4 border p-2 rounded">
-            <Image src={item.image} alt={item.name} width={60} height={60} />
-            <div className="flex-1">
-              <p className="font-bold">{item.name}</p>
-              <p>₦{item.price} x {item.quantity}</p>
-            </div>
-            <button
-              className="text-red-500"
-              onClick={() => removeFromCart(item.id)}
-            >
-              Remove
-            </button>
-          </div>
-        ))
-      )}
+        <>
+          <ul className="space-y-4">
+            {items.map((item) => (
+              <li key={item.cart_detail_id} className="flex justify-between border-b py-4">
+                <div>
+                  <h2 className="font-semibold">{item.item_name}</h2>
+                  <p>₦{item.item_price} × {item.quantity}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
 
-      <div className="mt-6 text-lg font-bold">
-        Total: ₦{total}
-      </div>
+          <div className="text-right mt-6 text-xl font-bold">
+            Total: ₦{total.toFixed(2)}
+          </div>
+        </>
+      )}
     </div>
   );
 }

@@ -233,16 +233,10 @@ export async function deleteProduct(product_id: number) {
 }
 
 export async function createUser() {
-  try {
-    const result = await sql`
-        INSERT INTO users DEFAULT VALUES RETURNING id
-    `;
-    const user_id = result[0]?.id;
-    return user_id;
-  } catch (error) {
-    console.log(error);
-  }
+  const [user] = await sql`INSERT INTO users DEFAULT VALUES RETURNING id`;
+  return user.id;
 }
+
 
 export async function updateUser(formData: FormData) {
   const validatedData = UserSchema.partial().safeParse({
@@ -452,6 +446,8 @@ export async function addProductToCart({
     console.log(error);
   }
 }
+
+
 
 const CreateOrder = OrderSchema.omit({ id: true });
 
