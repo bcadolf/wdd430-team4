@@ -53,7 +53,7 @@ export default function LoginForm() {
         padding: '30px',
       }}
     >
-      <h2 style={{paddingBottom: '30px', fontWeight: 'bold',  fontSize: '1.25rem'}}>
+      <h2 style={{paddingBottom: '30px', fontWeight: 'bold',  fontSize: '1.25rem' color: oklch(0.7635 0.1264 73.74)}}>
         Please login to your Seller&apos;s account
       </h2>
       <form
