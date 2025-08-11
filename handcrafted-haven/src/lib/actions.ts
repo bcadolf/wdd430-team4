@@ -14,6 +14,7 @@ import {
 import 'dotenv/config';
 import path from 'path';
 import { writeFile } from 'fs/promises';
+import { put } from '@vercel/blob';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -157,9 +158,17 @@ export async function createProduct(
   const file =
     maybeFile instanceof File && maybeFile.size > 0 ? maybeFile : null;
 
-  let imagePath: string | undefined;
+  let imagePath: string;
 
   if (file) {
+    const blob = await put(`products/${Date.now()}-${file.name}`, file, {
+      access: 'public',
+    });
+    imagePath = blob.url;
+  } else {
+    imagePath = '/products/No-Image-Placeholder.svg'; // Default image path if no file is provided
+  }
+  /*if (file) {
     const buffer = Buffer.from(await file.arrayBuffer());
     const fileName = `${Date.now()}-${file.name}`;
     const filePath = path.join(process.cwd(), 'public', 'products', fileName);
@@ -167,7 +176,7 @@ export async function createProduct(
     imagePath = `/products/${fileName}`;
   } else {
     imagePath = '/products/No-Image-Placeholder.svg'; // Default image path if no file is provided
-  }
+  }*/ //testing vercel blob storage
 
   const validatedData = CreateProduct.safeParse({
     item_name: formData.get('item_name'),
