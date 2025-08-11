@@ -25,7 +25,7 @@ import {
   getProductsByCategory,
   getAllCarts,
   getDistinctCategories,
-} from "../data";
+} from '../data';
 
 /** tests run before seeding to ensure everything worked */
 
@@ -92,7 +92,6 @@ async function testCreateUser() {
   const result = await createUser();
   console.log(result);
 }
-
 
 // testCreateUser(); SUCCESS
 
@@ -177,14 +176,12 @@ async function testCreateOrderItem() {
 //testCreateReview();
 
 async function testGetCartById() {
-  const result = await getFullCartById({ cart_id: 48
-
-   });
+  const result = await getFullCartById({ cart_id: 48 });
 
   console.log(result);
 }
 
-//testGetCartById(); 
+//testGetCartById();
 
 async function testGetSellerByParam() {
   const result = await getSellerByParam({
@@ -200,7 +197,7 @@ async function testGetSellerByParam() {
   console.log(result, { 'With Pass': resultPass });
 }
 
- //testGetSellerByParam();
+//testGetSellerByParam();
 
 async function testGetProductByParam() {
   const result = await getProductByParam({
@@ -216,12 +213,12 @@ async function testGetProductByParam() {
 async function testGetProductsByCategory() {
   const result = await getProductsByCategory('cutlery');
   console.log(result);
-  console.log("result:", result);
+  console.log('result:', result);
   //console.log("result.rows:", (result as any).rows);
-  console.log("Is rows property defined?", "rows" in result);
+  console.log('Is rows property defined?', 'rows' in result);
 }
 
-testGetProductsByCategory();
+// testGetProductsByCategory();
 
 async function testGetUserById() {
   const result = await getUserById({
@@ -240,9 +237,9 @@ async function testGetReviewByParam() {
 }
 // testGetReviewByParam();
 
-export default async function testCategories(){
-    const categories = await getDistinctCategories();
-    console.log(categories);
+export default async function testCategories() {
+  const categories = await getDistinctCategories();
+  console.log(categories);
 }
 
 //testCategories();
