@@ -3,21 +3,6 @@ import { createUser, createCart, addProductToCart } from "@/lib/actions";
 import { cookies } from "next/headers";
 import { getCartByParam } from "@/lib/data";
 
-export async function GET(req: Request) {
-  const url = new URL(req.url);
-  const cartId = url.searchParams.get('cart_id');
-
-  if (!cartId) {
-    return NextResponse.json({ error: 'Missing cart_id' }, { status: 400 });
-  }
-
-  try {
-    const cart = await getFullCartById(parseInt(cartId));
-    return NextResponse.json({ cart });
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch cart' }, { status: 500 });
-  }
-}
 
 export async function POST(request: Request) {
   try {
@@ -34,10 +19,10 @@ export async function POST(request: Request) {
       }
     }
 
-    
-
-    const cart = await getCartByParam({ field: "user_id", value: user_id });
-    let cart_id = cart?.id;
+        const cart = await getCartByParam({ field: "user_id", value: user_id});
+        console.log("test", cart);
+        let cart_id = cart?.id;
+        console.log(cart_id);
 
     if (!cart_id) {
       cart_id = await createCart({ user_id });
@@ -66,16 +51,12 @@ export async function POST(request: Request) {
       sameSite: "lax",
     });
 
-    return response;
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Failed to add item to cart" },
-      { status: 500 }
-    );
-  }
-}
+        return response;
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({ error: "failed to add item to cart"}, { status: 500});
 
-function getFullCartById(arg0: number) {
-  throw new Error("Function not implemented.");
-}
+
+    }
+
+    }

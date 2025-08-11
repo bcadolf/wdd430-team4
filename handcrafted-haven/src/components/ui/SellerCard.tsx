@@ -1,20 +1,24 @@
 import Image from 'next/image';
 
 import { getProductByParam } from '@/lib/data';
+import Link from 'next/link';
 
-export async function SellerCard() {
-  const seller_id = 'f1bd0df5-9e36-4828-bbdf-52f7b0ec5995'; // Replace with actual seller ID logic
+export async function SellerCard({ seller_id }: { seller_id: string }) {
   const products = await getProductByParam({
     field: 'seller_id',
     value: seller_id,
   }); // Replace with actual seller ID logic
+
   if (!products || products.length === 0) {
-    throw new Error('No products found for this seller.');
+    return (
+      <div className='text-center text-gray-500'>
+        No products found for this seller.
+      </div>
+    );
   }
-  console.log('Seller Products:', products);
 
   return (
-    <div className='grid grid-cols-3 grid-rows-3 gap-4'>
+    <div className='grid md:grid-cols-3 grid-rows-none auto-rows-auto gap-4 overflow-auto sm:grid-cols-2 xs:grid-cols-1'>
       {products.map((product) => (
         <div
           key={product.id}
@@ -32,9 +36,14 @@ export async function SellerCard() {
             {product.item_name}
           </h3>
           <p>Price: {product.item_price}</p>
-          <p className='text-gray-600 text-sm mt-1 text-center'>
+          <p className='text-accnet text-sm mt-1 text-center'>
             {product.item_description}
           </p>
+          <Link href={`sellers/edit-item/${product.id}`}>
+            <button className='mt-3 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors'>
+              Edit Item
+            </button>
+          </Link>
         </div>
       ))}
     </div>

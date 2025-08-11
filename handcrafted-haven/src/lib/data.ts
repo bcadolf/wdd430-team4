@@ -10,6 +10,16 @@ import {
 } from './definitions';
 import { CategorySchema } from './validation/schemas';
 
+type RawProductRow = {
+  id: number;
+  item_name: string;
+  item_image: string;
+  item_price: string;
+  item_stock: number;
+  item_description: string;
+  seller_id: string;
+};
+
 // call the db
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -154,22 +164,25 @@ export async function getUserById({ user_id }: { user_id: string }) {
   return result[0];
 }
 
-export async function getProductsByCategory(category: string) {
+export async function getProductsByCategory(category: string): Promise<RawProductRow[]>{
   try {
     const validatedData = CategorySchema.safeParse({
       category,
     });
 
     if (!validatedData.success) {
-      throw new Error('Invalid category');
+      throw new Error("Invalid category");
     }
 
     const result = await sql`
         SELECT * FROM products WHERE category = ${category}
     `;
-    return result;
+    const rows = Array.from(result) as RawProductRow[];
+    //return result as unknown as RawProductRow[]; //Temporary hack for prototyping.
+    return rows
   } catch (error) {
     console.log(error);
+    return []
   }
 }
 
@@ -195,9 +208,6 @@ export async function getReviewByParam(params: ReviewSQLParams) {
 export async function getAllCarts() {
   return await sql`SELECT * FROM carts`;
 }
-
-
-
 
 /**
  * login credentials - done
