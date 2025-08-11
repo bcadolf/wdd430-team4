@@ -18,7 +18,7 @@ export async function SellerCard({ seller_id }: { seller_id: string }) {
   }
 
   return (
-    <div className='grid grid-cols-3 grid-rows-none auto-rows-auto gap-4 overflow-auto'>
+    <div className='grid md:grid-cols-3 grid-rows-none auto-rows-auto gap-4 overflow-auto sm:grid-cols-2 xs:grid-cols-1'>
       {products.map((product) => (
         <div
           key={product.id}
@@ -36,7 +36,7 @@ export async function SellerCard({ seller_id }: { seller_id: string }) {
             {product.item_name}
           </h3>
           <p>Price: {product.item_price}</p>
-          <p className='text-gray-600 text-sm mt-1 text-center'>
+          <p className='text-accnet text-sm mt-1 text-center'>
             {product.item_description}
           </p>
           <Link href={`sellers/edit-item/${product.id}`}>
