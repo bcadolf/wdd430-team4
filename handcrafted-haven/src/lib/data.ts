@@ -43,7 +43,6 @@ export async function getFullCartById({ cart_id }: { cart_id: number }) {
     JOIN products p ON p.id = cd.product_id
     WHERE cd.cart_id = ${cart_id}
   `;
-
 }
 
 // one size fits all... kinda its set so the params set in definitions can be used to pull the seller data. Using this reduces having to call a function for each new key/field search.
@@ -164,14 +163,16 @@ export async function getUserById({ user_id }: { user_id: string }) {
   return result[0];
 }
 
-export async function getProductsByCategory(category: string): Promise<RawProductRow[]>{
+export async function getProductsByCategory(
+  category: string
+): Promise<RawProductRow[]> {
   try {
     const validatedData = CategorySchema.safeParse({
       category,
     });
 
     if (!validatedData.success) {
-      throw new Error("Invalid category");
+      throw new Error('Invalid category');
     }
 
     const result = await sql`
@@ -179,10 +180,10 @@ export async function getProductsByCategory(category: string): Promise<RawProduc
     `;
     const rows = Array.from(result) as RawProductRow[];
     //return result as unknown as RawProductRow[]; //Temporary hack for prototyping.
-    return rows
+    return rows;
   } catch (error) {
     console.log(error);
-    return []
+    return [];
   }
 }
 
