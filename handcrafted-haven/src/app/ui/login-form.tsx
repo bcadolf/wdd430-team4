@@ -54,7 +54,7 @@ export default function LoginForm() {
       }}
     >
       <h2 style={{paddingBottom: '30px', fontWeight: 'bold',  fontSize: '1.25rem'}}>
-        Please login to your Seller's account
+        Please login to your Seller&apos;s account
       </h2>
       <form
         onSubmit={handleLogin}
