@@ -1,0 +1,40 @@
+.footerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: solid  2px var(--color-secondary);
+
+
+
+}
+.footer {
+    width: 90%;
+    margin: 0 auto;
+}
+.socials {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    color: black;
+}
+
+.navList {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    font-weight: 500;
+    color: black;
+}
+.copyright {
+    color: black;
+    margin-top: 1rem;
+}
+.footerName {
+    color: black;
+    font-weight: 600;
+}
+.footerName::before {
+    content: "/";
+    color: var(--color-secondary);
+}
