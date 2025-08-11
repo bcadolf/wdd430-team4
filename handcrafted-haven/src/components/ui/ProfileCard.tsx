@@ -28,9 +28,9 @@ export async function ProfileCard({ seller_id }: { seller_id: string }) {
           ></Image>
         </div>
         <div className='flex flex-col items-center mt-4'>
-          <h3 className='text-primary font-bold mt-3 text-'>
+          <h2 className='text-primary font-bold mt-3 text-'>
             {profile.owner_first} {profile.owner_last}
-          </h3>
+          </h2>
           <p className='text-accent text-sm mt-1 text-center'>
             Handcrafted Jewelry Artisan
           </p>
