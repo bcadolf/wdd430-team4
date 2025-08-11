@@ -1,11 +1,13 @@
+
 import HeroImage from '@/components/ui/HeroImage';
 import { getDistinctCategories } from '@/lib/data';
-import CategoryButtons from '@/components/ui/CategoryButtons';
+import CategoryProductList from '@/components/product/CategoryProductList';
 
 export default async function Home(){
-  const categories = await getDistinctCategories();
+      const categories = await getDistinctCategories();
+
   return <>
     <HeroImage/>
-    <CategoryButtons categories={categories}/>
+    <CategoryProductList categories={categories}/>
   </>
 }
