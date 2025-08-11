@@ -216,9 +216,12 @@ async function testGetProductByParam() {
 async function testGetProductsByCategory() {
   const result = await getProductsByCategory('cutlery');
   console.log(result);
+  console.log("result:", result);
+  //console.log("result.rows:", (result as any).rows);
+  console.log("Is rows property defined?", "rows" in result);
 }
 
-//testGetProductsByCategory();
+testGetProductsByCategory();
 
 async function testGetUserById() {
   const result = await getUserById({
@@ -242,6 +245,6 @@ export default async function testCategories(){
     console.log(categories);
 }
 
-testCategories();
+//testCategories();
 
 /* eslint-enable @typescript-eslint/no-unused-vars */
