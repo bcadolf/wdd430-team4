@@ -132,7 +132,7 @@ type CartFields = 'id' | 'user_id';
 type CartSQLParam = {
   field: CartFields;
   value: string | number;
-}
+};
 export async function getCartByParam(params: CartSQLParam) {
   try {
     const { field, value } = params;
@@ -142,7 +142,6 @@ export async function getCartByParam(params: CartSQLParam) {
     if (!validField.includes(field)) {
       throw new Error(`Invlaid field: ${field}`);
     }
-
 
     const query = `
         SELECT * FROM carts WHERE ${field} = $1
@@ -155,7 +154,6 @@ export async function getCartByParam(params: CartSQLParam) {
     console.log(error);
   }
 }
-
 
 export async function getAllProducts() {
   return await sql`SELECT * FROM products`;

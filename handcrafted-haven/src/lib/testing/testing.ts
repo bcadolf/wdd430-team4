@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // lint disabled for file since it is only for testing and the functions are commented out to allow for picking which to run.
-
-import test from 'node:test';
 import {
   createCart,
   createCartDetail,
@@ -33,12 +31,12 @@ async function testCreateSeller() {
   const formData = new FormData();
   formData.set('owner_first', 'Nick');
   formData.set('owner_last', 'Fury');
-  formData.set('store_name', 'Nick Nacks');
-  formData.set('store_email', 'nicky@handcraftedhaven.com');
+  formData.set('store_name', 'Logans ');
+  formData.set('store_email', 'loganhartshorn@gmail.com');
   formData.set('store_address', '1234 Superhero Lane, New York, NY');
   formData.set('password', 'password123!');
 
-  const result = await createSeller(formData);
+  const result = await createSeller({ success: false, message: '' }, formData);
 
   console.log(result);
 }
@@ -64,13 +62,15 @@ async function testCreateProduct() {
     'item_description',
     'Hand-painted Mug crafted with care using traditional techniques.'
   );
-  formData.set('seller_id', '0f8fad10-6c29-40d2-8d02-581851eff936');
+  formData.set('seller_id', 'c2cd79fa-74bf-42bd-a7d4-233992f42f4c');
   formData.set('item_image', '/products/hand-painted-mug.webp');
 
-  await createProduct(formData);
+  formData.set('category', 'clothes');
+  const result = await createProduct({ success: false, message: '' }, formData);
+  console.log(result);
 }
 
-// testCreateProduct(); SUCCESS
+testCreateProduct();
 
 async function testUpdateProduct() {
   const formData = new FormData();
@@ -82,7 +82,7 @@ async function testUpdateProduct() {
   );
   formData.set('category', 'cutlery');
 
-  const result = await updateProduct(formData);
+  const result = await updateProduct({ success: false, message: '' }, formData);
   console.log(result);
 }
 
@@ -175,18 +175,28 @@ async function testCreateOrderItem() {
 
 //testCreateReview();
 
+// testGetSellerByParam();
+
+// testGetProductByParam();
+
+// testGetProductsByCategory();
+
+// testGetUserById(); SUCCESS
+
+// testGetReviewByParam();
+
 async function testGetCartById() {
-  const result = await getFullCartById({ cart_id: 48 });
+  const result = await getFullCartById({ cart_id: 1 });
 
   console.log(result);
 }
 
-//testGetCartById();
+// testGetCartById(); SUCCESS
 
 async function testGetSellerByParam() {
   const result = await getSellerByParam({
-    field: 'store_name',
-    value: 'Fine Iron',
+    field: 'store_email',
+    value: 'loganhartshorn@gmail.com',
   });
   // test with getting password as well.
   const resultPass = await getSellerByParam({
@@ -201,8 +211,8 @@ async function testGetSellerByParam() {
 
 async function testGetProductByParam() {
   const result = await getProductByParam({
-    field: 'seller_id',
-    value: '343832af-b69b-4164-87e5-b230429f4ff1',
+    field: 'item_price_cents',
+    value: 899,
   });
 
   console.log(result);
@@ -218,7 +228,7 @@ async function testGetProductsByCategory() {
   console.log('Is rows property defined?', 'rows' in result);
 }
 
-// testGetProductsByCategory();
+// testGetProductByParam(); SUCCESS
 
 async function testGetUserById() {
   const result = await getUserById({
@@ -231,11 +241,12 @@ async function testGetUserById() {
 // testGetUserById(); SUCCESS
 
 async function testGetReviewByParam() {
-  const result = await getReviewByParam({ field: 'product_id', value: 4 });
+  const result = await getReviewByParam({ field: 'product_id', value: 1 });
 
   console.log(result);
 }
-// testGetReviewByParam();
+
+// testGetReviewByParam(); SUCCESS
 
 export default async function testCategories() {
   const categories = await getDistinctCategories();

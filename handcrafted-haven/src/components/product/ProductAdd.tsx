@@ -9,7 +9,7 @@ type ProductAddProps = {
 export default function ProductAdd({ product_id, seller_id }: ProductAddProps) {
     const handleAddToCart = async () => {
         
-        await fetch('/api/products/cart', {
+        await fetch('/api/cart', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             credentials: "include",
