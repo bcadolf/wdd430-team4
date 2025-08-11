@@ -104,7 +104,7 @@ export default function CreateSellerForm() {
         justifyContent: 'center',
         background: '#0c2c47',
         borderRadius: '24px',
-        padding: '10px',
+        padding: '25px',
       }}
     >
       <form
@@ -258,7 +258,7 @@ export default function CreateSellerForm() {
         </small>
 
         <button
-          className='bg-blue-950 text-white rounded px-5 py-3 font-bold hover:bg-blue-700 transition-colors cursor-pointer'
+          className='bg-blue-950 text-white rounded px-5 py-3 font-bold hover:bg-blue-900 transition-colors cursor-pointer'
           type='submit'
         >
           Create Account
