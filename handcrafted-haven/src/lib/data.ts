@@ -24,25 +24,46 @@ type RawProductRow = {
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 // used to get all the data needed for the cart ui display. will be returned as an array.
-export async function getCartByUserId(user_id: number) {
-  const [cart] = await sql`
-    SELECT * FROM carts WHERE user_id = ${user_id}
-  `;
-  return cart;
+export async function getFullCartById({ cart_id }: { cart_id: number }) {
+  try {
+    const data = await sql<CartWithItems[]>`
+        SELECT
+        c.id AS cart_id,
+        c.user_id,
+        cd.id AS cart_detail_id,
+        cd.seller_id,
+        cd.product_id,
+        cd.quantity,
+        ROUND(p.item_price * 100)::INT AS item_price_cents,
+        p.item_stock,
+        p.item_name,
+        p.item_image
+        FROM carts c
+        JOIN cart_details cd ON cd.cart_id = c.id
+        JOIN products p ON p.id = cd.product_id
+        WHERE c.id = ${cart_id};
+    `;
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-export async function getFullCartById({ cart_id }: { cart_id: number }) {
-  return await sql`
-    SELECT
-      cd.id AS cart_detail_id,
-      cd.quantity,
-      p.item_name,
-      p.item_price,
-      p.item_image
-    FROM cart_details cd
-    JOIN products p ON p.id = cd.product_id
-    WHERE cd.cart_id = ${cart_id}
-  `;
+export async function getCartCount(cart_id: string | undefined) {
+  if (!cart_id) return 0;
+
+  try {
+    const result = await sql`
+      SELECT COALESCE(SUM(quantity), 0) as count
+      FROM cart_details 
+      WHERE cart_id = ${cart_id}
+    `;
+    return result[0]?.count || 0;
+  } catch (error) {
+    console.error('Error getting cart count:', error);
+    return 0;
+  }
 }
 
 // one size fits all... kinda its set so the params set in definitions can be used to pull the seller data. Using this reduces having to call a function for each new key/field search.
@@ -221,6 +242,8 @@ export async function getDistinctCategories() {
     return [];
   }
 }
+
+
 
 /**
  * login credentials - done

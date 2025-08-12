@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
-import { createUser, createCart, addProductToCart } from "@/lib/actions";
+import { createUser, createCart, addProductToCart, removeProductFromCart } from "@/lib/actions";
 import { cookies } from "next/headers";
 import { getCartByParam } from "@/lib/data";
-
 
 export async function POST(request: Request) {
   try {
@@ -51,12 +50,12 @@ export async function POST(request: Request) {
       sameSite: "lax",
     });
 
-        return response;
-    } catch (error) {
-        console.error(error);
-        return NextResponse.json({ error: "failed to add item to cart"}, { status: 500});
-
-
-    }
-
-    }
+    return response;
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Failed to add item to cart" },
+      { status: 500 }
+    );
+  }
+}

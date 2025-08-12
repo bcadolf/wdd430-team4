@@ -1,5 +1,6 @@
 import { getSellerByParam } from '@/lib/data';
 import Image from 'next/image';
+import Link from 'next/link';
 export async function ProfileCard({ seller_id }: { seller_id: string }) {
   if (!seller_id) {
     throw new Error('Seller ID is required to fetch profile data.');
@@ -40,9 +41,11 @@ export async function ProfileCard({ seller_id }: { seller_id: string }) {
               ✉️ {profile.store_email}
             </span>
             <span className='text-accent text-sm'>{profile.store_address}</span>
+            <Link href={`/sellers/edit-profile/${profile.id}`} className='flex justify-center items-center gap-2'>
             <button className='mt-3 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors'>
               Edit Profile
             </button>
+            </Link>
           </div>
         </div>
       </div>

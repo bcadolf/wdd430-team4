@@ -15,7 +15,6 @@ import {
   updateUser,
 } from '../actions';
 import {
-  getFullCartById,
   getProductByParam,
   getReviewByParam,
   getSellerByParam,
@@ -48,7 +47,7 @@ async function testUpdateSeller() {
   formData.set('seller_id', '343832af-b69b-4164-87e5-b230429f4ff1');
   formData.set('owner_last', 'Strongleg');
   formData.set('store_address', '27 Iron Way, Steele VA');
-  await updateSeller(formData);
+  await updateSeller({ success: false, message: '' }, formData);
 }
 
 // testUpdateSeller(); SUCCESS
@@ -184,14 +183,6 @@ async function testCreateOrderItem() {
 // testGetUserById(); SUCCESS
 
 // testGetReviewByParam();
-
-async function testGetCartById() {
-  const result = await getFullCartById({ cart_id: 1 });
-
-  console.log(result);
-}
-
-// testGetCartById(); SUCCESS
 
 async function testGetSellerByParam() {
   const result = await getSellerByParam({
