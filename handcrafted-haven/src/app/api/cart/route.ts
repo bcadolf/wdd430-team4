@@ -1,7 +1,26 @@
 import { NextResponse } from "next/server";
-import { createUser, createCart, addProductToCart } from "@/lib/actions";
+import { createUser, createCart, addProductToCart, removeProductFromCart } from "@/lib/actions";
 import { cookies } from "next/headers";
-import { getCartByParam } from "@/lib/data";
+import { getCartByParam, getCartItems } from "@/lib/data";
+import postgres from 'postgres';
+
+export async function GET() {
+  try{
+    const cookieStore = await cookies();
+    const cart_id = cookieStore.get("cart_id")?.value;
+
+    if (!cart_id) {
+      return NextResponse.json([]);
+    }
+
+     const cartItems = await getCartItems({ cart_id: parseInt(cart_id) });
+    return NextResponse.json(cartItems);
+
+  } catch (error) {
+    console.error('Error fetching cart:',error);
+    return NextResponse.json({ error: "Failed to fetch cart" }, { status: 500 });
+  }
+}
 
 export async function POST(request: Request) {
   try {
@@ -55,5 +74,35 @@ export async function POST(request: Request) {
       { error: "Failed to add item to cart" },
       { status: 500 }
     );
+  }
+}
+
+// Delete item from cart
+export async function DELETE(request: Request) {
+  try{ 
+    console.log(' DELETE /api/cart - Starting...');
+
+    const cookieStore = await cookies();
+    const cart_id = cookieStore.get("cart_id")?.value;
+
+    console.log(' Cart ID from cookies:', cart_id)
+
+    if(!cart_id) {
+      console.log('❌ No cart_id found');
+      return NextResponse.json({ error: "No cart found"}, { status: 404 });
+    }
+
+    const body = await request.json();
+    const { product_id } = body;
+
+    console.log('🗑️ Removing product:', { cart_id, product_id });
+
+    await removeProductFromCart({ cart_id, product_id });
+
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('❌ DELETE /api/cart - Error:', error);
+    return NextResponse.json({ error: "Failed to remove from cart" }, { status: 500 });
   }
 }

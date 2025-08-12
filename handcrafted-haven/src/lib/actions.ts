@@ -417,17 +417,16 @@ export async function createCart({ user_id }: { user_id: string }) {
   }
 }
 
-export async function deleteCart(cart_id: number) {
-  if (typeof cart_id !== 'number') {
-    throw new Error('Invalid ID type');
-  }
+export async function removeProductFromCart({ cart_id, product_id }: { cart_id: string, product_id: string }) {
   try {
     await sql`
-      DELETE FROM carts
-      WHERE id = ${cart_id}
+      DELETE FROM cart_details 
+      WHERE cart_id = ${cart_id} AND product_id = ${product_id}
     `;
+    return { success: true };
   } catch (error) {
-    console.log(error);
+    console.error('Error removing product from cart:', error);
+    throw error;
   }
 }
 
@@ -682,3 +681,5 @@ export async function deleteReview(review_id: number) {
     console.log(error);
   }
 }
+
+
