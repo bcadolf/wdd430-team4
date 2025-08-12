@@ -33,7 +33,6 @@ export default function ProductList() {
 
     return (
         <div>
-            <h2>Products for Sale</h2>
             <ProductCard products={filteredProducts}/>
         </div>
     )
