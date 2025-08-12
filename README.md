@@ -21,7 +21,7 @@ Username: wwares@handcraftedhaven.com
 Password: 2tr!ng1y$
 
 Username:jjewels@handcraftedhaven.com
-Password: password123!
+Password: kilo123@
 
 Username: nicky@handcraftedhaven.com
 Password: password123!
