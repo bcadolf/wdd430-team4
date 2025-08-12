@@ -48,7 +48,7 @@ async function testUpdateSeller() {
   formData.set('seller_id', '343832af-b69b-4164-87e5-b230429f4ff1');
   formData.set('owner_last', 'Strongleg');
   formData.set('store_address', '27 Iron Way, Steele VA');
-  await updateSeller(formData);
+  await updateSeller({ success: false, message: '' }, formData);
 }
 
 // testUpdateSeller(); SUCCESS
