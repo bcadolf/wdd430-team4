@@ -84,7 +84,7 @@ export async function createSeller(
 
 const UpdateSeller = SellerSchema.partial();
 
-export async function updateSeller(formData: FormData) {
+export async function updateSeller(prevState: {success:boolean;message:string},formData: FormData) {
   const maybeFile = formData.get('item_image');
   const file =
     maybeFile instanceof File && maybeFile.size > 0 ? maybeFile : null;
@@ -115,6 +115,7 @@ export async function updateSeller(formData: FormData) {
 
   if (!validatedData.success) {
     return {
+      success: false,
       errors: validatedData.error,
       message: 'Missing or Invalid Information. Failed to Update Seller.',
     };
@@ -146,6 +147,10 @@ export async function updateSeller(formData: FormData) {
   } catch (error) {
     console.log(error);
   }
+  return {
+    success: true,
+    message: 'Seller updated successfully.',
+  };
 }
 
 export async function deleteSeller(seller_id: string) {
