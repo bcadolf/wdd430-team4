@@ -33,6 +33,7 @@ export default async function CartPage() {
           flexDirection: 'column',
           padding: '40px',
           justifyContent: 'center',
+          color: 'white',
         }}
       >
         <h2
