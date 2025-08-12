@@ -100,6 +100,13 @@ export async function updateSeller(prevState: {success:boolean;message:string},f
   } else {
     imagePath = undefined; // Default image path if no file is provided
   }
+let hashedPassword: string | undefined;
+const password = formData.get('password');
+if (typeof password === 'string' && password.length > 0) {
+  hashedPassword = await bcrypt.hash(password, 12);
+}
+
+
   const rawData = {
     id: formData.get('seller_id'),
     owner_first: formData.get('owner_first') ?? undefined,
@@ -107,7 +114,7 @@ export async function updateSeller(prevState: {success:boolean;message:string},f
     store_name: formData.get('store_name') ?? undefined,
     store_email: formData.get('store_email') ?? undefined,
     store_address: formData.get('store_address') ?? undefined,
-    password: formData.get('password') ?? undefined,
+    password: hashedPassword ?? undefined,
     seller_image: imagePath,
   };
 

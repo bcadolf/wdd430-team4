@@ -15,7 +15,7 @@
 ### Testing Profiles
 
 Username: fineiron@handcraftedhaven.com
-Password: 1R0N1sh0t$
+Password: okijhgy@!
 
 Username: wwares@handcraftedhaven.com
 Password: 2tr!ng1y$

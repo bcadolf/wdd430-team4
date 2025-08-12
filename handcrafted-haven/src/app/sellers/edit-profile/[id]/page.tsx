@@ -1,7 +1,6 @@
 'use client';
 
 import { updateSeller } from '@/lib/actions';
-import { CategorySchema } from '@/lib/validation/schemas';
 import { useActionState } from 'react';
 import { use, useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -14,7 +13,6 @@ export default function EditProfilePage ({ params }: { params: Promise<{ id: str
   const router = useRouter();
   const { id } = use(params);
   const [seller, setSeller] = useState<Seller | null>(null);
-  const categories = CategorySchema.shape.category.options;
   const [state, formAction] = useActionState(updateSeller, initialState);
   
   useEffect(() => {
@@ -42,17 +40,17 @@ export default function EditProfilePage ({ params }: { params: Promise<{ id: str
         <h1 className='text-2xl font-bold mb-4'>Edit Profile</h1>
         <input
           type='text'
-          name='ower_first'
+          name='owner_first'
           placeholder='First Name'
-          className='border p-2 mb-4 w-full max-w-md rounded'
+          className='mt-3 bg-primary text-white border p-2 mb-4 w-full max-w-md rounded'
           defaultValue={seller.owner_first}
           required
         />
         <input
           type='text'
-          name='ower_last'
+          name='owner_last'
           placeholder='Last Name'
-          className='border p-2 mb-4 w-full max-w-md rounded'
+          className='mt-3 bg-primary text-white border p-2 mb-4 w-full max-w-md rounded'
           defaultValue={seller.owner_last}
           required
         />
@@ -60,7 +58,7 @@ export default function EditProfilePage ({ params }: { params: Promise<{ id: str
           type='text'
           name='store_name'
           placeholder='Store Name'
-          className='border p-2 mb-4 w-full max-w-md rounded'
+          className='mt-3 bg-primary text-white border p-2 mb-4 w-full max-w-md rounded'
           defaultValue={seller.store_name}
           required
         />
@@ -68,7 +66,7 @@ export default function EditProfilePage ({ params }: { params: Promise<{ id: str
           type='email'
           name='store_email'
           placeholder='Store Email'
-          className='border p-2 mb-4 w-full max-w-md rounded'
+          className='mt-3 bg-primary text-white border p-2 mb-4 w-full max-w-md rounded'
           defaultValue={seller.store_email}
           required
         />
@@ -76,16 +74,22 @@ export default function EditProfilePage ({ params }: { params: Promise<{ id: str
           type='text'
           name='store_address'
           placeholder='Store Address'
-          className='border p-2 mb-4 w-full max-w-md rounded'
+          className='mt-3 bg-primary text-white border p-2 mb-4 w-full max-w-md rounded'
           defaultValue={seller.store_address}
           required
+        />
+        <input
+          type='text'
+          name='password'
+          placeholder='Password'
+          className='mt-3 bg-primary text-white border p-2 mb-4 w-full max-w-md rounded'
         />
         <div>
             <input
               type='file'
               name='item_image'
               accept='image/png, image/jpeg, image/jpg, image/webp'
-              className='mb-4 border rounded bg-gray-300 w-full max-w-md'
+              className='mt-3 bg-primary text-white mb-4 border rounded bg-gray-300 w-full max-w-md'
             />
             <Image
               src={seller.seller_image}
@@ -95,6 +99,8 @@ export default function EditProfilePage ({ params }: { params: Promise<{ id: str
               className='object-cover rounded-lg mt-2 px-2'
             />
           </div>
+        <input type='hidden' name='seller_id' value={seller.id} />
+        {state.message && <p className='text-red-500 mt-2'>{state.message}</p>}
         <button
           type='submit'
           className='mt-3 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors'
