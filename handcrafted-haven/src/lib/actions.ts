@@ -89,7 +89,7 @@ export async function updateSeller(formData: FormData) {
   const file =
     maybeFile instanceof File && maybeFile.size > 0 ? maybeFile : null;
 
-  let imagePath: string;
+  let imagePath: string | undefined;
 
   if (file) {
     const blob = await put(`sellers/${Date.now()}-${file.name}`, file, {
@@ -98,7 +98,7 @@ export async function updateSeller(formData: FormData) {
     });
     imagePath = blob.url;
   } else {
-    imagePath = '/sellers/No-Image-Placeholder.svg'; // Default image path if no file is provided
+    imagePath = undefined; // Default image path if no file is provided
   }
   const rawData = {
     id: formData.get('seller_id'),
@@ -236,7 +236,7 @@ export async function updateProduct(
   const file =
     maybeFile instanceof File && maybeFile.size > 0 ? maybeFile : null;
 
-  let imagePath: string;
+  let imagePath: string | undefined;
 
   if (file) {
     const blob = await put(`products/${Date.now()}-${file.name}`, file, {
@@ -245,7 +245,7 @@ export async function updateProduct(
     });
     imagePath = blob.url;
   } else {
-    imagePath = '/products/No-Image-Placeholder.svg'; // Default image path if no file is provided
+    imagePath = undefined; // Default image path if no file is provided
   }
 
   const validatedData = ProductSchema.partial().safeParse({
