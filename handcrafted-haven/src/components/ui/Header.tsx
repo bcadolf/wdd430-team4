@@ -12,8 +12,9 @@ const navlinks: NavLink[] = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
   { label: 'Products', href: '/products' },
-  { label: 'Login', href: '/login' },
   { label: 'Seller', href: '/sellers' },
+  { label: 'Login', href: '/login' },
+  { label: 'SignUp', href: '/create-account'},
 ];
 
 export default function Header() {
@@ -25,7 +26,7 @@ export default function Header() {
   if (pathname === '/about') title = 'About Us';
   return (
     <header className={styles.header}>
-      <Link href='/'>
+      <Link href='/' className={styles.logo}>
         <Image
           src='/handcrafted-haven-logo.webp'
           width='150'
@@ -56,7 +57,7 @@ export default function Header() {
           ))}
         </ul>
       </nav>
-      <Link href='/cart'>
+      <Link href='/cart' className={styles.cartButton}>
         <Image
           src='/checkout.webp'
           width='50'
