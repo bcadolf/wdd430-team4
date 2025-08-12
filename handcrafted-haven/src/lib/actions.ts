@@ -84,7 +84,7 @@ export async function createSeller(
 
 const UpdateSeller = SellerSchema.partial();
 
-export async function updateSeller(formData: FormData) {
+export async function updateSeller(prevState: {success:boolean;message:string},formData: FormData) {
   const maybeFile = formData.get('item_image');
   const file =
     maybeFile instanceof File && maybeFile.size > 0 ? maybeFile : null;
@@ -100,6 +100,13 @@ export async function updateSeller(formData: FormData) {
   } else {
     imagePath = undefined; // Default image path if no file is provided
   }
+let hashedPassword: string | undefined;
+const password = formData.get('password');
+if (typeof password === 'string' && password.length > 0) {
+  hashedPassword = await bcrypt.hash(password, 12);
+}
+
+
   const rawData = {
     id: formData.get('seller_id'),
     owner_first: formData.get('owner_first') ?? undefined,
@@ -107,7 +114,7 @@ export async function updateSeller(formData: FormData) {
     store_name: formData.get('store_name') ?? undefined,
     store_email: formData.get('store_email') ?? undefined,
     store_address: formData.get('store_address') ?? undefined,
-    password: formData.get('password') ?? undefined,
+    password: hashedPassword ?? undefined,
     seller_image: imagePath,
   };
 
@@ -115,6 +122,7 @@ export async function updateSeller(formData: FormData) {
 
   if (!validatedData.success) {
     return {
+      success: false,
       errors: validatedData.error,
       message: 'Missing or Invalid Information. Failed to Update Seller.',
     };
@@ -146,6 +154,10 @@ export async function updateSeller(formData: FormData) {
   } catch (error) {
     console.log(error);
   }
+  return {
+    success: true,
+    message: 'Seller updated successfully.',
+  };
 }
 
 export async function deleteSeller(seller_id: string) {
