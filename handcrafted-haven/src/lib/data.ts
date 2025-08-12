@@ -24,7 +24,7 @@ type RawProductRow = {
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 // used to get all the data needed for the cart ui display. will be returned as an array.
-export async function getFullCartById({ cart_id }: { cart_id: number }) {
+export async function getCartItems({ cart_id }: { cart_id: number }) {
   try {
     const data = await sql<CartWithItems[]>`
         SELECT
@@ -47,6 +47,22 @@ export async function getFullCartById({ cart_id }: { cart_id: number }) {
     return data;
   } catch (error) {
     console.log(error);
+  }
+}
+
+export async function getCartCount(cart_id: string | undefined) {
+  if (!cart_id) return 0;
+
+  try {
+    const result = await sql`
+      SELECT COALESCE(SUM(quantity), 0) as count
+      FROM cart_details 
+      WHERE cart_id = ${cart_id}
+    `;
+    return result[0]?.count || 0;
+  } catch (error) {
+    console.error('Error getting cart count:', error);
+    return 0;
   }
 }
 
@@ -226,6 +242,8 @@ export async function getDistinctCategories(){
     return []
   }
 }
+
+
 
 /**
  * login credentials - done
