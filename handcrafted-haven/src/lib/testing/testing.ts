@@ -15,7 +15,6 @@ import {
   updateUser,
 } from '../actions';
 import {
-  getFullCartById,
   getProductByParam,
   getReviewByParam,
   getSellerByParam,
@@ -184,14 +183,6 @@ async function testCreateOrderItem() {
 // testGetUserById(); SUCCESS
 
 // testGetReviewByParam();
-
-async function testGetCartById() {
-  const result = await getFullCartById({ cart_id: 1 });
-
-  console.log(result);
-}
-
-// testGetCartById(); SUCCESS
 
 async function testGetSellerByParam() {
   const result = await getSellerByParam({
